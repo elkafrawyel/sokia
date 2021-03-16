@@ -1,0 +1,57 @@
+name: sokia_app
+description: A new Flutter application.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons:
+  dio: ^3.0.10
+  get:
+  get_storage:
+  splash_screen_view:
+  flutter_launcher_icons:
+  url_launcher:
+  cached_network_image:
+  google_fonts:
+  flutter_local_notifications: ^4.0.1+2
+  flutter_ringtone_player:
+  firebase_messaging: "^8.0.0-dev.15"
+  firebase_analytics:
+  firebase_core:
+  google_maps_flutter:
+  expandable_group:
+  rating_bar:
+  lottie:
+  pin_entry_field:
+  flutter_countdown_timer:
+  data_connection_checker:
+  google_sign_in:
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "src/images/logo.png"
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - src/images/
+    - src/json/
