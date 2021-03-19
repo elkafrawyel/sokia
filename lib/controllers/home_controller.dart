@@ -32,15 +32,20 @@ class HomeController extends GetxController {
           .showToast(message: 'Data not loaded yet', context: Get.context);
       return;
     }
-    searchList = mosques.where((element) {
-      final title = element.mosqueName.toLowerCase();
-      final address = element.mosqueAdress.toLowerCase();
-      final searchQuery = query.toLowerCase();
+    if (query.isEmpty) {
+      searchList = mosques;
+      update();
+    } else {
+      searchList = mosques.where((element) {
+        final title = element.mosqueName.toLowerCase();
+        final address = element.mosqueAdress.toLowerCase();
+        final searchQuery = query.toLowerCase();
 
-      return title.contains(searchQuery) || address.contains(searchQuery);
-    }).toList();
+        return title.contains(searchQuery) || address.contains(searchQuery);
+      }).toList();
 
-    update();
+      update();
+    }
   }
 
   _getData() async {
@@ -54,6 +59,9 @@ class HomeController extends GetxController {
           HomeResponse homeResponse = dataState.data as HomeResponse;
 
           categories.addAll(homeResponse.categories);
+          mosques.addAll(homeResponse.mosques);
+          mosques.addAll(homeResponse.mosques);
+          mosques.addAll(homeResponse.mosques);
           mosques.addAll(homeResponse.mosques);
           loading = false;
           emptyCategories = categories.isEmpty;

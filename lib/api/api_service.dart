@@ -29,8 +29,8 @@ class ApiService {
         HttpHeaders.acceptLanguageHeader: language,
         HttpHeaders.authorizationHeader: 'Bearer $apiToken'
       },
-      connectTimeout: 5000,
-      receiveTimeout: 3000,
+      connectTimeout: 10000,
+      receiveTimeout: 10000,
     );
 
     Dio _dio = Dio(options);

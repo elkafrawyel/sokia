@@ -6,9 +6,6 @@ import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/get_binding.dart';
 import 'package:sokia_app/helper/language/Translation.dart';
 import 'package:sokia_app/screens/home/home_screen.dart';
-import 'package:sokia_app/screens/splash_screen.dart';
-
-import 'helper/messaging/push_notifications.dart';
 
 class MyApp extends StatefulWidget {
   @override

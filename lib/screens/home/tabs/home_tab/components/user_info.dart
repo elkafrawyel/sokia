@@ -10,7 +10,7 @@ class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsetsDirectional.only(start: 10, end: 10, top: 10),
+      padding: EdgeInsetsDirectional.only(start: 10, end: 10, top: 30),
       alignment: AlignmentDirectional.topStart,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
