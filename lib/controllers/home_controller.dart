@@ -60,9 +60,6 @@ class HomeController extends GetxController {
 
           categories.addAll(homeResponse.categories);
           mosques.addAll(homeResponse.mosques);
-          mosques.addAll(homeResponse.mosques);
-          mosques.addAll(homeResponse.mosques);
-          mosques.addAll(homeResponse.mosques);
           loading = false;
           emptyCategories = categories.isEmpty;
           emptyMosques = mosques.isEmpty;
