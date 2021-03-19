@@ -10,7 +10,7 @@ import 'local_storage.dart';
 class CommonMethods {
   showToast({@required String message, @required BuildContext context}) {
     Toast.show(message, context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
   }
 
   showSnackBar(String message, {IconData iconData = Icons.info}) {
@@ -111,7 +111,7 @@ class CommonMethods {
       bottomSheet,
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(0),
       ),
     );
   }

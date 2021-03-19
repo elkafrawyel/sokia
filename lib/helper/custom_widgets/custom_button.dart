@@ -8,13 +8,18 @@ class CustomButton extends StatelessWidget {
   final Color colorBackground;
   final Color colorText;
   final double fontSize;
+  final double elevation;
+  final bool underLineText;
 
-  CustomButton(
-      {@required this.text,
-      @required this.onPressed,
-      this.colorBackground,
-      this.colorText,
-      this.fontSize = fontSize16});
+  CustomButton({
+    @required this.text,
+    @required this.onPressed,
+    this.colorBackground,
+    this.colorText,
+    this.fontSize = fontSize16,
+    this.elevation = 5.0,
+    this.underLineText = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class CustomButton extends StatelessWidget {
         primary: Colors.white,
         backgroundColor: colorBackground,
         onSurface: Colors.grey,
-        elevation: 5,
+        elevation: elevation,
         // side: BorderSide(color: Colors.red, width: 2),
         // shape: const BeveledRectangleBorder(
         //     borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -31,12 +36,21 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10))),
       ),
       onPressed: onPressed,
-      child: CustomText(
-        text: text,
-        color: colorText,
-        fontSize: fontSize,
-        alignment: AlignmentDirectional.center,
-      ),
+      child: !underLineText
+          ? CustomText(
+              text: text,
+              color: colorText,
+              fontSize: fontSize,
+              alignment: AlignmentDirectional.center,
+            )
+          : Text(
+              text,
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                color: colorText,
+                fontSize: fontSize,
+              ),
+            ),
     );
   }
 }

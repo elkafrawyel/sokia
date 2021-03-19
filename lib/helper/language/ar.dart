@@ -217,4 +217,12 @@ Map<String, String> ar = {
   'noAddress': 'لا يوجد عنوان',
   'directCall': 'إتصال مباشر',
   'whatsAppCall': 'تواصل بالواتساب',
+  'createOrder': 'انشاء الطلب',
+  'boxes': 'كراتين',
+  'orderCountMessage': 'لا يمكن ان يقل العدد عن 10',
+  'chooseCategory': 'أضغط للاختيار',
+  'workerName':'الاسم',
+  'workerNumber':'الرقم',
+  'workerNameHint':'أسم العامل (أختياري)',
+  'workerNumberHint':'رقم العامل (أختياري)',
 };

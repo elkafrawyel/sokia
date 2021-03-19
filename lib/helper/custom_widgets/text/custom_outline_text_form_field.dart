@@ -18,6 +18,8 @@ class CustomOutlinedTextFormField extends StatelessWidget {
   final Color labelColor;
   final Color textColor;
   final bool enabled;
+  final Function(String value) onChanged;
+  final Function(String value) onFieldSubmitted;
 
   CustomOutlinedTextFormField({
     this.isPassword = false,
@@ -37,6 +39,8 @@ class CustomOutlinedTextFormField extends StatelessWidget {
     this.labelColor,
     this.textColor = Colors.black,
     this.enabled = true,
+    this.onChanged,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -46,8 +50,9 @@ class CustomOutlinedTextFormField extends StatelessWidget {
       style: TextStyle(fontSize: 14, color: textColor),
       controller: controller,
       keyboardType: keyboardType,
+      onChanged: onChanged,
       textInputAction: TextInputAction.next,
-      onFieldSubmitted: (value) => FocusScope.of(context).nextFocus(),
+      onFieldSubmitted: onFieldSubmitted,
       validator: !required
           ? null
           : (String value) {

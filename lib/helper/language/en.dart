@@ -223,4 +223,12 @@ Map<String, String> en = {
   'noAddress': 'No Address',
   'directCall': 'Direct Call',
   'whatsAppCall': 'WhatsApp Message',
+  'createOrder': 'Create Order',
+  'boxes': 'Boxes',
+  'orderCountMessage': 'Count Must be bigger than 10',
+  'chooseCategory': 'Tap category to choose',
+  'workerNameHint': 'Worker Name (optional)',
+  'workerNumberHint': 'Worker Number (optional)',
+  'workerName': 'Name',
+  'workerNumber': 'Number',
 };
