@@ -23,12 +23,9 @@ dependencies:
   url_launcher:
   cached_network_image:
   google_fonts:
-  flutter_local_notifications: ^4.0.1+2
-  flutter_ringtone_player:
-  firebase_messaging: "^8.0.0-dev.15"
-  firebase_analytics:
-  firebase_core:
   google_maps_flutter:
+  geolocator:
+  material_floating_search_bar:
   expandable_group:
   rating_bar:
   lottie:
@@ -36,12 +33,28 @@ dependencies:
   flutter_countdown_timer:
   data_connection_checker:
   google_sign_in:
-
+  toast:
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+#    native splash screens
+  flutter_native_splash:
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: src/images/splash.png
+  android: true
+  ios: true
+  android_gravity: fill
+  ios_content_mode: scaleAspectFill
+
+  # run this command
+  #  flutter pub run flutter_native_splash:create
+
+
 
 flutter_icons:
   android: true

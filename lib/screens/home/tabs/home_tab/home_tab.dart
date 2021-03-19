@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:sokia_app/controllers/home_controller.dart';
 import 'package:sokia_app/controllers/user_controller.dart';
 import 'package:sokia_app/helper/Constant.dart';
@@ -96,15 +97,8 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                 ? _loading()
                 : controller.emptyMosques
                     ? _empty()
-                    : SuggestionItem(
-                        mosque: controller.isSearching
-                            ? controller.searchList[index]
-                            : controller.mosques[index]),
-            childCount: controller.loading
-                ? 2
-                : controller.isSearching
-                    ? controller.searchList.length
-                    : controller.mosques.length,
+                    : SuggestionItem(mosque: controller.mosques[index]),
+            childCount: controller.loading ? 2 : controller.mosques.length,
           ),
         ),
       );
@@ -159,16 +153,9 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   buildFloating(double shrinkOffset) => Column(children: [
         UserInfo(),
-        SearchView(
-          onChanged: (searchQuery) {
-            Get.find<HomeController>().search(searchQuery);
-          },
-          onSubmitted: (searchQuery) {
-            Get.find<HomeController>().search(searchQuery);
-          },
-          onSearchTapped: (searchQuery) {
-            Get.find<HomeController>().search(searchQuery);
-          },
+        Container(
+          child: buildFloatingSearchBar(),
+          height: 60,
         ),
         GetBuilder<HomeController>(
           init: HomeController(),
@@ -184,4 +171,61 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                 ),
         ),
       ]);
+}
+
+final _searchController = FloatingSearchBarController();
+
+Widget buildFloatingSearchBar() {
+  final isPortrait =
+      MediaQuery.of(Get.context).orientation == Orientation.portrait;
+
+  return GetBuilder<HomeController>(
+    builder: (controller) => FloatingSearchBar(
+      hint: 'search'.tr,
+      scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+      transitionDuration: const Duration(milliseconds: 800),
+      transitionCurve: Curves.easeInOut,
+      physics: const BouncingScrollPhysics(),
+      axisAlignment: isPortrait ? 0.0 : -1.0,
+      openAxisAlignment: 0.0,
+      width: isPortrait ? 600 : 500,
+      debounceDelay: const Duration(milliseconds: 500),
+      onQueryChanged: (query) {
+        if (query.isNotEmpty) controller.search(query);
+      },
+      // Specify a custom transition to be used for
+      // animating between opened and closed stated.
+      transition: CircularFloatingSearchBarTransition(),
+      actions: [
+        FloatingSearchBarAction(
+          showIfOpened: false,
+          child: CircularButton(
+            icon: const Icon(Icons.place),
+            onPressed: () {},
+          ),
+        ),
+        FloatingSearchBarAction.searchToClear(
+          showIfClosed: false,
+        ),
+      ],
+      controller: _searchController,
+      builder: (context, transition) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Material(
+            color: Colors.white,
+            elevation: 4.0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: controller.searchList.map((mosque) {
+                return SuggestionItem(
+                  mosque: mosque,
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    ),
+  );
 }

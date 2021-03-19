@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sokia_app/api/api_service.dart';
 import 'package:sokia_app/controllers/user_controller.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
+import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/custom_widgets/data_state_views/network_view.dart';
 import 'package:sokia_app/helper/data_states.dart';
 
@@ -16,9 +17,6 @@ class HomeController extends GetxController {
   bool emptyCategories = false;
   bool emptyMosques = false;
 
-  var searchQuery = ''.obs;
-  bool isSearching = false;
-
   var userController = Get.put(UserController());
 
   @override
@@ -26,36 +24,23 @@ class HomeController extends GetxController {
     super.onInit();
     _getData();
     userController.loadProfile();
-
-    //every time search query changes that callback will fire
-    ever(
-      searchQuery,
-      (_) {
-        if (searchQuery.isNotEmpty) {
-          print('searching');
-
-          isSearching = true;
-          searchList.clear();
-          mosques.forEach((element) {
-            if (element.mosqueName.toLowerCase().contains(searchQuery) ||
-                element.mosqueAdress.toLowerCase().contains(searchQuery)) {
-              searchList.add(element);
-            }
-          });
-          emptyMosques = searchList.isEmpty;
-          update();
-        } else {
-          print('not searching');
-
-          isSearching = false;
-          update();
-        }
-      },
-    );
   }
 
   search(String query) {
-    searchQuery.value = query;
+    if (mosques.isEmpty) {
+      CommonMethods()
+          .showToast(message: 'Data not loaded yet', context: Get.context);
+      return;
+    }
+    searchList = mosques.where((element) {
+      final title = element.mosqueName.toLowerCase();
+      final address = element.mosqueAdress.toLowerCase();
+      final searchQuery = query.toLowerCase();
+
+      return title.contains(searchQuery) || address.contains(searchQuery);
+    }).toList();
+
+    update();
   }
 
   _getData() async {

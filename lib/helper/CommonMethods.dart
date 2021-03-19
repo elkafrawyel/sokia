@@ -3,10 +3,16 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
+import 'package:toast/toast.dart';
 
 import 'local_storage.dart';
 
 class CommonMethods {
+  showToast({@required String message, @required BuildContext context}) {
+    Toast.show(message, context,
+        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+  }
+
   showSnackBar(String message, {IconData iconData = Icons.info}) {
     Get.showSnackbar(
       GetBar(

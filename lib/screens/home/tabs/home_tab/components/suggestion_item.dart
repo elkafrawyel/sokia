@@ -13,7 +13,7 @@ class SuggestionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('ddddddddddddd');
+
       },
       child: Container(
         child: Card(
