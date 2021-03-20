@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
   final double fontSize;
   final double elevation;
   final bool underLineText;
+  final double radius;
 
   CustomButton({
     @required this.text,
@@ -19,6 +20,7 @@ class CustomButton extends StatelessWidget {
     this.fontSize = fontSize16,
     this.elevation = 5.0,
     this.underLineText = false,
+    this.radius = 10,
   });
 
   @override
@@ -32,8 +34,17 @@ class CustomButton extends StatelessWidget {
         // side: BorderSide(color: Colors.red, width: 2),
         // shape: const BeveledRectangleBorder(
         //     borderRadius: BorderRadius.all(Radius.circular(10))),
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10))),
+        shape: radius == 0
+            ? const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(0),
+                ),
+              )
+            : const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
       ),
       onPressed: onPressed,
       child: !underLineText

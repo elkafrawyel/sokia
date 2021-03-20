@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:sokia_app/helper/local_storage.dart';
+import 'package:get/get.dart';
+import 'package:sokia_app/screens/home/home_screen.dart';
 
 class OrderCompletedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.dark,
         toolbarHeight: 0,
       ),
       body: Container(
@@ -26,21 +29,24 @@ class OrderCompletedScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomText(
-                    fontSize: fontSize16,
+                    fontSize: fontSize18,
                     color: Colors.white,
                     alignment: AlignmentDirectional.center,
-                    text: 'تم تأكيد طلبك بنجاح',
+                    text: 'orderConfirmed'.tr,
                   ),
-                  CustomText(
-                    fontSize: 12,
-                    color: Colors.white,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    text:
-                        'يمكنك الرجوع إلى تفاصيل طلبك وذلك من خلال خانة طلباتي الموجودة في القائمة ',
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: CustomText(
+                      fontSize: fontSize14,
+                      color: Colors.white,
+                      maxLines: 2,
+                      alignment: AlignmentDirectional.center,
+                      textAlign: TextAlign.center,
+                      text: 'orderCompleteMessage'.tr,
+                    ),
                   ),
                   SizedBox(
-                    height: 60,
+                    height: 40,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -49,14 +55,17 @@ class OrderCompletedScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
                             color: Colors.white),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
+                        child: IconButton(
+                          icon: Icon(
                             LocalStorage().isArabicLanguage()
                                 ? Icons.arrow_back
                                 : Icons.arrow_forward,
                             color: kPrimaryColor,
                           ),
+                          onPressed: () {
+                            // load my orders
+                            Get.offAll(() => HomeScreen());
+                          },
                         ),
                       ),
                       SizedBox(
@@ -66,7 +75,7 @@ class OrderCompletedScreen extends StatelessWidget {
                         fontSize: fontSize16,
                         color: Colors.white,
                         alignment: AlignmentDirectional.center,
-                        text: 'الرجوع للرئيسية',
+                        text: 'goHome'.tr,
                       ),
                     ],
                   )

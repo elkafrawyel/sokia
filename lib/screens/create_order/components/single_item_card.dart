@@ -81,7 +81,8 @@ class SingleItemCard extends StatelessWidget {
                         Expanded(
                           child: CustomText(
                             alignment: AlignmentDirectional.centerEnd,
-                            text: '16.99 ر.س',
+                            text: orderController
+                                .priceWithCurrency(orderModel.orderPrice),
                             color: kAccentColor,
                             fontSize: fontSize16,
                           ),
@@ -94,7 +95,7 @@ class SingleItemCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                            text: ' عدد 20 قارورة * 330 مل',
+                            text: orderModel.category.note,
                             color: Colors.grey.shade600,
                             fontSize: fontSize14,
                           ),
@@ -242,7 +243,7 @@ class SingleItemCard extends StatelessWidget {
   }
 
   void nameDebounce(VoidCallback callback,
-      {Duration duration = const Duration(seconds: 3)}) {
+      {Duration duration = const Duration(seconds: 1)}) {
     if (nameDebouncer != null) {
       nameDebouncer.cancel();
     }
@@ -250,7 +251,7 @@ class SingleItemCard extends StatelessWidget {
   }
 
   void numberDebounce(VoidCallback callback,
-      {Duration duration = const Duration(seconds: 3)}) {
+      {Duration duration = const Duration(seconds: 1)}) {
     if (numberDebouncer != null) {
       numberDebouncer.cancel();
     }

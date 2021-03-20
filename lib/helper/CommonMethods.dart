@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:toast/toast.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'local_storage.dart';
 
@@ -178,6 +179,8 @@ class CommonMethods {
 
   String timeAgoSinceDate(int unixDate) {
     bool isArabic = LocalStorage().isArabicLanguage();
+    initializeDateFormatting();
+
     var date = DateTime.fromMillisecondsSinceEpoch(unixDate);
     var formatter = DateFormat.yMMMMEEEEd();
     print(formatter.locale);

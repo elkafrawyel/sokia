@@ -45,26 +45,28 @@ class CustomOutlinedTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      obscureText: isPassword,
-      style: TextStyle(fontSize: 14, color: textColor),
-      controller: controller,
-      keyboardType: keyboardType,
-      onChanged: onChanged,
-      textInputAction: TextInputAction.next,
-      onFieldSubmitted: onFieldSubmitted,
-      validator: !required
-          ? null
-          : (String value) {
-              if (value.isEmpty) {
-                return validateEmptyText;
-              } else {
-                return null;
-              }
-            },
-      maxLines: maxLines,
-      maxLength: maxLength,
-      decoration: InputDecoration(
+    return Container(
+      color: Colors.white,
+      child: TextFormField(
+        obscureText: isPassword,
+        style: TextStyle(fontSize: 14, color: textColor),
+        controller: controller,
+        keyboardType: keyboardType,
+        onChanged: onChanged,
+        textInputAction: TextInputAction.next,
+        onFieldSubmitted: onFieldSubmitted,
+        validator: !required
+            ? null
+            : (String value) {
+                if (value.isEmpty) {
+                  return validateEmptyText;
+                } else {
+                  return null;
+                }
+              },
+        maxLines: maxLines,
+        maxLength: maxLength,
+        decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(fontSize: 14, color: hintColor),
           contentPadding: EdgeInsets.all(16),
@@ -77,8 +79,11 @@ class CustomOutlinedTextFormField extends StatelessWidget {
           ),
           labelText: labelText,
           labelStyle: TextStyle(fontSize: 14, color: labelColor),
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+      ),
     );
   }
 }

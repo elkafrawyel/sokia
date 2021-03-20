@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeResponse {
@@ -137,6 +138,8 @@ class Category {
   int _id;
   String _categoryName;
   String _categoryImage;
+  var _categoryPrice;
+  String _note;
 
   int get id => _id;
 
@@ -144,16 +147,30 @@ class Category {
 
   String get categoryImage => _categoryImage;
 
-  Category({int id, String categoryName, String categoryImage}) {
+  double get categoryPrice => double.parse(_categoryPrice.toString());
+
+  String get note => _note;
+
+  Category({
+    int id,
+    String categoryName,
+    String categoryImage,
+    var categoryPrice,
+    String note,
+  }) {
     _id = id;
     _categoryName = categoryName;
     _categoryImage = categoryImage;
+    _categoryPrice = categoryPrice;
+    _note = note;
   }
 
   Category.fromJson(dynamic json) {
     _id = json["id"];
     _categoryName = json["categoryName"];
     _categoryImage = json["categoryImage"];
+    _categoryPrice = json["categoryPrice"];
+    _note = json["note"];
   }
 
   Map<String, dynamic> toJson() {
@@ -161,6 +178,8 @@ class Category {
     map["id"] = _id;
     map["categoryName"] = _categoryName;
     map["categoryImage"] = _categoryImage;
+    map["categoryPrice"] = _categoryPrice;
+    map["note"] = _note;
     return map;
   }
 }

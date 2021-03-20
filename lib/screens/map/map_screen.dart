@@ -4,8 +4,10 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:sokia_app/controllers/main_controller.dart';
 import 'package:sokia_app/controllers/map_controller.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
@@ -21,14 +23,13 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final Completer<GoogleMapController> _controller = Completer();
 
-  // final _mapController = Get.put(MapController());
+  final _mainController = Get.find<MainController>();
   final _searchController = FloatingSearchBarController();
   GoogleMapController controller;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   List<String> selectedMarkersId = [];
   BitmapDescriptor selectedIcon;
   BitmapDescriptor unSelectedIcon;
-  LatLng _userLatLng;
   LatLng _myLatLang = LatLng(30.949780185265226, 31.184251479085507);
 
   @override
@@ -51,8 +52,10 @@ class _MapScreenState extends State<MapScreen> {
     //     ),
     //     'src/images/location_.png');
 
-    selectedIcon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
-    unSelectedIcon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+    selectedIcon =
+        BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+    unSelectedIcon =
+        BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
     _addMarkers();
   }
 
@@ -96,8 +99,11 @@ class _MapScreenState extends State<MapScreen> {
     // continue accessing the position of the device.
     Position userPosition = await Geolocator.getCurrentPosition();
     setState(() {
-      _userLatLng = LatLng(userPosition.latitude, userPosition.longitude);
-      print(_userLatLng);
+      _mainController.userLatLng =
+          LatLng(userPosition.latitude, userPosition.longitude);
+      // store user location in main controller to save
+      // it in app lifetime and not load it again every time
+      print(_mainController.userLatLng);
     });
   }
 
@@ -193,14 +199,29 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Widget buildMap() {
-    return _userLatLng == null
-        ? Center(
-            child: CircularProgressIndicator(),
+    return _mainController.userLatLng == null
+        ? Container(
+            alignment: AlignmentDirectional.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: CustomText(
+                    text: 'findingYou'.tr,
+                    alignment: AlignmentDirectional.center,
+                    fontSize: fontSize18,
+                  ),
+                )
+              ],
+            ),
           )
         : GoogleMap(
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
-                target: Platform.isAndroid ? _userLatLng : _myLatLang,
+                // target: _userLatLng ,
+                target: _myLatLang,
                 zoom: 12),
             onMapCreated: (GoogleMapController controller) {
               _onMapCreated(controller);
@@ -232,7 +253,7 @@ class _MapScreenState extends State<MapScreen> {
   void _onMapCreated(GoogleMapController controller) {
     this.controller = controller;
     // zoom in to the selected camera position
-    if (_userLatLng != null) _goTo(_userLatLng);
+    if (_mainController.userLatLng != null) _goTo(_mainController.userLatLng);
   }
 
   Widget buildBottomNavigationBar() {
@@ -279,7 +300,7 @@ class _MapScreenState extends State<MapScreen> {
         MediaQuery.of(context).orientation == Orientation.portrait;
 
     return FloatingSearchBar(
-      hint: 'Search...',
+      hint: 'mapSearch'.tr,
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
       transitionCurve: Curves.easeInOut,

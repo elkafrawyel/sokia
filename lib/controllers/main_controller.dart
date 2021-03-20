@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sokia_app/helper/language/language_model.dart';
 import 'package:sokia_app/helper/local_storage.dart';
 
@@ -7,6 +8,8 @@ class MainController extends GetxController {
   var appLocaleCode = LocalStorage().getLanguage();
 
   var languageList = LanguageData.languageList();
+
+  LatLng userLatLng;
 
   @override
   void onInit() {
