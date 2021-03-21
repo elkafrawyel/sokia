@@ -4,8 +4,10 @@ class MainScreen extends StatelessWidget {
   final String title;
   final Color pageBackground;
   final Widget body;
+  final Key key;
 
   MainScreen({
+    this.key,
     this.title,
     this.pageBackground,
     this.body,
@@ -14,6 +16,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: key,
         appBar: AppBar(
           title: Text(
             title,

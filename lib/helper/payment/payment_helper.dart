@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:sokia_app/api/logging_interceptor.dart';
+import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/helper/payment/payment_response.dart';
 
@@ -18,7 +20,7 @@ class PaymentHelper {
   String _developmentMode = 'TEST'; //LIVE
   String _paymentType = 'CD'; // PA DB CD CP RV RF
 
-  openPaymentUi(
+  Future <String> openPaymentUi(
       {@required Brands brand,
       @required double amount,
       @required Currency currency}) async {
@@ -58,22 +60,15 @@ class PaymentHelper {
           "developmentMode": _developmentMode,
           "checkoutId": _checkoutId,
           "brand": brand.value,
-          "language": LocalStorage().getString(LocalStorage.languageKey) //ar en
+          "language": LocalStorage().isArabicLanguage() ? "ar" : "en" //ar en
         });
         transactionStatus = '$result';
       } on PlatformException catch (e) {
         transactionStatus = "${e.message}";
       }
-
-      if (transactionStatus != null ||
-          transactionStatus == "SUCCESS" ||
-          transactionStatus == "SYNC_RESULT_OK" ||
-          transactionStatus == "SYNC_Transaction_Completed") {
-        print('Sokia transactionStatus ----> $transactionStatus');
-        // getPaymentStatus();
-      } else {
-        print('Sokia transactionStatus ----> $transactionStatus');
-      }
+      return transactionStatus;
+    }else{
+      return null;
     }
   }
 

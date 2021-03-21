@@ -142,18 +142,18 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
 
                 if (transaction.transactionType == TransactionType.SYNC) {
                     /* check the result of synchronous transaction */
-                    success("SYNC_RESULT_OK")
+                    success("true")
                 } else {
                     /* wait for the asynchronous transaction callback in the onNewIntent() */
                 }
             }
             CheckoutActivity.RESULT_CANCELED -> {
-                if (language == "ar")
-                    Toast.makeText(baseContext, "تم ألغاء الدفع", Toast.LENGTH_LONG).show()
-                else
-                    Toast.makeText(baseContext, "Process Canceled", Toast.LENGTH_LONG).show()
+//                if (language == "ar")
+//                    Toast.makeText(baseContext, "تم ألغاء الدفع", Toast.LENGTH_LONG).show()
+//                else
+//                    Toast.makeText(baseContext, "Process Canceled", Toast.LENGTH_LONG).show()
 
-                error("2", "Canceled", "User Cancelled Payment")
+                error("2", "canceled", "User Cancelled Payment")
             }
             CheckoutActivity.RESULT_ERROR -> {
 
@@ -168,7 +168,7 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
 
                 Log.e("error4", error.describeContents().toString())
 
-                error("3", error.errorMessage, "")
+                error("3", "false ${error.errorMessage}", "")
 
             }
         }
@@ -177,7 +177,7 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (intent.scheme == "com.sokia.app") {
-            success("SUCCESS")
+            success("true")
         }
     }
 
@@ -206,7 +206,7 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
         }
 
         if (transaction.transactionType == TransactionType.SYNC) {
-            success("SYNC_Transaction_Completed")
+            success("true")
         } else {
             /* wait for the callback in the s */
             val uri = Uri.parse(transaction.redirectUrl)
@@ -216,7 +216,7 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
     }
 
     override fun transactionFailed(transaction: Transaction?, p1: PaymentError?) {
-        error("1", p1.toString(), "")
+        error("1", "false", "")
     }
 
 

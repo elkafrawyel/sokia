@@ -9,6 +9,7 @@ import 'package:sokia_app/api/logging_interceptor.dart';
 import 'package:sokia_app/controllers/home_controller.dart';
 import 'package:sokia_app/controllers/order_controller.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
+import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/custom_button.dart';
 import 'package:sokia_app/helper/custom_widgets/main_screen.dart';
@@ -25,7 +26,7 @@ class CreateOrderScreen extends StatelessWidget {
   final List<Mosque> mosques;
   final orderController = Get.put(OrderController());
   final homeController = Get.find<HomeController>();
-
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   //radio switch value
   final String cash = 'cash'.tr;
   final String visa = 'visa'.tr;
@@ -45,10 +46,21 @@ class CreateOrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainScreen(
-      title: 'createOrder'.tr,
-      pageBackground: kBackgroundColor,
-      body: SingleChildScrollView(
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        title: Text(
+          'createOrder'.tr,
+          style: Theme.of(context)
+              .textTheme
+              .headline6
+              .copyWith(color: Colors.white),
+        ),
+        centerTitle: true,
+        brightness: Brightness.dark,
+      ),
+      backgroundColor: kBackgroundColor,
+      body:  SingleChildScrollView(
         child: Column(
           children: [
             _buildMosqueCards(),
@@ -165,11 +177,8 @@ class CreateOrderScreen extends StatelessWidget {
                       children: [
                         // mada
                         GestureDetector(
-                          onTap: () {
-                            PaymentHelper().openPaymentUi(
-                                brand: Brands.Mada,
-                                amount: orderController.totalPriceForAllOrders,
-                                currency: Currency.USD);
+                          onTap: () async {
+                            _openPaymentGateWay(Brands.Mada);
                           },
                           child: Container(
                             width: 100,
@@ -191,10 +200,8 @@ class CreateOrderScreen extends StatelessWidget {
                         // visa
                         GestureDetector(
                           onTap: () {
-                            PaymentHelper().openPaymentUi(
-                                brand: Brands.Visa,
-                                amount: orderController.totalPriceForAllOrders,
-                                currency: Currency.USD);
+                            _openPaymentGateWay(Brands.Visa);
+
                           },
                           child: Container(
                             width: 100,
@@ -216,10 +223,8 @@ class CreateOrderScreen extends StatelessWidget {
                         // master card
                         GestureDetector(
                           onTap: () {
-                            PaymentHelper().openPaymentUi(
-                                brand: Brands.MasterCard,
-                                amount: orderController.totalPriceForAllOrders,
-                                currency: Currency.USD);
+                            _openPaymentGateWay(Brands.MasterCard);
+
                           },
                           child: Container(
                             width: 100,
@@ -241,10 +246,7 @@ class CreateOrderScreen extends StatelessWidget {
                         // apple
                         GestureDetector(
                           onTap: () {
-                            PaymentHelper().openPaymentUi(
-                                brand: Brands.Apple,
-                                amount: orderController.totalPriceForAllOrders,
-                                currency: Currency.USD);
+                            _openPaymentGateWay(Brands.Apple);
                           },
                           child: Visibility(
                             visible: Platform.isIOS,
@@ -375,4 +377,35 @@ class CreateOrderScreen extends StatelessWidget {
               ),
             )),
       );
+
+  void _openPaymentGateWay(Brands brand) async{
+    String status = await PaymentHelper().openPaymentUi(
+        brand: brand,
+        amount: orderController.totalPriceForAllOrders,
+        currency: Currency.USD);
+
+    if (status != null && status == "true") {
+      print('Sokia transactionStatus ----> $status');
+
+      CommonMethods().showToast(
+          message: 'Payment Completed',
+          context: scaffoldKey.currentContext);
+
+      // getPaymentStatus();
+    } else if (status == "cancelled") {
+      CommonMethods().showToast(
+          message: 'Payment Cancelled',
+          context: scaffoldKey.currentContext);
+
+      print('Sokia transactionStatus ----> $status');
+    } else if (status.contains("false")) {
+      //remove false from string
+      CommonMethods().showToast(
+          message: 'Payment Failed',
+          context: scaffoldKey.currentContext);
+
+      //error
+      print('Sokia transactionStatus ----> $status');
+    }
+  }
 }
