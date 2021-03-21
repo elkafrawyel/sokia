@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sokia_app/controllers/home_controller.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
+import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
+import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/screens/create_order/create_order_screen.dart';
 import 'package:get/get.dart';
 
@@ -16,9 +18,12 @@ class SuggestionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(
-          () => CreateOrderScreen(mosques: [mosque]),
-        );
+        //you must login
+        if (LocalStorage().getBool(LocalStorage.loginKey)) {
+          Get.to(() => CreateOrderScreen(mosques: [mosque]));
+        } else {
+          CommonMethods().showToast(message: 'youMustLogin'.tr, context: context);
+        }
       },
       child: Container(
         child: Card(

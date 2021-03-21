@@ -13,6 +13,8 @@
         android:label="@string/app_name"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+
+
         <activity
             android:name="com.sokia.sokia_app.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -35,27 +37,21 @@
             <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
                 android:resource="@drawable/launch_background" />
+
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
 
-<!--            &lt;!&ndash;            ========================== Notification======================&ndash;&gt;-->
-<!--            <intent-filter>-->
-<!--                <action android:name="FLUTTER_NOTIFICATION_CLICK" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--            </intent-filter>-->
+            <!--            ===================== payment =============================-->
+            <intent-filter>
+                <data android:scheme="com.sokia.app" />
+                <action android:name="android.intent.action.VIEW" />
 
-<!--            <meta-data-->
-<!--                android:name="com.google.firebase.messaging.default_notification_color"-->
-<!--                android:resource="@color/colorPrimary" />-->
-<!--            <meta-data-->
-<!--                android:name="com.google.firebase.messaging.default_notification_icon"-->
-<!--                android:resource="@mipmap/ic_launcher" />-->
-<!--            <meta-data-->
-<!--                android:name="com.google.firebase.messaging.default_notification_channel_id"-->
-<!--                android:value="com.tera.store" />-->
-<!--            &lt;!&ndash; =============================End Notification======================&ndash;&gt;-->
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+            <!--            =====================end payment =============================-->
 
         </activity>
 
@@ -67,6 +63,23 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDjgFugHz8mbWg5vrES7X3a10umUKioC0o" />
         <!-- ============================= End Google Map======================-->
+
+        <!--  ================================ payment ==========================-->
+        <receiver
+            android:name="com.sokia.sokia_app.CheckoutBroadcastReceiver"
+            android:exported="false" />
+        <service
+            android:name="com.oppwa.mobile.connect.service.ConnectService"
+            android:exported="false" />
+        <activity
+            android:name="com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Checkout.Light"
+            android:windowSoftInputMode="adjustPan"
+            tools:replace="android:theme,android:windowSoftInputMode" />
+
+        <!--   ================================end payment ==========================-->
 
     </application>
 </manifest>

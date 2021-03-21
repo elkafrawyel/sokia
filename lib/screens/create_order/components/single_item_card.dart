@@ -42,7 +42,7 @@ class SingleItemCard extends StatelessWidget {
             ),
             child: CustomText(
               text: 'orderDetails'.tr + ' ( ${orderModel.mosque.mosqueName} )',
-              fontSize: fontSize18,
+              fontSize: fontSize16,
             ),
           ),
           Padding(
@@ -56,7 +56,7 @@ class SingleItemCard extends StatelessWidget {
               elevation: 5,
               shadowColor: Colors.black,
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
                     Row(
@@ -66,12 +66,13 @@ class SingleItemCard extends StatelessWidget {
                           text: '${orderModel.count} ' +
                               'boxes'.tr +
                               ' ${orderModel.category.categoryName}',
-                          fontSize: fontSize16,
+                          fontSize: fontSize14,
                           color: kPrimaryColor,
                         ),
                         CustomButton(
                             text: 'change'.tr,
                             underLineText: true,
+                            fontSize: fontSize14 - 2,
                             colorBackground: Colors.white,
                             colorText: Colors.grey.shade500,
                             elevation: 0.0,
@@ -84,43 +85,40 @@ class SingleItemCard extends StatelessWidget {
                             text: orderController
                                 .priceWithCurrency(orderModel.orderPrice),
                             color: kAccentColor,
-                            fontSize: fontSize16,
+                            fontSize: fontSize14,
                           ),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText(
-                            text: orderModel.category.note,
-                            color: Colors.grey.shade600,
-                            fontSize: fontSize14,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CachedNetworkImage(
-                              fit: BoxFit.contain,
-                              // placeholder: placeholder,
-                              height: 50,
-                              width: 50,
-                              placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2.0,
-                                ),
-                              ),
-                              imageUrl: orderModel.category.categoryImage,
-                              errorWidget: (context, url, error) => Icon(
-                                Icons.error,
-                                color: Colors.grey.shade300,
-                                size: 50,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(
+                          text: orderModel.category.note,
+                          color: Colors.grey.shade600,
+                          fontSize: fontSize14,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.contain,
+                            // placeholder: placeholder,
+                            height: 50,
+                            width: 50,
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.0,
                               ),
                             ),
+                            imageUrl: orderModel.category.categoryImage,
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.error,
+                              color: Colors.grey.shade300,
+                              size: 50,
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -136,11 +134,14 @@ class SingleItemCard extends StatelessWidget {
                             },
                             color: Colors.black,
                             iconSize: 30,
-                            icon: ImageIcon(AssetImage('src/images/add.png')),
+                            icon: Icon(
+                              Icons.add,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: CustomText(
                             text: orderModel.count.toString(),
                             fontSize: fontSize18,
@@ -157,7 +158,10 @@ class SingleItemCard extends StatelessWidget {
                             },
                             color: Colors.black,
                             iconSize: 30,
-                            icon: ImageIcon(AssetImage('src/images/minus.png')),
+                            icon: Icon(
+                              Icons.remove,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                         Expanded(
@@ -165,6 +169,8 @@ class SingleItemCard extends StatelessWidget {
                             text: 'اقل عدد 10 كراتين لوجهتك',
                             color: kAccentColor,
                             fontSize: fontSize14,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
                             alignment: AlignmentDirectional.centerEnd,
                           ),
                         )

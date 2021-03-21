@@ -6,7 +6,5 @@ import 'MyApp.dart';
 
 void main() async {
   await GetStorage.init();
-  WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
   runApp(MyApp());
 }

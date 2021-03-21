@@ -241,4 +241,5 @@ Map<String, String> en = {
   'fee': 'Fee',
   'goHome': 'Back to home',
   'orderCompleteMessage': 'You  can check your orders in home screen',
+  'youMustLogin':'You must login first to make an order',
 };

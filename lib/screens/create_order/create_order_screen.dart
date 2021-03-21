@@ -1,4 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sokia_app/api/api_service.dart';
+import 'package:sokia_app/api/logging_interceptor.dart';
 import 'package:sokia_app/controllers/home_controller.dart';
 import 'package:sokia_app/controllers/order_controller.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
@@ -8,6 +15,7 @@ import 'package:sokia_app/helper/custom_widgets/main_screen.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_outline_text_form_field.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
+import 'package:sokia_app/helper/payment/payment_helper.dart';
 import 'package:sokia_app/screens/create_order/components/single_item_card.dart';
 import 'package:sokia_app/screens/order_completed_screen.dart';
 
@@ -45,6 +53,7 @@ class CreateOrderScreen extends StatelessWidget {
           children: [
             _buildMosqueCards(),
             _paymentMethod(),
+            _paymentMethodView(),
             _notes(),
             _price(),
             _confirmButton(),
@@ -70,8 +79,8 @@ class CreateOrderScreen extends StatelessWidget {
     );
   }
 
-  void _confirmOrder() {
-    Get.to(()=>OrderCompletedScreen());
+  Future<void> _confirmOrder() async {
+    // Get.to(()=>OrderCompletedScreen());
   }
 
   _confirmButton() => Container(
@@ -139,7 +148,129 @@ class CreateOrderScreen extends StatelessWidget {
         ],
       );
 
-  _notes() => Padding(
+  Widget _paymentMethodView() => GetBuilder<OrderController>(
+        builder: (controller) => AnimatedSwitcher(
+          duration: Duration(milliseconds: 500),
+          child: controller.cash
+              ? Container(
+                  key: UniqueKey(),
+                )
+              : Padding(
+                  key: UniqueKey(),
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                    height: 70,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        // mada
+                        GestureDetector(
+                          onTap: () {
+                            PaymentHelper().openPaymentUi(
+                                brand: Brands.Mada,
+                                amount: orderController.totalPriceForAllOrders,
+                                currency: Currency.USD);
+                          },
+                          child: Container(
+                            width: 100,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white),
+                            alignment: AlignmentDirectional.center,
+                            child: Image.asset(
+                              'src/images/mada.png',
+                              fit: BoxFit.contain,
+                              alignment: AlignmentDirectional.center,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        // visa
+                        GestureDetector(
+                          onTap: () {
+                            PaymentHelper().openPaymentUi(
+                                brand: Brands.Visa,
+                                amount: orderController.totalPriceForAllOrders,
+                                currency: Currency.USD);
+                          },
+                          child: Container(
+                            width: 100,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white),
+                            alignment: AlignmentDirectional.center,
+                            child: Image.asset(
+                              'src/images/visa.png',
+                              fit: BoxFit.contain,
+                              alignment: AlignmentDirectional.center,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        // master card
+                        GestureDetector(
+                          onTap: () {
+                            PaymentHelper().openPaymentUi(
+                                brand: Brands.MasterCard,
+                                amount: orderController.totalPriceForAllOrders,
+                                currency: Currency.USD);
+                          },
+                          child: Container(
+                            width: 100,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white),
+                            alignment: AlignmentDirectional.center,
+                            child: Image.asset(
+                              'src/images/mastercard.png',
+                              fit: BoxFit.contain,
+                              alignment: AlignmentDirectional.center,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        // apple
+                        GestureDetector(
+                          onTap: () {
+                            PaymentHelper().openPaymentUi(
+                                brand: Brands.Apple,
+                                amount: orderController.totalPriceForAllOrders,
+                                currency: Currency.USD);
+                          },
+                          child: Visibility(
+                            visible: Platform.isIOS,
+                            child: Container(
+                              width: 100,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white),
+                              alignment: AlignmentDirectional.center,
+                              child: Image.asset(
+                                'src/images/apple.png',
+                                fit: BoxFit.contain,
+                                alignment: AlignmentDirectional.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+        ),
+      );
+
+  Widget _notes() => Padding(
         padding: const EdgeInsets.all(20),
         child: CustomOutlinedTextFormField(
           text: 'note'.tr,
