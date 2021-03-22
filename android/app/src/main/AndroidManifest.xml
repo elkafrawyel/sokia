@@ -61,7 +61,7 @@
         <!-- ============================= Google Map======================-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDjgFugHz8mbWg5vrES7X3a10umUKioC0o" />
+            android:value="AIzaSyAlD-AjHc-bdnyomHFsHtlkXy8gO_neVgg" />
         <!-- ============================= End Google Map======================-->
 
         <!--  ================================ payment ==========================-->

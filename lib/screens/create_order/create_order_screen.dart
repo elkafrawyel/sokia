@@ -16,7 +16,7 @@ import 'package:sokia_app/helper/custom_widgets/main_screen.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_outline_text_form_field.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
-import 'package:sokia_app/helper/payment/payment_helper.dart';
+import 'package:sokia_app/helper/payment/payment_api.dart';
 import 'package:sokia_app/screens/create_order/components/single_item_card.dart';
 import 'package:sokia_app/screens/order_completed_screen.dart';
 
@@ -24,19 +24,24 @@ final TextEditingController noteController = TextEditingController();
 
 class CreateOrderScreen extends StatelessWidget {
   final List<Mosque> mosques;
+  final Category category;
   final orderController = Get.put(OrderController());
   final homeController = Get.find<HomeController>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
   //radio switch value
   final String cash = 'cash'.tr;
   final String visa = 'visa'.tr;
 
-  CreateOrderScreen({@required this.mosques}) {
+  CreateOrderScreen({@required this.mosques, this.category}) {
+    // orderController.orderMap.clear();
+    // orderController.cash = true;
+    // noteController.text = '';
     if (orderController.orderMap.isEmpty) {
       mosques.forEach((mosque) {
         OrderModel orderModel = OrderModel(
           mosque: mosque,
-          category: homeController.categories[0],
+          category: category == null ? homeController.categories[0] : category,
           count: 10,
         );
         orderController.addToOrderMap(orderModel: orderModel);
@@ -60,7 +65,7 @@ class CreateOrderScreen extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       backgroundColor: kBackgroundColor,
-      body:  SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             _buildMosqueCards(),
@@ -77,10 +82,6 @@ class CreateOrderScreen extends StatelessWidget {
 
   Widget _buildMosqueCards() {
     return GetBuilder<OrderController>(
-      dispose: (state) {
-        orderController.orderMap.clear();
-        noteController.text = '';
-      },
       builder: (controller) => Column(
         children: controller.orderMap.values.map((order) {
           return SingleItemCard(
@@ -201,7 +202,6 @@ class CreateOrderScreen extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             _openPaymentGateWay(Brands.Visa);
-
                           },
                           child: Container(
                             width: 100,
@@ -224,7 +224,6 @@ class CreateOrderScreen extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             _openPaymentGateWay(Brands.MasterCard);
-
                           },
                           child: Container(
                             width: 100,
@@ -378,31 +377,25 @@ class CreateOrderScreen extends StatelessWidget {
             )),
       );
 
-  void _openPaymentGateWay(Brands brand) async{
-    String status = await PaymentHelper().openPaymentUi(
+  void _openPaymentGateWay(Brands brand) async {
+    String status = await PaymentApi().openPaymentUi(
         brand: brand,
         amount: orderController.totalPriceForAllOrders,
-        currency: Currency.USD);
+        currency: Currency.SAR);
 
     if (status != null && status == "true") {
       print('Sokia transactionStatus ----> $status');
 
-      CommonMethods().showToast(
-          message: 'Payment Completed',
-          context: scaffoldKey.currentContext);
+      CommonMethods().showSnackBar('Payment Completed');
 
       // getPaymentStatus();
     } else if (status == "cancelled") {
-      CommonMethods().showToast(
-          message: 'Payment Cancelled',
-          context: scaffoldKey.currentContext);
+      CommonMethods().showSnackBar('Payment Cancelled');
 
       print('Sokia transactionStatus ----> $status');
     } else if (status.contains("false")) {
       //remove false from string
-      CommonMethods().showToast(
-          message: 'Payment Failed',
-          context: scaffoldKey.currentContext);
+      CommonMethods().showSnackBar('Payment Failed');
 
       //error
       print('Sokia transactionStatus ----> $status');

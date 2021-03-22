@@ -13,14 +13,17 @@ import 'package:sokia_app/helper/custom_widgets/text/custom_outline_text_form_fi
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:sokia_app/screens/create_order/components/bottom_sheet_list.dart';
 
-// ignore: must_be_immutable
+Timer nameDebouncer;
+Timer numberDebouncer;
+final _formKey = GlobalKey<FormState>();
+
+final nameController = TextEditingController();
+final numberController = TextEditingController();
+
 class SingleItemCard extends StatelessWidget {
   final OrderModel orderModel;
 
   final orderController = Get.find<OrderController>();
-
-  Timer nameDebouncer;
-  Timer numberDebouncer;
 
   SingleItemCard({
     @required this.orderModel,
@@ -41,8 +44,8 @@ class SingleItemCard extends StatelessWidget {
               start: 20,
             ),
             child: CustomText(
-              text: 'orderDetails'.tr + ' ( ${orderModel.mosque.mosqueName} )',
-              fontSize: fontSize16,
+              text: 'orderDetails'.tr + ' (${orderModel.mosque.mosqueName})',
+              fontSize: fontSize14,
             ),
           ),
           Padding(
@@ -51,15 +54,15 @@ class SingleItemCard extends StatelessWidget {
             child: Card(
               color: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
               ),
-              elevation: 5,
-              shadowColor: Colors.black,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    Row(
+              elevation: 3,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                        top: 10, end: 10, start: 10),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         CustomText(
@@ -90,7 +93,12 @@ class SingleItemCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Row(
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.only(end: 10, start: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(
@@ -120,7 +128,11 @@ class SingleItemCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Row(
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.only(end: 10, start: 10),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
@@ -166,80 +178,18 @@ class SingleItemCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: CustomText(
-                            text: 'اقل عدد 10 كراتين لوجهتك',
+                            text: 'atLeastTenBox'.tr,
                             color: kAccentColor,
-                            fontSize: fontSize14,
-                            maxLines: 2,
+                            fontSize: 12,
                             textAlign: TextAlign.center,
                             alignment: AlignmentDirectional.centerEnd,
                           ),
                         )
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        top: 20,
-                      ),
-                      child: CustomOutlinedTextFormField(
-                        text: 'workerNameHint'.tr,
-                        hintText: 'workerNameHint'.tr,
-                        maxLines: 1,
-                        labelText: 'workerNameHint'.tr,
-                        required: false,
-                        keyboardType: TextInputType.text,
-                        labelColor: Colors.black,
-                        hintColor: Colors.black,
-                        textColor: Colors.black,
-                        onChanged: (value) {
-                          nameDebounce(() {
-                            orderModel.workerName = value;
-                            print(value);
-                            orderController.updateOrderMap(
-                                orderModel: orderModel);
-                          });
-                        },
-                        onFieldSubmitted: (value) {
-                          if (nameDebouncer != null) nameDebouncer.cancel();
-
-                          print(value);
-                          orderController.updateOrderMap(
-                              orderModel: orderModel);
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        top: 20,
-                      ),
-                      child: CustomOutlinedTextFormField(
-                        text: 'workerNumberHint'.tr,
-                        hintText: 'workerNumberHint'.tr,
-                        maxLines: 1,
-                        required: false,
-                        labelText: 'workerNumberHint'.tr,
-                        keyboardType: TextInputType.number,
-                        labelColor: Colors.black,
-                        hintColor: Colors.black,
-                        textColor: Colors.black,
-                        onChanged: (value) {
-                          numberDebounce(() {
-                            orderModel.workerNumber = value;
-                            print(value);
-                            orderController.updateOrderMap(
-                                orderModel: orderModel);
-                          });
-                        },
-                        onFieldSubmitted: (value) {
-                          if (numberDebouncer != null) numberDebouncer.cancel();
-
-                          print(value);
-                          orderController.updateOrderMap(
-                              orderModel: orderModel);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  _workerInfo(),
+                ],
               ),
             ),
           ),
@@ -249,7 +199,7 @@ class SingleItemCard extends StatelessWidget {
   }
 
   void nameDebounce(VoidCallback callback,
-      {Duration duration = const Duration(seconds: 1)}) {
+      {Duration duration = const Duration(seconds: 3)}) {
     if (nameDebouncer != null) {
       nameDebouncer.cancel();
     }
@@ -257,7 +207,7 @@ class SingleItemCard extends StatelessWidget {
   }
 
   void numberDebounce(VoidCallback callback,
-      {Duration duration = const Duration(seconds: 1)}) {
+      {Duration duration = const Duration(seconds: 3)}) {
     if (numberDebouncer != null) {
       numberDebouncer.cancel();
     }
@@ -291,4 +241,178 @@ class SingleItemCard extends StatelessWidget {
       ),
     );
   }
+
+  _workerInfo() => Column(
+        children: [
+          Visibility(
+            visible: (orderModel.workerName != null &&
+                    orderModel.workerName.isNotEmpty) ||
+                (orderModel.workerNumber != null &&
+                    orderModel.workerNumber.isNotEmpty),
+            child: Divider(
+              thickness: 2,
+            ),
+          ),
+          Visibility(
+            visible: orderModel.workerName != null &&
+                orderModel.workerName.isNotEmpty,
+            child: Padding(
+              padding:
+                  const EdgeInsetsDirectional.only(top: 10, end: 10, start: 10),
+              child: CustomText(
+                text: '${'workerName'.tr} : ${orderModel.workerName}',
+              ),
+            ),
+          ),
+          Visibility(
+            visible: orderModel.workerNumber != null &&
+                orderModel.workerNumber.isNotEmpty,
+            child: Padding(
+              padding:
+                  const EdgeInsetsDirectional.only(top: 10, end: 10, start: 10),
+              child: CustomText(
+                text: '${'workerNumber'.tr} : ${orderModel.workerNumber}',
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsetsDirectional.only(top: 10),
+            child: CustomButton(
+              text: 'addWorkerInfo'.tr,
+              colorText: Colors.white,
+              elevation: 0,
+              radius: 20,
+              fontSize: fontSize14,
+              colorBackground: kPrimaryColor,
+              onPressed: () async {
+                WorkerInfo workerInfo = await _showWorkerDialog(
+                    workerName: orderModel.workerName,
+                    workerNumber: orderModel.workerNumber);
+                orderModel.workerName = workerInfo.name;
+                orderModel.workerNumber = workerInfo.number;
+                orderController.updateOrderMap(orderModel: orderModel);
+              },
+            ),
+          ),
+        ],
+      );
+
+  Future<WorkerInfo> _showWorkerDialog(
+      {String workerName, String workerNumber}) async {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController numberController = TextEditingController();
+    nameController.text = workerName;
+    numberController.text = workerNumber;
+    String name;
+    String number;
+    await showDialog<WorkerInfo>(
+      barrierDismissible: true,
+      context: Get.context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          insetPadding: EdgeInsets.all(20),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+                start: 10, bottom: 5, end: 10, top: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                    controller: nameController,
+                    keyboardType: TextInputType.text,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: 'workerName'.tr,
+                      hintStyle:
+                          TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                      contentPadding: EdgeInsets.all(16),
+                      alignLabelWithHint: true,
+                      errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 14,
+                      ),
+                      labelText: 'workerName'.tr,
+                      labelStyle:
+                          TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    )),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  controller: numberController,
+                  keyboardType: TextInputType.number,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'workerNumber'.tr,
+                    hintStyle:
+                        TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                    contentPadding: EdgeInsets.all(16),
+                    alignLabelWithHint: true,
+                    errorStyle: TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                    ),
+                    labelText: 'workerNumber'.tr,
+                    labelStyle:
+                        TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CustomButton(
+                        text: 'ok'.tr,
+                        colorBackground: Colors.white,
+                        fontSize: fontSize16,
+                        elevation: 0,
+                        colorText: kPrimaryColor,
+                        radius: 0,
+                        onPressed: () {
+                          if (nameController.text.isNotEmpty)
+                            name = nameController.text;
+                          if (numberController.text.isNotEmpty)
+                            number = numberController.text;
+
+                          Get.back();
+                        }),
+                    CustomButton(
+                        text: 'cancel'.tr,
+                        colorBackground: Colors.white,
+                        fontSize: fontSize16,
+                        elevation: 0,
+                        colorText: Colors.red,
+                        radius: 0,
+                        onPressed: () {
+                          Get.back();
+                        }),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    return WorkerInfo(name: name, number: number);
+  }
+}
+
+class WorkerInfo {
+  String name, number;
+
+  WorkerInfo({this.name, this.number});
 }

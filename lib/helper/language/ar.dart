@@ -150,7 +150,7 @@ Map<String, String> ar = {
   'from': 'من',
   'to': 'الي',
   'rateApp': 'تقييم التطبيق',
-  'currency': 'ج.م',
+  'currency': 'ر.س',
   'edited': 'تم تعديله بنجاح',
   'mySales': 'مبيعاتي',
   'Purchase': 'اشتري',
@@ -221,10 +221,8 @@ Map<String, String> ar = {
   'boxes': 'كراتين',
   'orderCountMessage': 'لا يمكن ان يقل العدد عن 10',
   'chooseCategory': 'أضغط للاختيار',
-  'workerName': 'الاسم',
-  'workerNumber': 'الرقم',
-  'workerNameHint': 'أسم العامل (أختياري)',
-  'workerNumberHint': 'رقم العامل (أختياري)',
+  'workerName': 'أسم العامل',
+  'workerNumber': 'رقم العامل',
   'findingYou': 'نحاول ايجاد موقعك...',
   'mapSearch': 'ضع اسم المدينة, المسجد او الحي',
   'choosePaymentMethod': 'حدد طريقة الدفع',
@@ -238,4 +236,9 @@ Map<String, String> ar = {
   'orderCompleteMessage':
       'يمكنك الرجوع إلى تفاصيل طلبك وذلك من خلال خانة طلباتي الموجودة في القائمة',
   'youMustLogin': 'يجب تسجيل الدخول اولا لانشاء طلب',
+  'searching': 'جاري البحث...',
+  'unSelectAll': 'ألغاء اختيار الكل',
+  'workerInfo': 'معلومات عامل المسجد',
+  'addWorkerInfo': 'أضف معلومات عامل المسجد',
+  'atLeastTenBox': 'اقل عدد 10 كراتين'
 };

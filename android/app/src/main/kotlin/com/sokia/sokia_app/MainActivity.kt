@@ -138,7 +138,7 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
 
                 /* resource path if needed */
                 val resourcePath = data.getStringExtra(CheckoutActivity.CHECKOUT_RESULT_RESOURCE_PATH)
-                Log.e("resourcePath", "resourcePath -----> $resourcePath")
+                Log.e("resourcePath", "ResourcePath -----> $resourcePath")
 
                 if (transaction.transactionType == TransactionType.SYNC) {
                     /* check the result of synchronous transaction */
@@ -148,11 +148,6 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
                 }
             }
             CheckoutActivity.RESULT_CANCELED -> {
-//                if (language == "ar")
-//                    Toast.makeText(baseContext, "تم ألغاء الدفع", Toast.LENGTH_LONG).show()
-//                else
-//                    Toast.makeText(baseContext, "Process Canceled", Toast.LENGTH_LONG).show()
-
                 error("2", "canceled", "User Cancelled Payment")
             }
             CheckoutActivity.RESULT_ERROR -> {
@@ -226,11 +221,6 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
             handler.post {
                 firedSuccess = true
                 result!!.success(obj)
-                if (language == "ar")
-                    Toast.makeText(baseContext, "تمت العملية بنجاح", Toast.LENGTH_LONG).show()
-                else
-                    Toast.makeText(baseContext, "Process Completed", Toast.LENGTH_LONG).show()
-
             }
         }
     }

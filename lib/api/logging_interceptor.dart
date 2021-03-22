@@ -49,7 +49,6 @@ class LoggingInterceptor extends Interceptor {
       LocalStorage().clear();
       getX.Get.find<UserController>().setUser(null);
     }
-    CommonMethods().showToast(message: 'error'.tr, context: getX.Get.context);
     print(err.error);
     print(err.message);
     return super.onError(err);

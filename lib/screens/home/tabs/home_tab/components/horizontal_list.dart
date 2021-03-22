@@ -20,7 +20,7 @@ class HorizontalList extends StatelessWidget {
         itemCount: categories.length,
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
-            Get.to(() => MapScreen());
+            Get.to(() => MapScreen(category: categories[index],));
           },
           child: Container(
             height: 140,

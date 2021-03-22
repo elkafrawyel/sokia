@@ -3,24 +3,26 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:sokia_app/api/logging_interceptor.dart';
-import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/helper/payment/payment_response.dart';
 
-class PaymentHelper {
+class PaymentApi {
   String _checkoutId = '';
   static const platform = const MethodChannel('com.sokia.app');
 
   String _baseUrl = 'https://test.oppwa.com/v1/checkouts';
   String _paymentAccessToken =
-      'OGE4Mjk0MTc0ZDA1OTViYjAxNGQwNWQ4MjllNzAxZDF8OVRuSlBjMm45aA==';
-  String _entity = '8a8294174d0595bb014d05d82e5b01d2';
-  String _developmentMode = 'TEST'; //LIVE
-  String _paymentType = 'CD'; // PA DB CD CP RV RF
+      'OGFjN2E0Y2E3MjE4NWU0ZjAxNzIzMTZlNmEyYjU1Njd8N3NzNkdFMjhUeg==';
+  String _entity = '8ac7a4ca72185e4f0172316eba32556b';
+  String _madaEntity = '8ac7a4c873fb7f860173fc76c18f0279';
+  String _merchantTransactionId = LocalStorage().getString(LocalStorage.token);
+  String _testMode = 'EXTERNAL';
 
-  Future <String> openPaymentUi(
+  String _developmentMode = 'TEST'; //LIVE
+  String _paymentType = 'DB'; // PA DB CD CP RV RF
+
+  Future<String> openPaymentUi(
       {@required Brands brand,
       @required double amount,
       @required Currency currency}) async {
@@ -38,8 +40,17 @@ class PaymentHelper {
     _dio.interceptors.add(LoggingInterceptor());
 
     //toStringAsFixed(2) to make 200.0 become 200.00
-    String myUrl =
-        "$_baseUrl?entityId=$_entity&amount=${amount.toStringAsFixed(2)}&currency=${currency.value}&paymentType=$_paymentType";
+    String _amount = amount.toStringAsFixed(2);
+    String _entityId = brand == Brands.Mada ? _madaEntity : _entity;
+
+
+    String myUrl = "$_baseUrl?" +
+        "entityId=$_entityId" +
+        "&amount=$_amount" +
+        "&currency=${currency.value}" +
+        "&paymentType=$_paymentType" +
+        "&merchantTransactionId=$_merchantTransactionId" +
+        "&testMode=$_testMode";
 
     final response = await _dio.post(
       myUrl,
@@ -67,7 +78,7 @@ class PaymentHelper {
         transactionStatus = "${e.message}";
       }
       return transactionStatus;
-    }else{
+    } else {
       return null;
     }
   }

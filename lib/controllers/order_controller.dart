@@ -42,7 +42,8 @@ class OrderController extends GetxController {
   }
 
   String priceWithCurrency(double price) {
-    return '$price ' + 'currency'.tr;
+
+    return '${price.toStringAsFixed(2)} ' + 'currency'.tr;
   }
 
   changePaymentMethod(bool isCash) {

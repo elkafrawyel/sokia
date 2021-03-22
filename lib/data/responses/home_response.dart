@@ -149,7 +149,7 @@ class Category {
 
   double get categoryPrice => double.parse(_categoryPrice.toString());
 
-  String get note => _note;
+  String get note => _note == null ? '' : _note;
 
   Category({
     int id,
