@@ -1,52 +1,34 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sokia_app/api/api_service.dart';
-import 'package:sokia_app/api/logging_interceptor.dart';
 import 'package:sokia_app/controllers/home_controller.dart';
-import 'package:sokia_app/controllers/order_controller.dart';
+import 'package:sokia_app/controllers/create_order_controller.dart';
+import 'package:sokia_app/data/data_models/order_model.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/custom_button.dart';
-import 'package:sokia_app/helper/custom_widgets/main_screen.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_outline_text_form_field.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:sokia_app/helper/payment/payment_api.dart';
 import 'package:sokia_app/screens/create_order/components/single_item_card.dart';
-import 'package:sokia_app/screens/order_completed_screen.dart';
 
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 final TextEditingController noteController = TextEditingController();
 
 class CreateOrderScreen extends StatelessWidget {
   final List<Mosque> mosques;
   final Category category;
-  final orderController = Get.put(OrderController());
-  final homeController = Get.find<HomeController>();
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  final _orderController = Get.put(CreateOrderController());
 
   //radio switch value
   final String cash = 'cash'.tr;
   final String visa = 'visa'.tr;
 
   CreateOrderScreen({@required this.mosques, this.category}) {
-    // orderController.orderMap.clear();
-    // orderController.cash = true;
-    // noteController.text = '';
-    if (orderController.orderMap.isEmpty) {
-      mosques.forEach((mosque) {
-        OrderModel orderModel = OrderModel(
-          mosque: mosque,
-          category: category == null ? homeController.categories[0] : category,
-          count: 10,
-        );
-        orderController.addToOrderMap(orderModel: orderModel);
-      });
-    }
+    _orderController.addOrders(mosques, category);
   }
 
   @override
@@ -65,23 +47,36 @@ class CreateOrderScreen extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       backgroundColor: kBackgroundColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildMosqueCards(),
-            _paymentMethod(),
-            _paymentMethodView(),
-            _notes(),
-            _price(),
-            _confirmButton(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildMosqueCards(),
+                _paymentMethod(),
+                _paymentMethodView(),
+                _notes(),
+                _price(),
+                _confirmButton(),
+              ],
+            ),
+          ),
+          GetBuilder<CreateOrderController>(
+            builder: (controller) => Container(
+              alignment: AlignmentDirectional.center,
+              child: Visibility(
+                visible: controller.loading,
+                child: CommonMethods().loadingWithBackground(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildMosqueCards() {
-    return GetBuilder<OrderController>(
+    return GetBuilder<CreateOrderController>(
       builder: (controller) => Column(
         children: controller.orderMap.values.map((order) {
           return SingleItemCard(
@@ -94,6 +89,7 @@ class CreateOrderScreen extends StatelessWidget {
 
   Future<void> _confirmOrder() async {
     // Get.to(()=>OrderCompletedScreen());
+    _orderController.createOrder(noteController.text);
   }
 
   _confirmButton() => Container(
@@ -122,7 +118,7 @@ class CreateOrderScreen extends StatelessWidget {
               color: kPrimaryColor,
             ),
           ),
-          GetBuilder<OrderController>(
+          GetBuilder<CreateOrderController>(
             builder: (controller) => Padding(
               padding: const EdgeInsetsDirectional.only(start: 20),
               child: Column(
@@ -133,9 +129,9 @@ class CreateOrderScreen extends StatelessWidget {
                         //if value and groupValue are the same it will be selected otherwise not selected
                         value: true,
                         activeColor: Colors.amber,
-                        groupValue: orderController.cash,
+                        groupValue: _orderController.cash,
                         onChanged: (value) {
-                          orderController.changePaymentMethod(value);
+                          _orderController.changePaymentMethod(value);
                         },
                       ),
                       Text(cash, style: TextStyle(fontSize: fontSize16)),
@@ -146,9 +142,9 @@ class CreateOrderScreen extends StatelessWidget {
                       Radio(
                         value: false,
                         activeColor: Colors.amber,
-                        groupValue: orderController.cash,
+                        groupValue: _orderController.cash,
                         onChanged: (value) {
-                          orderController.changePaymentMethod(value);
+                          _orderController.changePaymentMethod(value);
                         },
                       ),
                       Text(visa, style: TextStyle(fontSize: fontSize16)),
@@ -161,7 +157,7 @@ class CreateOrderScreen extends StatelessWidget {
         ],
       );
 
-  Widget _paymentMethodView() => GetBuilder<OrderController>(
+  Widget _paymentMethodView() => GetBuilder<CreateOrderController>(
         builder: (controller) => AnimatedSwitcher(
           duration: Duration(milliseconds: 500),
           child: controller.cash
@@ -287,7 +283,7 @@ class CreateOrderScreen extends StatelessWidget {
         ),
       );
 
-  _price() => GetBuilder<OrderController>(
+  _price() => GetBuilder<CreateOrderController>(
         builder: (_) => Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadiusDirectional.only(
@@ -310,8 +306,8 @@ class CreateOrderScreen extends StatelessWidget {
                         color: Colors.grey.shade500,
                       ),
                       CustomText(
-                        text: orderController
-                            .priceWithCurrency(orderController.totalPrice),
+                        text: _orderController
+                            .priceWithCurrency(_orderController.totalPrice),
                         fontSize: fontSize16,
                       )
                     ],
@@ -326,8 +322,8 @@ class CreateOrderScreen extends StatelessWidget {
                           color: Colors.grey.shade500,
                         ),
                         CustomText(
-                          text: orderController
-                              .priceWithCurrency(orderController.fee),
+                          text: _orderController
+                              .priceWithCurrency(_orderController.fee),
                           fontSize: fontSize16,
                         )
                       ],
@@ -344,8 +340,8 @@ class CreateOrderScreen extends StatelessWidget {
                           color: Colors.grey.shade500,
                         ),
                         CustomText(
-                          text: orderController
-                              .priceWithCurrency(orderController.shipping),
+                          text: _orderController
+                              .priceWithCurrency(_orderController.shipping),
                           fontSize: fontSize16,
                         )
                       ],
@@ -364,8 +360,8 @@ class CreateOrderScreen extends StatelessWidget {
                           text: 'orderTotalPrice'.tr,
                         ),
                         CustomText(
-                          text: orderController.priceWithCurrency(
-                              orderController.totalPriceForAllOrders),
+                          text: _orderController.priceWithCurrency(
+                              _orderController.totalPriceForAllOrders),
                           fontSize: fontSize18,
                           color: kPrimaryColor,
                         ),
@@ -380,7 +376,7 @@ class CreateOrderScreen extends StatelessWidget {
   void _openPaymentGateWay(Brands brand) async {
     String status = await PaymentApi().openPaymentUi(
         brand: brand,
-        amount: orderController.totalPriceForAllOrders,
+        amount: _orderController.totalPriceForAllOrders,
         currency: Currency.SAR);
 
     if (status != null && status == "true") {

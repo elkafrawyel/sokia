@@ -244,6 +244,17 @@ Map<String, String> en = {
   'unSelectAll': 'UnSelect All Places',
   'workerInfo': 'Worker Information',
   'addWorkerInfo': 'Add Worker Information',
-  'atLeastTenBox':'At least 10 boxes'
-
+  'atLeastTenBox': 'At least 10 boxes',
+  'loginToSeeOrders': 'Login to see your orders',
+  'running': 'Active',
+  'cancelled': 'Cancelled',
+  'ended': 'Ended',
+  'orderNumber': 'Order Code',
+  'customerInfo': 'Customer Information',
+  'noPhoneNumber': 'Not Found',
+  'orderDate': 'Order Date',
+  'date': 'Date',
+  'orderInfo': 'Order Information',
+  'notFound': 'Not found',
+  'location': 'Location'
 };

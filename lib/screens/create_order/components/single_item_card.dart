@@ -5,17 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/controllers/home_controller.dart';
-import 'package:sokia_app/controllers/order_controller.dart';
+import 'package:sokia_app/controllers/create_order_controller.dart';
+import 'package:sokia_app/data/data_models/order_model.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/custom_button.dart';
-import 'package:sokia_app/helper/custom_widgets/text/custom_outline_text_form_field.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:sokia_app/screens/create_order/components/bottom_sheet_list.dart';
 
 Timer nameDebouncer;
 Timer numberDebouncer;
-final _formKey = GlobalKey<FormState>();
 
 final nameController = TextEditingController();
 final numberController = TextEditingController();
@@ -23,15 +22,11 @@ final numberController = TextEditingController();
 class SingleItemCard extends StatelessWidget {
   final OrderModel orderModel;
 
-  final orderController = Get.find<OrderController>();
+  final orderController = Get.find<CreateOrderController>();
 
   SingleItemCard({
     @required this.orderModel,
-  }) {
-    if (orderModel.category == null) {
-      orderModel.category = Get.find<HomeController>().categories[0];
-    }
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +45,7 @@ class SingleItemCard extends StatelessWidget {
           ),
           Padding(
             padding:
-                const EdgeInsetsDirectional.only(top: 10, start: 10, end: 10),
+            const EdgeInsetsDirectional.only(top: 10, start: 10, end: 10),
             child: Card(
               color: Colors.white,
               shape: RoundedRectangleBorder(
@@ -67,8 +62,8 @@ class SingleItemCard extends StatelessWidget {
                       children: [
                         CustomText(
                           text: '${orderModel.count} ' +
-                              'boxes'.tr +
-                              ' ${orderModel.category.categoryName}',
+                            'boxes'.tr +
+                            ' ${orderModel.category.categoryName}',
                           fontSize: fontSize14,
                           color: kPrimaryColor,
                         ),
@@ -96,7 +91,7 @@ class SingleItemCard extends StatelessWidget {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.only(end: 10, start: 10),
+                    const EdgeInsetsDirectional.only(end: 10, start: 10),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,7 +126,7 @@ class SingleItemCard extends StatelessWidget {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.only(end: 10, start: 10),
+                    const EdgeInsetsDirectional.only(end: 10, start: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -243,59 +238,64 @@ class SingleItemCard extends StatelessWidget {
   }
 
   _workerInfo() => Column(
-        children: [
-          Visibility(
-            visible: (orderModel.workerName != null &&
-                    orderModel.workerName.isNotEmpty) ||
-                (orderModel.workerNumber != null &&
-                    orderModel.workerNumber.isNotEmpty),
-            child: Divider(
-              thickness: 2,
-            ),
+    children: [
+      Visibility(
+        visible: (orderModel.workerName != null &&
+            orderModel.workerName.isNotEmpty) ||
+            (orderModel.workerNumber != null &&
+                orderModel.workerNumber.isNotEmpty),
+        child: Divider(
+          thickness: 2,
+        ),
+      ),
+      Visibility(
+        visible: orderModel.workerName != null &&
+            orderModel.workerName.isNotEmpty,
+        child: Padding(
+          padding:
+          const EdgeInsetsDirectional.only(top: 10, end: 10, start: 10),
+          child: CustomText(
+            text: '${'workerName'.tr} : ${orderModel.workerName}',
           ),
-          Visibility(
-            visible: orderModel.workerName != null &&
-                orderModel.workerName.isNotEmpty,
-            child: Padding(
-              padding:
-                  const EdgeInsetsDirectional.only(top: 10, end: 10, start: 10),
-              child: CustomText(
-                text: '${'workerName'.tr} : ${orderModel.workerName}',
-              ),
-            ),
+        ),
+      ),
+      Visibility(
+        visible: orderModel.workerNumber != null &&
+            orderModel.workerNumber.isNotEmpty,
+        child: Padding(
+          padding:
+          const EdgeInsetsDirectional.only(top: 10, end: 10, start: 10),
+          child: CustomText(
+            text: '${'workerNumber'.tr} : ${orderModel.workerNumber}',
           ),
-          Visibility(
-            visible: orderModel.workerNumber != null &&
-                orderModel.workerNumber.isNotEmpty,
-            child: Padding(
-              padding:
-                  const EdgeInsetsDirectional.only(top: 10, end: 10, start: 10),
-              child: CustomText(
-                text: '${'workerNumber'.tr} : ${orderModel.workerNumber}',
-              ),
-            ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsetsDirectional.only(
+          top: 10,
+        ),
+        child: Container(
+          width: MediaQuery.of(Get.context).size.width * 0.6,
+          child: CustomButton(
+            text: 'addWorkerInfo'.tr,
+            colorText: Colors.white,
+            elevation: 0,
+            radius: 20,
+            fontSize: 12,
+            colorBackground: kPrimaryColor,
+            onPressed: () async {
+              WorkerInfo workerInfo = await _showWorkerDialog(
+                  workerName: orderModel.workerName,
+                  workerNumber: orderModel.workerNumber);
+              orderModel.workerName = workerInfo.name;
+              orderModel.workerNumber = workerInfo.number;
+              orderController.updateOrderMap(orderModel: orderModel);
+            },
           ),
-          Padding(
-            padding: const EdgeInsetsDirectional.only(top: 10),
-            child: CustomButton(
-              text: 'addWorkerInfo'.tr,
-              colorText: Colors.white,
-              elevation: 0,
-              radius: 20,
-              fontSize: fontSize14,
-              colorBackground: kPrimaryColor,
-              onPressed: () async {
-                WorkerInfo workerInfo = await _showWorkerDialog(
-                    workerName: orderModel.workerName,
-                    workerNumber: orderModel.workerNumber);
-                orderModel.workerName = workerInfo.name;
-                orderModel.workerNumber = workerInfo.number;
-                orderController.updateOrderMap(orderModel: orderModel);
-              },
-            ),
-          ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 
   Future<WorkerInfo> _showWorkerDialog(
       {String workerName, String workerNumber}) async {
@@ -329,7 +329,7 @@ class SingleItemCard extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: 'workerName'.tr,
                       hintStyle:
-                          TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                      TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       contentPadding: EdgeInsets.all(16),
                       alignLabelWithHint: true,
                       errorStyle: TextStyle(
@@ -338,7 +338,7 @@ class SingleItemCard extends StatelessWidget {
                       ),
                       labelText: 'workerName'.tr,
                       labelStyle:
-                          TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                      TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -353,7 +353,7 @@ class SingleItemCard extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: 'workerNumber'.tr,
                     hintStyle:
-                        TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                    TextStyle(fontSize: 14, color: Colors.grey.shade600),
                     contentPadding: EdgeInsets.all(16),
                     alignLabelWithHint: true,
                     errorStyle: TextStyle(
@@ -362,7 +362,7 @@ class SingleItemCard extends StatelessWidget {
                     ),
                     labelText: 'workerNumber'.tr,
                     labelStyle:
-                        TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                    TextStyle(fontSize: 14, color: Colors.grey.shade600),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),

@@ -3,6 +3,7 @@ import 'package:get/get.dart' as getX;
 import 'package:sokia_app/controllers/user_controller.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/local_storage.dart';
+import 'package:sokia_app/screens/home/home_screen.dart';
 
 class LoggingInterceptor extends Interceptor {
   int _maxCharactersPerLine = 200;
@@ -48,6 +49,8 @@ class LoggingInterceptor extends Interceptor {
     if (err.error.toString().contains('Http status error [401]')) {
       LocalStorage().clear();
       getX.Get.find<UserController>().setUser(null);
+      getX.Get.to(()=>HomeScreen());
+      // CommonMethods().showSnackBar('userNotFount'.tr);
     }
     print(err.error);
     print(err.message);

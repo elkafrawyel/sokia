@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sokia_app/data/data_models/create_order_request.dart';
 import 'package:sokia_app/data/responses/about_app_response.dart';
 import 'package:sokia_app/data/responses/auth_response.dart';
 import 'package:sokia_app/data/responses/conditions_response.dart';
 import 'package:sokia_app/data/responses/help_response.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/data/responses/info_response.dart';
+import 'package:sokia_app/data/responses/my_orders_response.dart';
 import 'package:sokia_app/data/responses/notifications_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/data_states.dart';
@@ -466,6 +468,38 @@ class ApiService {
     }
   }
 
+  getMyOrders({
+    @required Function(DataState dataState) state,
+  }) async {
+    if (await _checkNetwork()) {
+      try {
+        Response response = await _getDioClient().get(
+          "/getOrders",
+        );
+
+        if (response.statusCode == 200) {
+          MyOrdersResponse myOrdersResponse =
+              MyOrdersResponse.fromJson(response.data);
+          if (myOrdersResponse.status) {
+            state(SuccessState(myOrdersResponse.orders));
+          } else {
+            CommonMethods().showGeneralError();
+            state(ErrorState());
+          }
+        } else {
+          CommonMethods().showGeneralError();
+          state(ErrorState());
+        }
+      } catch (e) {
+        CommonMethods().showGeneralError();
+
+        state(ErrorState());
+      }
+    } else {
+      state(NoConnectionState());
+    }
+  }
+
   getConditionsData({
     @required Function(DataState dataState) state,
   }) async {
@@ -520,6 +554,40 @@ class ApiService {
           state(ErrorState());
         }
       } catch (e) {
+        CommonMethods().showGeneralError();
+        state(ErrorState());
+      }
+    } else {
+      state(NoConnectionState());
+    }
+  }
+
+  createOrder({
+    @required CreateOrderRequest createOrderRequest,
+    @required Function(DataState dataState) state,
+  }) async {
+    //order details
+    if (await _checkNetwork()) {
+      Response response = await _getDioClient().post(
+        "/createOrder",
+        data: {
+          "orderPrice": createOrderRequest.orderPrice,
+          "orderType": createOrderRequest.orderType,
+          "paymentMethod": createOrderRequest.paymentMethod,
+          "note": createOrderRequest.note,
+          "orderDetails": createOrderRequest.orderDetails
+        },
+      );
+
+      if (response.statusCode == 200) {
+        InfoResponse infoResponse = InfoResponse.fromJson(response.data);
+        if (infoResponse.status) {
+          state(SuccessState(infoResponse));
+        } else {
+          CommonMethods().showGeneralError();
+          state(ErrorState());
+        }
+      } else {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }

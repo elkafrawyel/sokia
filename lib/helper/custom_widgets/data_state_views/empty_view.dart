@@ -12,26 +12,20 @@ class EmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _emptyImage(),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            message == null ? 'empty'.tr : message,
-            style: TextStyle(fontSize: fontSize16, color: textColor),
-            maxLines: 3,
-          ),
-          SizedBox(
-            height: 40,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _emptyImage(),
+        SizedBox(
+          height: 30,
+        ),
+        Text(
+          message == null ? 'empty'.tr : message,
+          style: TextStyle(fontSize: fontSize16, color: textColor),
+          maxLines: 3,
+        ),
+      ],
     );
   }
 
@@ -39,7 +33,7 @@ class EmptyView extends StatelessWidget {
     switch (emptyViews) {
       case EmptyViews.Box:
         return Lottie.asset(emptyImageBox,
-            width: 200, height: 200, repeat: false);
+            width: 300, height: 300, repeat: false);
       case EmptyViews.Face:
         return Lottie.asset(emptyImageFace, repeat: false);
       case EmptyViews.Magnifier:
