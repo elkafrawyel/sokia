@@ -14,10 +14,11 @@ class CreateOrderController extends GetxController {
 
   Map<int, OrderModel> orderMap = {};
   bool cash = true;
-  double fee = 05.00;
-  double shipping = 20.0;
+  double fee = 10.00;
+  double shipping = 15.0;
   double totalPriceForAllOrders = 0.0;
   double totalPrice = 0.0;
+  String checkoutId;
   final homeController = Get.find<HomeController>();
 
   void addOrders(List<Mosque> mosques, Category category) {
@@ -85,10 +86,16 @@ class CreateOrderController extends GetxController {
           workerName: e.workerName,
           workerNumber: e.workerNumber));
     });
-
+    if (!cash && checkoutId == null) {
+      CommonMethods().showToast(message: 'Payment Error', context: Get.context);
+    }
     CreateOrderRequest createOrderRequest = CreateOrderRequest(
         orderPrice: totalPriceForAllOrders,
         orderType: 'normal',
+        fee: fee,
+        note: note,
+        checkoutId: checkoutId,
+        shipping: shipping,
         paymentMethod: cash ? 'cash' : 'visa',
         orderDetails: orderDetails);
 

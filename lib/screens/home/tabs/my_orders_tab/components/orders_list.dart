@@ -7,7 +7,6 @@ import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/screens/home/tabs/my_orders_tab/components/order_item.dart';
 
 class OrdersListView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,7 +16,9 @@ class OrdersListView extends StatelessWidget {
             ? controller.loading
                 ? LoadingView()
                 : controller.empty
-                    ? EmptyView()
+                    ? EmptyView(
+                        textColor: Colors.grey.shade700,
+                      )
                     : ListView.builder(
                         primary: false,
                         shrinkWrap: true,

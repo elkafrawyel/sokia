@@ -7,6 +7,8 @@ import 'package:sokia_app/helper/get_binding.dart';
 import 'package:sokia_app/helper/language/Translation.dart';
 import 'package:sokia_app/screens/home/home_screen.dart';
 
+import 'helper/messaging/push_notifications.dart';
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -15,7 +17,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    // PushNotificationsManager().init(context);
+    PushNotificationsManager().init(context);
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,

@@ -161,15 +161,19 @@ class CommonMethods {
   }
 
   String getDateString(int time) {
+    initializeDateFormatting();
+
     var date = DateTime.fromMillisecondsSinceEpoch(time);
     if (LocalStorage().isArabicLanguage()) {
-      var formatter = DateFormat.yMMMMEEEEd('ar_SA');
+      var formatter = DateFormat.yMd('ar_SA');
+      // var formatter = DateFormat.yMMMMEEEEd('ar_SA');
       print(formatter.locale);
       String formatted = formatter.format(date);
       print(formatted);
       return formatted;
     } else {
-      var formatter = DateFormat.yMMMMEEEEd();
+      var formatter = DateFormat.yMd();
+      // var formatter = DateFormat.yMMMMEEEEd();
       print(formatter.locale);
       String formatted = formatter.format(date);
       print(formatted);

@@ -39,7 +39,7 @@ class OrderCompletedScreen extends StatelessWidget {
                     child: CustomText(
                       fontSize: fontSize14,
                       color: Colors.white,
-                      maxLines: 2,
+                      maxLines: 5,
                       alignment: AlignmentDirectional.center,
                       textAlign: TextAlign.center,
                       text: 'orderCompleteMessage'.tr,

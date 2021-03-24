@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "638238450713",
+    "project_id": "sokia-b46f4",
+    "storage_bucket": "sokia-b46f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638238450713:android:0012f87fbd86f0ed46b688",
+        "android_client_info": {
+          "package_name": "com.sokia.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638238450713-3htqsd71sh9b6qflvl8k1tb7g7gtvi9b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sokia.app",
+            "certificate_hash": "18fb29661dbb1a5886c1150d6e384fa221502db9"
+          }
+        },
+        {
+          "client_id": "638238450713-lhvcmsp9n48r6kgk3k858ogq5iiqjojj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sokia.app",
+            "certificate_hash": "2ce10d3d962e2359b0f8655b7fe2d5370c4b244c"
+          }
+        },
+        {
+          "client_id": "638238450713-su80qi61264asjao88nhm5nqc6mlreca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6lkQmODmzjJtFUU8-ZVJTYyAbjvqmo9g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638238450713-su80qi61264asjao88nhm5nqc6mlreca.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "638238450713-bpsopv8jksaturu02g1rfl49bmc31ok3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sokia.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

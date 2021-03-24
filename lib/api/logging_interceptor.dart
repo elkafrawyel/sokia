@@ -45,7 +45,6 @@ class LoggingInterceptor extends Interceptor {
   @override
   Future onError(DioError err) {
     print("<-- Error -->");
-    //unauthorized
     if (err.error.toString().contains('Http status error [401]')) {
       LocalStorage().clear();
       getX.Get.find<UserController>().setUser(null);

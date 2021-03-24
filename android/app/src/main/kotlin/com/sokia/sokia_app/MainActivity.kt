@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
+import android.widget.Switch
 import android.widget.Toast
 import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity
 import com.oppwa.mobile.connect.checkout.meta.CheckoutSettings
@@ -22,6 +23,7 @@ import com.oppwa.mobile.connect.service.IProviderBinder
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugins.googlesignin.GoogleSignInPlugin
 import java.util.*
 
 
@@ -44,16 +46,14 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
                 .setMethodCallHandler { call, result ->
 
-                    this.result = result
 
                     if (call.method.equals("getPaymentMethod")) {
+                        this.result = result
                         checkoutId = call.argument<String>("checkoutId")!!
                         developmentMode = call.argument<String>("developmentMode")!!
                         brand = call.argument<String>("brand")!!
                         language = call.argument<String>("language")!!
-
                         openCheckoutUI(checkoutId, brand)
-
                     } else {
                         error("1", "Method name is not found", "")
                     }
@@ -129,44 +129,50 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (resultCode) {
-            CheckoutActivity.RESULT_OK -> {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        when (requestCode) {
+            CheckoutActivity.REQUEST_CODE_CHECKOUT -> {
+                when (resultCode) {
+                    CheckoutActivity.RESULT_OK -> {
+                        /* transaction completed */
+                        val transaction: Transaction = data!!.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_TRANSACTION)!!
 
-                /* transaction completed */
-                val transaction: Transaction = data!!.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_TRANSACTION)!!
+                        /* resource path if needed */
+                        val resourcePath = data.getStringExtra(CheckoutActivity.CHECKOUT_RESULT_RESOURCE_PATH)
+                        Log.e("resourcePath", "ResourcePath -----> $resourcePath")
 
-                /* resource path if needed */
-                val resourcePath = data.getStringExtra(CheckoutActivity.CHECKOUT_RESULT_RESOURCE_PATH)
-                Log.e("resourcePath", "ResourcePath -----> $resourcePath")
+                        if (transaction.transactionType == TransactionType.SYNC) {
+                            /* check the result of synchronous transaction */
+                            success("true")
+                        }
+                    }
+                    CheckoutActivity.RESULT_CANCELED -> {
+                        error("2", "canceled", "User Cancelled Payment")
+                    }
+                    CheckoutActivity.RESULT_ERROR -> {
 
-                if (transaction.transactionType == TransactionType.SYNC) {
-                    /* check the result of synchronous transaction */
-                    success("true")
-                } else {
-                    /* wait for the asynchronous transaction callback in the onNewIntent() */
+                        /* error occurred */
+                        val error: PaymentError = data!!.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_ERROR)!!
+
+                        Log.e("error1", error.errorInfo.toString())
+
+                        Log.e("error2", error.errorCode.toString())
+
+                        Log.e("error3", error.errorMessage)
+
+                        Log.e("error4", error.describeContents().toString())
+
+                        error("3", "false ${error.errorMessage}", "")
+
+                    }
                 }
             }
-            CheckoutActivity.RESULT_CANCELED -> {
-                error("2", "canceled", "User Cancelled Payment")
-            }
-            CheckoutActivity.RESULT_ERROR -> {
-
-                /* error occurred */
-                val error: PaymentError = data!!.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_ERROR)!!
-
-                Log.e("error1", error.errorInfo.toString())
-
-                Log.e("error2", error.errorCode.toString())
-
-                Log.e("error3", error.errorMessage)
-
-                Log.e("error4", error.describeContents().toString())
-
-                error("3", "false ${error.errorMessage}", "")
-
+            else -> {
+                Toast.makeText(context, "Google $resultCode", Toast.LENGTH_LONG).show()
             }
         }
+
     }
 
     override fun onNewIntent(intent: Intent) {

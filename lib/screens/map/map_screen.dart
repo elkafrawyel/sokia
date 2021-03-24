@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sokia_app/controllers/create_order_controller.dart';
 import 'package:sokia_app/controllers/main_controller.dart';
 import 'package:sokia_app/controllers/map_controller.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
@@ -133,7 +134,7 @@ class _MapScreenState extends State<MapScreen> {
                 colorText: Colors.white,
                 fontSize: fontSize14,
                 colorBackground: kPrimaryColor,
-                onPressed: () {
+                onPressed: () async {
                   //you must login
                   if (LocalStorage().getBool(LocalStorage.loginKey)) {
                     List<Mosque> mosques =
@@ -143,10 +144,9 @@ class _MapScreenState extends State<MapScreen> {
                           .showToast(message: 'Select First', context: context);
                       return;
                     } else {
-                      Get.to(() => CreateOrderScreen(
-                            mosques: mosques,
-                            category: widget.category,
-                          ));
+                      await Get.to(() => CreateOrderScreen(
+                          mosques: mosques, category: widget.category));
+                      Get.find<CreateOrderController>().orderMap.clear();
                     }
                   } else {
                     CommonMethods().showToast(

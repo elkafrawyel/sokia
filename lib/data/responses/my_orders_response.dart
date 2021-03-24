@@ -41,6 +41,7 @@ class Order {
   String _orderStatus;
   String _note;
   var _fee;
+  int _unixTime;
   String _createdAt;
   String _updatedAt;
   var _shippingPrice;
@@ -61,6 +62,8 @@ class Order {
   String get orderStatus => _orderStatus;
 
   String get note => _note;
+
+  int get unixTime => _unixTime;
 
   double get fee => double.parse(_fee.toString());
 
@@ -85,6 +88,7 @@ class Order {
       String createdAt,
       String updatedAt,
       double shippingPrice,
+      int unixTime,
       List<OrderDetails> orderDetails}) {
     _id = id;
     _userId = userId;
@@ -97,6 +101,7 @@ class Order {
     _fee = fee;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
+    _unixTime = unixTime;
     _shippingPrice = shippingPrice;
     _orderDetails = orderDetails;
   }
@@ -111,6 +116,7 @@ class Order {
     _orderStatus = json["orderStatus"];
     _note = json["note"];
     _fee = json["fee"];
+    _unixTime = json["unx_time"];
     _createdAt = json["created_at"];
     _updatedAt = json["updated_at"];
     _shippingPrice = json["shippingPrice"];
@@ -134,6 +140,7 @@ class Order {
     map["note"] = _note;
     map["fee"] = _fee;
     map["created_at"] = _createdAt;
+    map["unx_time"] = _unixTime;
     map["updated_at"] = _updatedAt;
     map["shippingPrice"] = _shippingPrice;
     if (_orderDetails != null) {

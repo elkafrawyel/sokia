@@ -3,13 +3,22 @@ class CreateOrderRequest {
   String _orderType;
   String _paymentMethod;
   String _note;
+  String _checkoutId;
+  double _fee;
+  double _shipping;
   List<OrderDetails> _orderDetails;
 
   double get orderPrice => _orderPrice;
 
   String get orderType => _orderType;
 
+  String get checkoutId => _checkoutId;
+
   String get paymentMethod => _paymentMethod;
+
+  double get fee => _fee;
+
+  double get shipping => _shipping;
 
   String get note => _note;
 
@@ -18,6 +27,9 @@ class CreateOrderRequest {
   CreateOrderRequest(
       {double orderPrice,
       String orderType,
+      String checkoutId,
+      double fee,
+      double shipping,
       String paymentMethod,
       String note,
       List<OrderDetails> orderDetails}) {
@@ -25,6 +37,9 @@ class CreateOrderRequest {
     _orderType = orderType;
     _paymentMethod = paymentMethod;
     _note = note;
+    _checkoutId = checkoutId;
+    _fee = fee;
+    _shipping = shipping;
     _orderDetails = orderDetails;
   }
 
@@ -32,6 +47,9 @@ class CreateOrderRequest {
     _orderPrice = json["orderPrice"];
     _orderType = json["orderType"];
     _paymentMethod = json["paymentMethod"];
+    _fee = json["fee"];
+    _shipping = json["shipping"];
+    _checkoutId = json["checkoutId"];
     _note = json["note"];
     if (json["orderDetails"] != null) {
       _orderDetails = [];
@@ -46,6 +64,9 @@ class CreateOrderRequest {
     map["orderPrice"] = _orderPrice;
     map["orderType"] = _orderType;
     map["paymentMethod"] = _paymentMethod;
+    map["shipping"] = _shipping;
+    map["fee"] = _fee;
+    map["checkoutId"] = _checkoutId;
     map["note"] = _note;
     if (_orderDetails != null) {
       map["orderDetails"] = _orderDetails.map((v) => v.toJson()).toList();
@@ -61,6 +82,7 @@ class OrderDetails {
   String _longitude;
   String _latitude;
   String _address;
+
   String _categoryName;
   String _workerName;
   String _workerNumber;
@@ -100,6 +122,7 @@ class OrderDetails {
     _longitude = longitude;
     _latitude = latitude;
     _address = address;
+
     _categoryName = categoryName;
     _workerName = workerName;
     _workerNumber = workerNumber;
@@ -112,6 +135,7 @@ class OrderDetails {
     _longitude = json["longitude"];
     _latitude = json["latitude"];
     _address = json["adress"];
+
     _categoryName = json["categoryName"];
     _workerName = json["workerName"];
     _workerNumber = json["workerNumber"];

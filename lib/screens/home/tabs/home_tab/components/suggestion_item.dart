@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:sokia_app/controllers/create_order_controller.dart';
 import 'package:sokia_app/controllers/home_controller.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
@@ -17,12 +18,14 @@ class SuggestionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         //you must login
         if (LocalStorage().getBool(LocalStorage.loginKey)) {
           Get.to(() => CreateOrderScreen(mosques: [mosque]));
+          Get.find<CreateOrderController>().orderMap.clear();
         } else {
-          CommonMethods().showToast(message: 'youMustLogin'.tr, context: context);
+          CommonMethods()
+              .showToast(message: 'youMustLogin'.tr, context: context);
         }
       },
       child: Container(

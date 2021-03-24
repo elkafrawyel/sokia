@@ -8,7 +8,9 @@ import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/helper/payment/payment_response.dart';
 
 class PaymentApi {
-  String _checkoutId = '';
+  String _checkoutId;
+
+  String get checkoutId => _checkoutId;
   static const platform = const MethodChannel('com.sokia.app');
 
   String _baseUrl = 'https://test.oppwa.com/v1/checkouts';
@@ -42,7 +44,6 @@ class PaymentApi {
     //toStringAsFixed(2) to make 200.0 become 200.00
     String _amount = amount.toStringAsFixed(2);
     String _entityId = brand == Brands.Mada ? _madaEntity : _entity;
-
 
     String myUrl = "$_baseUrl?" +
         "entityId=$_entityId" +

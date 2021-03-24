@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sokia_app/controllers/user_controller.dart';
 import 'package:sokia_app/data/responses/my_orders_response.dart';
+import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/custom_button.dart';
 import 'package:sokia_app/helper/custom_widgets/main_screen.dart';
@@ -159,8 +160,9 @@ class OrderDetailsScreen extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: CustomText(
-                        text: order.createdAt,
-                        fontSize: fontSize14,
+                        text: CommonMethods().getDateString(order.unixTime),
+                        fontSize: 12,
+                        maxLines: 2,
                         color: Colors.black,
                       ),
                     ),

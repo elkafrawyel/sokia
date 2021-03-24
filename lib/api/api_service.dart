@@ -575,6 +575,8 @@ class ApiService {
           "orderType": createOrderRequest.orderType,
           "paymentMethod": createOrderRequest.paymentMethod,
           "note": createOrderRequest.note,
+          "fee":createOrderRequest.fee,
+          "shippingPrice":createOrderRequest.shipping,
           "orderDetails": createOrderRequest.orderDetails
         },
       );
@@ -584,7 +586,7 @@ class ApiService {
         if (infoResponse.status) {
           state(SuccessState(infoResponse));
         } else {
-          CommonMethods().showGeneralError();
+          CommonMethods().showSnackBar(infoResponse.vErrors.getErrors());
           state(ErrorState());
         }
       } else {

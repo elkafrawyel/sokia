@@ -374,7 +374,8 @@ class CreateOrderScreen extends StatelessWidget {
       );
 
   void _openPaymentGateWay(Brands brand) async {
-    String status = await PaymentApi().openPaymentUi(
+    PaymentApi paymentApi = PaymentApi();
+    String status = await paymentApi.openPaymentUi(
         brand: brand,
         amount: _orderController.totalPriceForAllOrders,
         currency: Currency.SAR);
@@ -382,9 +383,11 @@ class CreateOrderScreen extends StatelessWidget {
     if (status != null && status == "true") {
       print('Sokia transactionStatus ----> $status');
 
-      CommonMethods().showSnackBar('Payment Completed');
-
-      // getPaymentStatus();
+      if (paymentApi.checkoutId != null) {
+        _orderController.checkoutId = paymentApi.checkoutId;
+        CommonMethods().showSnackBar('Payment Completed');
+        // getPaymentStatus();
+      }
     } else if (status == "cancelled") {
       CommonMethods().showSnackBar('Payment Cancelled');
 
