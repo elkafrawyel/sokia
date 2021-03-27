@@ -55,7 +55,7 @@ import SafariServices
         
         //        ================== End Payment ==============
         
-        GMSServices.provideAPIKey("AIzaSyDjgFugHz8mbWg5vrES7X3a10umUKioC0o")
+        GMSServices.provideAPIKey("AIzaSyAlD-AjHc-bdnyomHFsHtlkXy8gO_neVgg")
         GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }

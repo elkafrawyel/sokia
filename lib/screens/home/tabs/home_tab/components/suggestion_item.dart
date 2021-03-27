@@ -21,7 +21,7 @@ class SuggestionItem extends StatelessWidget {
       onTap: () async {
         //you must login
         if (LocalStorage().getBool(LocalStorage.loginKey)) {
-          Get.to(() => CreateOrderScreen(mosques: [mosque]));
+          await Get.to(() => CreateOrderScreen(mosques: [mosque]));
           Get.find<CreateOrderController>().orderMap.clear();
         } else {
           CommonMethods()
