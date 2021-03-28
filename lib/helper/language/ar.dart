@@ -252,5 +252,6 @@ Map<String, String> ar = {
   'date':'التاريخ',
   'orderInfo':'معلومات الطلب',
   'notFound':'لا يوجد',
-  'location':'الموقع'
+  'location':'الموقع',
+  'continueToOrders':'متابعة لانشاء طلب',
 };

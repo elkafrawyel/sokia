@@ -120,58 +120,42 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Widget buildBottomNavigationBar() {
-    return Container(
-      padding: EdgeInsetsDirectional.only(bottom: 20, start: 10, end: 10),
-      alignment: AlignmentDirectional.bottomCenter,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 5,
-            child: Container(
-              height: 50,
-              child: CustomButton(
-                text: 'تأكيد مكان الاستلام',
-                colorText: Colors.white,
-                fontSize: fontSize14,
-                colorBackground: kPrimaryColor,
-                onPressed: () async {
-                  //you must login
-                  if (LocalStorage().getBool(LocalStorage.loginKey)) {
-                    List<Mosque> mosques =
-                        _mapController.getSelectedPlacesAsMosques();
-                    if (mosques.isEmpty) {
-                      CommonMethods()
-                          .showToast(message: 'Select First', context: context);
-                      return;
-                    } else {
-                      await Get.to(() => CreateOrderScreen(
-                          mosques: mosques, category: widget.category));
-                      Get.find<CreateOrderController>().orderMap.clear();
-                    }
+    return GetBuilder<MapController>(
+      builder: (controller) => Visibility(
+        visible: _mapController.selectedMarkersId.isNotEmpty,
+        child: Container(
+          padding: EdgeInsetsDirectional.only(bottom: 10, start: 10, end: 10),
+          alignment: AlignmentDirectional.bottomCenter,
+          child: Container(
+            height: 50,
+            child: CustomButton(
+              text: 'continueToOrders'.tr,
+              colorText: Colors.white,
+              fontSize: fontSize16,
+              radius: 0,
+              colorBackground: kPrimaryColor,
+              onPressed: () async {
+                //you must login
+                if (LocalStorage().getBool(LocalStorage.loginKey)) {
+                  List<Mosque> mosques =
+                      _mapController.getSelectedPlacesAsMosques();
+                  if (mosques.isEmpty) {
+                    CommonMethods()
+                        .showToast(message: 'Select First', context: context);
+                    return;
                   } else {
-                    CommonMethods().showToast(
-                        message: 'youMustLogin'.tr, context: context);
+                    await Get.to(() => CreateOrderScreen(
+                        mosques: mosques, category: widget.category));
+                    Get.find<CreateOrderController>().orderMap.clear();
                   }
-                },
-              ),
+                } else {
+                  CommonMethods()
+                      .showToast(message: 'youMustLogin'.tr, context: context);
+                }
+              },
             ),
           ),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-              flex: 5,
-              child: Container(
-                height: 50,
-                child: CustomButton(
-                  text: 'عنوان مخصص',
-                  colorText: Colors.white,
-                  fontSize: fontSize14,
-                  colorBackground: kPrimaryColor,
-                  onPressed: () {},
-                ),
-              )),
-        ],
+        ),
       ),
     );
   }
@@ -253,7 +237,7 @@ class _MapScreenState extends State<MapScreen> {
                 menuWidth: MediaQuery.of(context).size.width - 50,
                 duration: Duration(milliseconds: 900),
                 // blurSize: 0,
-                // menuItemExtent: 80, item height
+                // menuItemExtent: 80, //item height
                 child: CircleAvatar(
                   radius: 20,
                   backgroundColor: Colors.white,

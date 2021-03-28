@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sokia_app/api/device_info.dart';
 import 'package:sokia_app/data/data_models/create_order_request.dart';
 import 'package:sokia_app/data/responses/about_app_response.dart';
 import 'package:sokia_app/data/responses/auth_response.dart';
@@ -19,17 +20,17 @@ import 'package:sokia_app/helper/local_storage.dart';
 import 'logging_interceptor.dart';
 
 class ApiService {
-  Dio _getDioClient() {
+  Future<Dio> _getDioClient() async {
     var language = LocalStorage().getLanguage();
     var apiToken = LocalStorage().getString(LocalStorage.token);
-
     BaseOptions options = new BaseOptions(
       baseUrl: "https://madheef.com/water/api/",
       headers: {
         HttpHeaders.acceptHeader: 'application/json',
         HttpHeaders.cacheControlHeader: 'no-Cache',
         HttpHeaders.acceptLanguageHeader: language,
-        HttpHeaders.authorizationHeader: 'Bearer $apiToken'
+        HttpHeaders.authorizationHeader: 'Bearer $apiToken',
+        'DeviceId': await DeviceInformation().getDeviceId(),
       },
       connectTimeout: 10000,
       receiveTimeout: 10000,
@@ -55,7 +56,7 @@ class ApiService {
   getHomeData({Function(DataState dataState) state}) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().get(
+        Response response = await (await _getDioClient()).get(
           "/homePage",
         );
 
@@ -89,7 +90,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().post(
+        Response response = await (await _getDioClient()).post(
           "/register",
           data: {
             "name": name,
@@ -134,7 +135,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().post(
+        Response response = await (await _getDioClient()).post(
           "/socialSignUp",
           data: {
             "name": name,
@@ -176,7 +177,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().post(
+        Response response = await (await _getDioClient()).post(
           "/login",
           data: {
             "userInfo": phone,
@@ -212,7 +213,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().get(
+        Response response = await (await _getDioClient()).get(
           "/profile",
         );
 
@@ -246,7 +247,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().post(
+        Response response = await (await _getDioClient()).post(
           "/editProfile",
           data: {
             "name": name,
@@ -281,7 +282,7 @@ class ApiService {
   sendFirebaseToken({
     @required String firebaseToken,
   }) async {
-    await _getDioClient().post(
+    await (await _getDioClient()).post(
       "/createFireBaseToken",
       data: {
         "firebase_token": firebaseToken,
@@ -298,7 +299,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().post(
+        Response response = await (await _getDioClient()).post(
           "/changePassword",
           data: {
             "oldPassword": oldPassword,
@@ -338,7 +339,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().post(
+        Response response = await (await _getDioClient()).post(
           "/contactUs",
           data: {
             "title": title,
@@ -378,7 +379,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().get(
+        Response response = await (await _getDioClient()).get(
           "/logOut",
         );
 
@@ -410,7 +411,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().get(
+        Response response = await (await _getDioClient()).get(
           "/myNotifi",
         );
 
@@ -442,7 +443,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().get(
+        Response response = await (await _getDioClient()).get(
           "/privacy_policies/help",
         );
 
@@ -473,7 +474,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().get(
+        Response response = await (await _getDioClient()).get(
           "/getOrders",
         );
 
@@ -505,7 +506,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().get(
+        Response response = await (await _getDioClient()).get(
           "/privacy_policies/policies",
         );
 
@@ -536,7 +537,7 @@ class ApiService {
   }) async {
     if (await _checkNetwork()) {
       try {
-        Response response = await _getDioClient().get(
+        Response response = await (await _getDioClient()).get(
           "/privacy_policies/about_app",
         );
 
@@ -568,15 +569,15 @@ class ApiService {
   }) async {
     //order details
     if (await _checkNetwork()) {
-      Response response = await _getDioClient().post(
+      Response response = await (await _getDioClient()).post(
         "/createOrder",
         data: {
           "orderPrice": createOrderRequest.orderPrice,
           "orderType": createOrderRequest.orderType,
           "paymentMethod": createOrderRequest.paymentMethod,
           "note": createOrderRequest.note,
-          "fee":createOrderRequest.fee,
-          "shippingPrice":createOrderRequest.shipping,
+          "fee": createOrderRequest.fee,
+          "shippingPrice": createOrderRequest.shipping,
           "orderDetails": createOrderRequest.orderDetails
         },
       );

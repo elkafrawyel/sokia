@@ -256,5 +256,6 @@ Map<String, String> en = {
   'date': 'Date',
   'orderInfo': 'Order Information',
   'notFound': 'Not found',
-  'location': 'Location'
+  'location': 'Location',
+  'continueToOrders': 'Continue to create order',
 };

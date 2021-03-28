@@ -10,21 +10,23 @@ class LoggingInterceptor extends Interceptor {
 
   @override
   Future onRequest(RequestOptions options) {
-    print("--> ${options.method} ${options.path}");
-    print("Content type: ${options.contentType}");
-    print("<-- END HTTP");
+    print("<-- HTTP -->");
+    print("--> ${options.headers}");
+    print("--> ${options.method}");
+    print("--> ${options.path}");
+    print("--> ${options.contentType}");
+    print("<-- END HTTP -->");
     return super.onRequest(options);
   }
 
   @override
   Future onResponse(Response response) {
     print(
-        "<-- ${response.statusCode} ${response.request.method} ${response
-            .request.path}");
+        "<-- ${response.statusCode} ${response.request.method} ${response.request.path}");
     String responseAsString = response.data.toString();
     if (responseAsString.length > _maxCharactersPerLine) {
       int iterations =
-      (responseAsString.length / _maxCharactersPerLine).floor();
+          (responseAsString.length / _maxCharactersPerLine).floor();
       for (int i = 0; i <= iterations; i++) {
         int endingIndex = i * _maxCharactersPerLine + _maxCharactersPerLine;
         if (endingIndex > responseAsString.length) {
@@ -48,7 +50,7 @@ class LoggingInterceptor extends Interceptor {
     if (err.error.toString().contains('Http status error [401]')) {
       LocalStorage().clear();
       getX.Get.find<UserController>().setUser(null);
-      getX.Get.to(()=>HomeScreen());
+      getX.Get.to(() => HomeScreen());
       // CommonMethods().showSnackBar('userNotFount'.tr);
     }
     print(err.error);

@@ -134,7 +134,7 @@ class MapController extends GetxController {
               title: Expanded(
                   child: Text(
                 marker.infoWindow.title,
-                maxLines: 1,
+                maxLines: 2,
               )),
               trailingIcon: Icon(
                 Icons.location_on_outlined,
