@@ -12,11 +12,12 @@ class SocialButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         onTap.call();
       },
       child: Padding(
-        padding: const EdgeInsetsDirectional.only(start: 20, end: 20, bottom: 10),
+        padding:
+            const EdgeInsetsDirectional.only(start: 20, end: 20, bottom: 10),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
@@ -26,15 +27,10 @@ class SocialButton extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Image.asset(imageAsset),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
                 child: Image.asset(
-                  'src/images/line.png',
-                  fit: BoxFit.fill,
-                  height: 30,
-                  width: 1,
+                  imageAsset,
+                  width: 50,
+                  height: 50,
                 ),
               ),
               Expanded(

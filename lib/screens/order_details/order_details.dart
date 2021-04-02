@@ -44,25 +44,27 @@ class OrderDetailsScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: CustomText(
-                        text: 'orderNumber'.tr,
-                        fontSize: fontSize14,
-                        alignment: AlignmentDirectional.centerStart,
-                        color: Colors.black,
-                      ),
+                    CustomText(
+                      text: 'orderNumber'.tr,
+                      fontSize: fontSize14,
+                      alignment: AlignmentDirectional.centerStart,
+                      color: Colors.black,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: CustomText(
-                        text: order.orderCode,
-                        fontSize: fontSize14,
-                        alignment: AlignmentDirectional.centerStart,
-                        color: Colors.black,
-                      ),
+                    CustomText(
+                      text: order.orderCode,
+                      fontSize: fontSize14,
+                      alignment: AlignmentDirectional.centerStart,
+                      color: Colors.black,
+                    ),
+                    CustomText(
+                      text: _orderStatus(order.orderStatus),
+                      fontSize: fontSize18,
+                      color: _orderStatusColor(order.orderStatus),
+                      maxLines: 1,
+                      alignment: AlignmentDirectional.bottomEnd,
+                      textAlign: TextAlign.start,
                     ),
                   ],
                 ),
@@ -160,7 +162,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: CustomText(
-                        text: CommonMethods().getDateString(order.unixTime),
+                        text: CommonMethods().getDateStringYMd(order.unixTime),
                         fontSize: 12,
                         maxLines: 2,
                         color: Colors.black,
@@ -202,9 +204,10 @@ class OrderDetailsScreen extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(Get.context).size.width * 0.4,
                       child: CustomText(
-                        text: '${order.orderDetails[0].count} ' +
-                            'boxes'.tr +
-                            ' ${order.orderDetails[0].categoryName}',
+                        // text: '${order.orderDetails[0].count} ' +
+                        //     'boxes'.tr +
+                        //     ' ${order.orderDetails[0].categoryName}',
+                        text: 'total'.tr,
                         fontSize: fontSize14,
                         color: Colors.black,
                       ),
@@ -252,7 +255,31 @@ class OrderDetailsScreen extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(Get.context).size.width * 0.4,
                       child: CustomText(
-                        text: 'total'.tr,
+                        text: 'fee'.tr,
+                        fontSize: fontSize14,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(Get.context).size.width * 0.4,
+                      child: CustomText(
+                        text: priceWithCurrency(order.fee),
+                        fontSize: fontSize14,
+                        color: Colors.black,
+                        alignment: AlignmentDirectional.centerStart,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(Get.context).size.width * 0.4,
+                      child: CustomText(
+                        text: 'orderTotalPrice'.tr,
                         fontSize: fontSize14,
                         color: Colors.black,
                       ),
@@ -277,24 +304,9 @@ class OrderDetailsScreen extends StatelessWidget {
                 children: [
                   Container(
                     height: 50,
-                    width: MediaQuery.of(Get.context).size.width * 0.4,
+                    width: MediaQuery.of(Get.context).size.width * 0.6,
                     child: CustomButton(
-                      text: 'Bill',
-                      colorText: Colors.white,
-                      colorBackground: kPrimaryColor,
-                      onPressed: () {
-                        Get.to(() => ChatScreen());
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(Get.context).size.width * 0.4,
-                    child: CustomButton(
-                      text: 'Chat',
+                      text: 'customerService'.tr,
                       colorText: Colors.white,
                       colorBackground: kPrimaryColor,
                       onPressed: () {
@@ -517,6 +529,28 @@ class OrderDetailsScreen extends StatelessWidget {
       ),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
+  }
+
+  _orderStatus(String orderStatus) {
+    switch (order.orderStatus) {
+      case 'running':
+        return 'running'.tr;
+      case 'cancelled':
+        return 'cancelled'.tr;
+      case 'ended':
+        return 'ended'.tr;
+    }
+  }
+
+  _orderStatusColor(String orderStatus) {
+    switch (order.orderStatus) {
+      case 'running':
+        return kPrimaryColor;
+      case 'cancelled':
+        return Colors.red;
+      case 'ended':
+        return kAccentColor;
+    }
   }
 
   String _multiLineAddress(String address) {

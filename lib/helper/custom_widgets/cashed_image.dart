@@ -10,20 +10,23 @@ class CashedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      fit: BoxFit.contain,
-      // placeholder: placeholder,
-      height: width,
-      width: height,
-      imageUrl: url,
-      placeholder: (context, url) => Image.asset(
-        'src/images/placeholder.png',
+    return Hero(
+      tag: 'sss',
+      child: CachedNetworkImage(
         fit: BoxFit.contain,
-      ),
-      errorWidget: (context, url, error) => Icon(
-        Icons.error,
-        color: Colors.red,
-        size: 100,
+        // placeholder: placeholder,
+        height: height,
+        width: width,
+        imageUrl: url,
+        placeholder: (context, url) => Image.asset(
+          'src/images/placeholder.png',
+          fit: BoxFit.cover,
+        ),
+        errorWidget: (context, url, error) => Icon(
+          Icons.error,
+          color: Colors.red,
+          size: 100,
+        ),
       ),
     );
   }

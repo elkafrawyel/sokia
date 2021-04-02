@@ -18,6 +18,7 @@ class CustomOutlinedTextFormField extends StatelessWidget {
   final Color labelColor;
   final Color textColor;
   final bool enabled;
+  final List<String> autoFillHints;
   final Function(String value) onChanged;
   final Function(String value) onFieldSubmitted;
 
@@ -41,6 +42,7 @@ class CustomOutlinedTextFormField extends StatelessWidget {
     this.enabled = true,
     this.onChanged,
     this.onFieldSubmitted,
+    this.autoFillHints,
   });
 
   @override
@@ -55,6 +57,7 @@ class CustomOutlinedTextFormField extends StatelessWidget {
         onChanged: onChanged,
         textInputAction: TextInputAction.next,
         onFieldSubmitted: onFieldSubmitted,
+        autofillHints: autoFillHints,
         validator: !required
             ? null
             : (String value) {
@@ -77,8 +80,6 @@ class CustomOutlinedTextFormField extends StatelessWidget {
             color: Colors.red,
             fontSize: 14,
           ),
-          labelText: labelText,
-          labelStyle: TextStyle(fontSize: 14, color: labelColor),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),

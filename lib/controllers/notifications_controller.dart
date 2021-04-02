@@ -10,13 +10,8 @@ class NotificationsController extends GetxController {
   bool error = false;
   bool empty = false;
 
-  @override
-  void onInit() {
-    super.onInit();
-    _getNotifications();
-  }
 
-  _getNotifications() async {
+  getNotifications() async {
     loading = true;
     update();
     notificationList.clear();

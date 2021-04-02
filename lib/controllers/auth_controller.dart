@@ -131,6 +131,49 @@ class AuthController extends GetxController {
     }
   }
 
+  signInApple() async {
+    switch (await DataConnectionChecker().connectionStatus) {
+      case DataConnectionStatus.disconnected:
+        CommonMethods().goOffline();
+        break;
+      case DataConnectionStatus.connected:
+        // final credential = await SignInWithApple.getAppleIDCredential(
+        //   scopes: [
+        //     AppleIDAuthorizationScopes.email,
+        //     AppleIDAuthorizationScopes.fullName,
+        //   ],
+        // );
+        //
+        // print(credential);
+        // ApiService().registerWithSocialAccount(
+        //   name: credential.givenName,
+        //   email: credential.email,
+        //   socialType: 'apple',
+        //   state: (dataState) async {
+        //     if (dataState is SuccessState) {
+        //       UserModel userModel = dataState.data as UserModel;
+        //
+        //       saveUserState(userModel);
+        //
+        //       loading = false;
+        //       update();
+        //
+        //       await Get.offAll(() => HomeScreen());
+        //     } else if (dataState is ErrorState) {
+        //       loading = false;
+        //       error = true;
+        //       update();
+        //     } else if (dataState is NoConnectionState) {
+        //       loading = false;
+        //       CommonMethods().goOffline();
+        //       update();
+        //     }
+        //   },
+        // );
+        break;
+    }
+  }
+
   saveUserState(UserModel userModel) {
     LocalStorage().setBool(LocalStorage.loginKey, true);
     LocalStorage().setString(LocalStorage.token, userModel.apiToken);

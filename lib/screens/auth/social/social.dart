@@ -77,17 +77,38 @@ class SocialLogin extends StatelessWidget {
                   },
                 ),
                 SocialButton(
-                  imageAsset: 'src/images/snapchat_social.png',
+                  imageAsset: 'src/images/snapchat_login.png',
                   text: 'loginWithSnap'.tr,
                   onTap: () {},
                 ),
                 SocialButton(
-                  imageAsset: 'src/images/google.png',
+                  imageAsset: 'src/images/google_login.png',
                   text: 'loginWithGoogle'.tr,
                   onTap: () {
                     controller.signInGoogle();
                   },
                 ),
+                SocialButton(
+                  text: 'loginWithApple'.tr,
+                  onTap: () {
+                    controller.signInApple();
+                  },
+                  imageAsset: 'src/images/apple_login.png',
+                ),
+                // SocialButton(
+                //   text: 'loginWithFacebook'.tr,
+                //   onTap: () {
+                //     controller.signInGoogle();
+                //   },
+                //   imageAsset: 'src/images/google.png',
+                // ),
+                // SocialButton(
+                //   text: 'loginWithTwitter'.tr,
+                //   onTap: () {
+                //     controller.signInGoogle();
+                //   },
+                //   imageAsset: 'src/images/google.png',
+                // ),
                 SizedBox(
                   height: 20,
                 ),

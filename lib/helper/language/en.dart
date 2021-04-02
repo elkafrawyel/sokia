@@ -204,8 +204,11 @@ Map<String, String> en = {
   'reSendAfter': 'Resend after',
   'reSend': 'Send',
   'loginWithPhone': 'Login with phone',
-  'loginWithSnap': 'Login with snapchat',
-  'loginWithGoogle': 'Login with google',
+  'loginWithSnap': 'Login with SnapChat',
+  'loginWithApple': 'Login with Apple',
+  'loginWithGoogle': 'Login with Google',
+  'loginWithFacebook': 'Login with Facebook',
+  'loginWithTwitter': 'Login with Twitter',
   'agreeTo': 'By using this app you agree to our',
   'termsAndConditions': 'terms and conditions.',
   'charity': 'Money did not detract from charity',
@@ -258,4 +261,8 @@ Map<String, String> en = {
   'notFound': 'Not found',
   'location': 'Location',
   'continueToOrders': 'Continue to create order',
+  'customerService':'Customer Service',
+  'writeMessage': 'Write a message...',
+  'howToHelpYou': 'How can we help you?',
+
 };

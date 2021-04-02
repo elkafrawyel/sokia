@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:sokia_app/api/device_info.dart';
 import 'package:sokia_app/data/data_models/create_order_request.dart';
 import 'package:sokia_app/data/responses/about_app_response.dart';
 import 'package:sokia_app/data/responses/auth_response.dart';
@@ -11,6 +10,7 @@ import 'package:sokia_app/data/responses/conditions_response.dart';
 import 'package:sokia_app/data/responses/help_response.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/data/responses/info_response.dart';
+import 'package:sokia_app/data/responses/messages_response.dart';
 import 'package:sokia_app/data/responses/my_orders_response.dart';
 import 'package:sokia_app/data/responses/notifications_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
@@ -23,6 +23,7 @@ class ApiService {
   Future<Dio> _getDioClient() async {
     var language = LocalStorage().getLanguage();
     var apiToken = LocalStorage().getString(LocalStorage.token);
+    var uuid = await LocalStorage().getUuid();
     BaseOptions options = new BaseOptions(
       baseUrl: "https://madheef.com/water/api/",
       headers: {
@@ -30,7 +31,7 @@ class ApiService {
         HttpHeaders.cacheControlHeader: 'no-Cache',
         HttpHeaders.acceptLanguageHeader: language,
         HttpHeaders.authorizationHeader: 'Bearer $apiToken',
-        'DeviceId': await DeviceInformation().getDeviceId(),
+        'uuid': uuid,
       },
       connectTimeout: 10000,
       receiveTimeout: 10000,
@@ -71,9 +72,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -117,9 +117,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -160,9 +159,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -198,9 +196,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -229,9 +226,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -269,9 +265,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -321,9 +316,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -364,9 +358,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -396,9 +389,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -428,9 +420,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -459,9 +450,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -491,9 +481,8 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
-
         state(ErrorState());
       }
     } else {
@@ -523,7 +512,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -554,7 +543,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } catch (e) {
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -569,28 +558,97 @@ class ApiService {
   }) async {
     //order details
     if (await _checkNetwork()) {
-      Response response = await (await _getDioClient()).post(
-        "/createOrder",
-        data: {
-          "orderPrice": createOrderRequest.orderPrice,
-          "orderType": createOrderRequest.orderType,
-          "paymentMethod": createOrderRequest.paymentMethod,
-          "note": createOrderRequest.note,
-          "fee": createOrderRequest.fee,
-          "shippingPrice": createOrderRequest.shipping,
-          "orderDetails": createOrderRequest.orderDetails
-        },
-      );
+      try {
+        Response response = await (await _getDioClient()).post(
+          "/createOrder",
+          data: {
+            "orderPrice": createOrderRequest.orderPrice,
+            "orderType": createOrderRequest.orderType,
+            "paymentMethod": createOrderRequest.paymentMethod,
+            "note": createOrderRequest.note,
+            "fee": createOrderRequest.fee,
+            "shippingPrice": createOrderRequest.shipping,
+            "orderDetails": createOrderRequest.orderDetails
+          },
+        );
 
-      if (response.statusCode == 200) {
-        InfoResponse infoResponse = InfoResponse.fromJson(response.data);
-        if (infoResponse.status) {
-          state(SuccessState(infoResponse));
+        if (response.statusCode == 200) {
+          InfoResponse infoResponse = InfoResponse.fromJson(response.data);
+          if (infoResponse.status) {
+            state(SuccessState(infoResponse));
+          } else {
+            CommonMethods().showSnackBar(infoResponse.vErrors.getErrors());
+            state(ErrorState());
+          }
         } else {
-          CommonMethods().showSnackBar(infoResponse.vErrors.getErrors());
+          CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } else {
+      } on DioError catch (ex) {
+        CommonMethods().showGeneralError();
+        state(ErrorState());
+      }
+    } else {
+      state(NoConnectionState());
+    }
+  }
+
+  sendMessage({
+    @required String message,
+    @required Function(DataState dataState) state,
+  }) async {
+    if (await _checkNetwork()) {
+      try {
+        Response response = await (await _getDioClient()).post(
+          "/sendMessage",
+          data: {
+            "message": message,
+          },
+        );
+
+        if (response.statusCode == 200) {
+          InfoResponse infoResponse = InfoResponse.fromJson(response.data);
+          if (infoResponse.status) {
+            state(SuccessState(true));
+          } else {
+            state(ErrorState());
+          }
+        } else {
+          CommonMethods().showGeneralError();
+          state(ErrorState());
+        }
+      } on DioError catch (ex) {
+        CommonMethods().showGeneralError();
+        state(ErrorState());
+      }
+    } else {
+      state(NoConnectionState());
+    }
+  }
+
+  getChatMessage({
+    @required int page,
+    @required Function(DataState dataState) state,
+  }) async {
+    if (await _checkNetwork()) {
+      try {
+        Response response = await (await _getDioClient()).get(
+          "/myMessages?page=$page",
+        );
+
+        if (response.statusCode == 200) {
+          MessagesResponse messagesResponse =
+              MessagesResponse.fromJson(response.data);
+          if (messagesResponse.status) {
+            state(SuccessState(messagesResponse.chat));
+          } else {
+            state(ErrorState());
+          }
+        } else {
+          CommonMethods().showGeneralError();
+          state(ErrorState());
+        }
+      } on DioError catch (ex) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }

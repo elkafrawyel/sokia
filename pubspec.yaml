@@ -39,15 +39,25 @@ dependencies:
   firebase_core: ^1.0.2
   toast:
   focused_menu:
-  device_info: ^2.0.0
-  platform_device_id: ^0.3.1
 
+  #  for chat
+  animate_do: ^2.0.0
+  emoji_picker: ^0.1.0
+  shared_preferences:
+  images_picker: ^1.0.0
+  material_design_icons_flutter: ^4.0.5955
+  bubble: ^1.2.1
+  photo_view: ^0.11.1
+  flutter_linkify:
+    git:
+      url: https://github.com/MohamedEL-Torky/flutter_linkify
+  carousel_slider:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-#    native splash screens
+  #    native splash screens
   flutter_native_splash:
 
 flutter_native_splash:

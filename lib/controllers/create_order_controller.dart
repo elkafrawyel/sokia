@@ -88,6 +88,7 @@ class CreateOrderController extends GetxController {
     });
     if (!cash && checkoutId == null) {
       CommonMethods().showToast(message: 'Payment Error', context: Get.context);
+      return;
     }
     CreateOrderRequest createOrderRequest = CreateOrderRequest(
         orderPrice: totalPriceForAllOrders,

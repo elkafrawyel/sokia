@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/controllers/notifications_controller.dart';
 import 'package:sokia_app/helper/Constant.dart';
+import 'package:sokia_app/helper/custom_widgets/data_state_views/empty_view.dart';
 import 'package:sokia_app/helper/custom_widgets/data_state_views/loading_view.dart';
 import 'package:sokia_app/helper/custom_widgets/main_screen.dart';
 
@@ -11,7 +12,7 @@ class NotificationsScreen extends StatelessWidget {
   final controller = Get.put(NotificationsController());
 
   NotificationsScreen() {
-    controller.onInit();
+    controller.getNotifications();
   }
 
   @override
@@ -24,21 +25,26 @@ class NotificationsScreen extends StatelessWidget {
           controller.onInit();
           return Future.value();
         },
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: GetBuilder<NotificationsController>(
-            builder: (controller) => controller.loading
-                ? LoadingView()
-                : ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return NotificationItem(
-                        notificationModel: controller.notificationList[index],
-                      );
-                    },
-                    itemCount: controller.notificationList.length,
-                  ),
-          ),
+        child: GetBuilder<NotificationsController>(
+          builder: (controller) => controller.loading
+              ? LoadingView()
+              : controller.empty
+                  ? Center(
+                    child: EmptyView(
+                        emptyViews: EmptyViews.Magnifier,
+                        textColor: Colors.black,
+                      ),
+                  )
+                  : ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return NotificationItem(
+                          notificationModel:
+                              controller.notificationList[index],
+                        );
+                      },
+                      itemCount: controller.notificationList.length,
+                    ),
         ),
       ),
     );

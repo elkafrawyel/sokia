@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:uuid/uuid.dart';
 
 class LocalStorage {
   static final String notifications = 'notifications';
   static final String languageKey = 'lang';
   static final String loginKey = 'login';
   static final String userId = 'userId';
+  static final String uuid = 'uuid';
   static final String token = 'token';
 
   setLanguage(String languageCode) async {
@@ -57,5 +59,12 @@ class LocalStorage {
     String language = getString(LocalStorage.languageKey);
     GetStorage().erase();
     setString(LocalStorage.languageKey, language);
+  }
+
+  Future<String> getUuid() async {
+    if (LocalStorage().getString(LocalStorage.uuid) == null) {
+      await GetStorage().write(LocalStorage.uuid, Uuid().v4());
+    }
+    return GetStorage().read(LocalStorage.uuid);
   }
 }

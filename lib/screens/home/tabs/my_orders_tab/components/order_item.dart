@@ -111,7 +111,7 @@ class OrderItem extends StatelessWidget {
     String text = '';
     if (orderDetails.isNotEmpty) {
       orderDetails.forEach((element) {
-        text = text +'- '+ element.donateTo + ',\n';
+        text = text + '- ' + element.donateTo + ',\n';
       });
     }
     return text.trim();

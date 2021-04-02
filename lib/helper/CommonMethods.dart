@@ -160,96 +160,75 @@ class CommonMethods {
     );
   }
 
-  String getDateString(int time) {
+  String getDateStringYMd(int time) {
     initializeDateFormatting();
 
     var date = DateTime.fromMillisecondsSinceEpoch(time);
     if (LocalStorage().isArabicLanguage()) {
       var formatter = DateFormat.yMd('ar_SA');
-      // var formatter = DateFormat.yMMMMEEEEd('ar_SA');
-      print(formatter.locale);
+      // print(formatter.locale);
       String formatted = formatter.format(date);
-      print(formatted);
+      // print(formatted);
       return formatted;
     } else {
       var formatter = DateFormat.yMd();
-      // var formatter = DateFormat.yMMMMEEEEd();
-      print(formatter.locale);
+      // print(formatter.locale);
       String formatted = formatter.format(date);
-      print(formatted);
+      // print(formatted);
+      return formatted;
+    }
+  }
+
+  String getDateStringHhMmA(int time) {
+    initializeDateFormatting();
+
+    var date = DateTime.fromMillisecondsSinceEpoch(time);
+    if (LocalStorage().isArabicLanguage()) {
+      var formatter = DateFormat('hh:mm a', 'ar_SA');
+      // print(formatter.locale);
+      String formatted = formatter.format(date);
+      // print(formatted);
+      return formatted;
+    } else {
+      var formatter = DateFormat('hh:mm a');
+      // print(formatter.locale);
+      String formatted = formatter.format(date);
+      // print(formatted);
       return formatted;
     }
   }
 
   String timeAgoSinceDate(int unixDate) {
-    bool isArabic = LocalStorage().isArabicLanguage();
     initializeDateFormatting();
 
     var date = DateTime.fromMillisecondsSinceEpoch(unixDate);
     var formatter = DateFormat.yMMMMEEEEd();
-    print(formatter.locale);
+    // print(formatter.locale);
     String formattedDate = formatter.format(date);
-    print(formattedDate);
+    // print(formattedDate);
 
     final date2 = DateTime.now();
     final difference = date2.difference(date);
-
     if (difference.inDays > 8) {
-      return getDateString(unixDate);
+      return getDateStringYMd(unixDate);
     } else if ((difference.inDays / 7).floor() >= 1) {
-      if (isArabic) {
-        return 'منذ اسبوع';
-      } else {
-        return 'Last week';
-      }
+      return getDateStringYMd(unixDate);
     } else if (difference.inDays >= 2) {
-      if (isArabic) {
-        return 'منذ ${difference.inDays} يوم';
-      } else {
-        return '${difference.inDays} days ago';
-      }
+      return getDateStringYMd(unixDate);
     } else if (difference.inDays >= 1) {
-      if (isArabic) {
-        return 'أمس';
-      } else {
-        return 'Yesterday';
-      }
+      return getDateStringYMd(unixDate);
     } else if (difference.inHours >= 2) {
-      if (isArabic) {
-        return 'منذ ${difference.inHours} ساعة';
-      } else {
-        return '${difference.inHours} hours ago';
-      }
+      return getDateStringHhMmA(unixDate);
     } else if (difference.inHours >= 1) {
-      if (isArabic) {
-        return 'منذ ساعة';
-      } else {
-        return 'An hour ago';
-      }
+      return getDateStringHhMmA(unixDate);
     } else if (difference.inMinutes >= 2) {
-      if (isArabic) {
-        return 'منذ ${difference.inMinutes} دقيقة';
-      } else {
-        return '${difference.inMinutes} minutes ago';
-      }
+      return getDateStringHhMmA(unixDate);
     } else if (difference.inMinutes >= 1) {
-      if (isArabic) {
-        return 'منذ دقيقة';
-      } else {
-        return 'A minute ago';
-      }
+      return getDateStringHhMmA(unixDate);
     } else if (difference.inSeconds >= 3) {
-      if (isArabic) {
-        return 'منذ ${difference.inSeconds}ثواني';
-      } else {
-        return '${difference.inSeconds} seconds ago';
-      }
+      return getDateStringHhMmA(unixDate);
     } else {
-      if (isArabic) {
-        return 'الان';
-      } else {
-        return 'Just now';
-      }
+      return getDateStringHhMmA(unixDate);
     }
   }
 }

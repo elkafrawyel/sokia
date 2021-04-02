@@ -56,8 +56,11 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                             ),
                             child: UserInfo(),
                           ),
-                          SizedBox(
-                            height: 20,
+                          Visibility(
+                            visible: !searchFocus,
+                            child: SizedBox(
+                              height: 20,
+                            ),
                           ),
                           _buildFloatingSearchBar(),
                           Visibility(
@@ -170,6 +173,9 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
           physics: const BouncingScrollPhysics(),
           axisAlignment: isPortrait ? 0.0 : -1.0,
           openAxisAlignment: 0.0,
+          shadowColor: Colors.white,
+          backgroundColor: Colors.white,
+          backdropColor: Colors.white,
           width: isPortrait ? 600 : 500,
           debounceDelay: const Duration(milliseconds: 500),
           onQueryChanged: (query) {

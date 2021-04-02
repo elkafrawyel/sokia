@@ -64,7 +64,7 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                             builder: (controller) => CustomText(
                               text: controller.user != null
                                   ? controller.user.name
-                                  : 'inSokia'.tr,
+                                  : 'appName'.tr,
                               fontSize: fontSize18,
                               alignment: AlignmentDirectional.centerStart,
                             ),

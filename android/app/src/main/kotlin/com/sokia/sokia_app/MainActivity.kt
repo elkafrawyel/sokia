@@ -128,6 +128,11 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
         bindService(intent, serviceConnection, BIND_AUTO_CREATE)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        unbindService(serviceConnection)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -169,7 +174,7 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
                 }
             }
             else -> {
-                Toast.makeText(context, "Google $resultCode", Toast.LENGTH_LONG).show()
+
             }
         }
 

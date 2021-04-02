@@ -54,7 +54,7 @@ class UserInfo extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              Get.to(NotificationsScreen());
+              Get.to(() => NotificationsScreen());
             },
             icon: Icon(
               Icons.notifications_active,

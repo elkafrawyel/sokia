@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sokia_app/controllers/user_controller.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/main_screen.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
@@ -30,18 +31,24 @@ class AccountScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(
-                thickness: 1,
+              Visibility(
+                visible: Get.find<UserController>().user.socialType ==null,
+                child: Divider(
+                  thickness: 1,
+                ),
               ),
               GestureDetector(
                 onTap: () {
                   Get.to(() => ChangePasswordScreen());
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomText(
-                    text: 'password'.tr,
-                    color: Colors.grey.shade700,
+                child: Visibility(
+                  visible: Get.find<UserController>().user.socialType ==null,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomText(
+                      text: 'password'.tr,
+                      color: Colors.grey.shade700,
+                    ),
                   ),
                 ),
               ),

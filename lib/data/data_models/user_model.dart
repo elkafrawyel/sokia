@@ -4,11 +4,10 @@ class UserModel {
   String _name;
   String _email;
   String _apiToken;
-  dynamic _firebaseToken;
+  String _firebaseToken;
   String _phone;
   String _approved;
-  String _type;
-  dynamic _socialType;
+  String _socialType;
 
   int get id => _id;
 
@@ -20,15 +19,12 @@ class UserModel {
 
   String get apiToken => _apiToken;
 
-  dynamic get firebaseToken => _firebaseToken;
-
   String get phone => _phone;
 
   bool get approved => _approved == 'yes' ? true : false;
 
-  String get type => _type;
 
-  dynamic get socialType => _socialType;
+  String get socialType => _socialType;
 
   UserModel({
     int id,
@@ -39,7 +35,6 @@ class UserModel {
     String firebaseToken,
     String phone,
     String approved,
-    String type,
     String socialType,
   }) {
     _id = id;
@@ -50,7 +45,6 @@ class UserModel {
     _firebaseToken = firebaseToken;
     _phone = phone;
     _approved = approved;
-    _type = type;
     _socialType = socialType;
   }
 
@@ -63,7 +57,6 @@ class UserModel {
     _firebaseToken = json["firebase_token"];
     _phone = json["phone"];
     _approved = json["approved"];
-    _type = json["type"];
     _socialType = json["socialType"];
   }
 
@@ -77,7 +70,6 @@ class UserModel {
     map["firebase_token"] = _firebaseToken;
     map["phone"] = _phone;
     map["approved"] = _approved;
-    map["type"] = _type;
     map["socialType"] = _socialType;
     return map;
   }

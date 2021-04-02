@@ -94,6 +94,7 @@ class LoginScreen extends StatelessWidget {
                             labelColor: Colors.black,
                             hintColor: Colors.black,
                             textColor: Colors.black,
+                            autoFillHints: [AutofillHints.telephoneNumberNational],
                           ),
                           SizedBox(
                             height: 20,
@@ -110,6 +111,7 @@ class LoginScreen extends StatelessWidget {
                             labelColor: Colors.black,
                             hintColor: Colors.black,
                             textColor: Colors.black,
+                            autoFillHints: [AutofillHints.password],
                           ),
                           SizedBox(
                             height: 20,
