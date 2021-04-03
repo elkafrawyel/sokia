@@ -6,15 +6,18 @@ import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:get/get.dart';
 
-class ImagesViewer extends StatelessWidget {
+class OnlineImagesViewer extends StatelessWidget {
   final int initialIndex;
   final List<String> images;
 
-  ImagesViewer({@required this.initialIndex, @required this.images});
+  OnlineImagesViewer({@required this.initialIndex, @required this.images});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //make body under appbar
+      extendBodyBehindAppBar: true,
+
       appBar: AppBar(
         title: CustomText(
           text: 'customerService'.tr,
@@ -38,18 +41,17 @@ class ImagesViewer extends StatelessWidget {
         ],
       ),
       backgroundColor: Colors.black,
-      body: Center(
-        child: CarouselSlider(
-          items: createSliders(),
-          options: CarouselOptions(
-            autoPlay: false,
-            viewportFraction: 1,
-            aspectRatio: 1,
-            enableInfiniteScroll: images.length > 1,
-            initialPage: initialIndex,
-            enlargeCenterPage: true,
-            autoPlayAnimationDuration: Duration(seconds: 2),
-          ),
+      body: CarouselSlider(
+        items: createSliders(),
+        options: CarouselOptions(
+          autoPlay: false,
+          height: double.infinity,
+          viewportFraction: 1,
+          aspectRatio: 1,
+          enableInfiniteScroll: images.length > 1,
+          initialPage: initialIndex,
+          enlargeCenterPage: true,
+          autoPlayAnimationDuration: Duration(seconds: 2),
         ),
       ),
     );

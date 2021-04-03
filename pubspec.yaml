@@ -52,12 +52,21 @@ dependencies:
     git:
       url: https://github.com/MohamedEL-Torky/flutter_linkify
   carousel_slider:
+  percent_indicator: ^3.0.1
+  mime: ^1.0.0
+  video_player: ^2.1.0
+  flick_video_player: ^0.2.0
+
+
+
+
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  #    native splash screens
+  #native splash screens
   flutter_native_splash:
 
 flutter_native_splash:

@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/controllers/chat_controller.dart';
-import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
-import 'package:sokia_app/helper/custom_widgets/data_state_views/empty_view.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
-import 'file:///D:/Work/Apps/Sokia-App/lib/screens/chat/components/from_message.dart';
-import 'file:///D:/Work/Apps/Sokia-App/lib/screens/chat/components/message_bubble.dart';
-import 'file:///D:/Work/Apps/Sokia-App/lib/screens/chat/components/to_message.dart';
-
+import 'package:sokia_app/screens/chat/components/message_bubble.dart';
 class MessageListView extends StatefulWidget {
   @override
   _MessageListViewState createState() => _MessageListViewState();

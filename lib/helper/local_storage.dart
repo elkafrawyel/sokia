@@ -9,6 +9,7 @@ class LocalStorage {
   static final String userId = 'userId';
   static final String uuid = 'uuid';
   static final String token = 'token';
+  static final String firebaseToken = 'firebaseToken';
 
   setLanguage(String languageCode) async {
     await GetStorage().write(languageKey, languageCode);

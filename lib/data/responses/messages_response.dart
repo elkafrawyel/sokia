@@ -1,3 +1,5 @@
+import 'package:sokia_app/data/data_models/chat_message.dart';
+
 class MessagesResponse {
   bool _status;
   Chat _chat;
@@ -65,72 +67,3 @@ class Chat {
   }
 }
 
-class ChatMessage {
-  int _id;
-  String _from;
-  String _to;
-  dynamic _message;
-  bool _isReaded;
-  String _image;
-  int _unixCreatedAt;
-  int _unixUpdatedAt;
-
-  int get id => _id;
-
-  String get from => _from;
-
-  String get to => _to;
-
-  dynamic get message => _message;
-
-  bool get isReaded => _isReaded;
-
-  String get image => _image;
-
-  int get unixCreatedAt => _unixCreatedAt;
-
-  int get unixUpdatedAt => _unixUpdatedAt;
-
-  ChatMessage(
-      {int id,
-      String from,
-      String to,
-      dynamic message,
-      bool isReaded,
-      String image,
-      int unixCreatedAt,
-      int unixUpdatedAt}) {
-    _id = id;
-    _from = from;
-    _to = to;
-    _message = message;
-    _isReaded = isReaded;
-    _image = image;
-    _unixCreatedAt = unixCreatedAt;
-    _unixUpdatedAt = unixUpdatedAt;
-  }
-
-  ChatMessage.fromJson(dynamic json) {
-    _id = json["id"];
-    _from = json["from"];
-    _to = json["to"];
-    _message = json["message"];
-    _isReaded = json["isReaded"];
-    _image = json["image"];
-    _unixCreatedAt = json["unix_created_at"];
-    _unixUpdatedAt = json["unix_updated_at"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["id"] = _id;
-    map["from"] = _from;
-    map["to"] = _to;
-    map["message"] = _message;
-    map["isReaded"] = _isReaded;
-    map["image"] = _image;
-    map["unix_created_at"] = _unixCreatedAt;
-    map["unix_updated_at"] = _unixUpdatedAt;
-    return map;
-  }
-}

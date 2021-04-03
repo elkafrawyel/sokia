@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:sokia_app/controllers/chat_controller.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
-import 'package:sokia_app/screens/chat/components/image_viewer.dart';
+import 'package:sokia_app/screens/chat/components/images_online_viewer.dart';
 import 'package:get/get.dart';
 
-class ImagesGrid extends StatelessWidget {
+class ImagesOnlineGrid extends StatelessWidget {
   final List<String> images;
 
-  ImagesGrid({@required this.images});
+  ImagesOnlineGrid({@required this.images});
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +23,20 @@ class ImagesGrid extends StatelessWidget {
   }) =>
       InkWell(
         onTap: () {
-          Get.to(() => ImagesViewer(initialIndex: index, images: images));
+          Get.to(() => OnlineImagesViewer(
+                initialIndex: index,
+                images: images,
+              ));
         },
         child: CachedNetworkImage(
           imageUrl: images[index],
-          fit: BoxFit.fill,
-          height: 150,
+          fit: BoxFit.cover,
+          height: 200,
+          width: 200,
           placeholder: (context, url) => Image.asset(
             'src/images/placeholder.png',
-            fit: BoxFit.fill,
-            height: 150,
+            fit: BoxFit.cover,
+            height: 200,
           ),
           errorWidget: (context, url, error) => Icon(
             Icons.error_outline_sharp,
@@ -108,28 +116,31 @@ class ImagesGrid extends StatelessWidget {
                 flex: 2,
               ),
               Expanded(
+                flex: 2,
                 child: Stack(
                   children: [
                     _singleImage(index: 3),
                     InkWell(
                       onTap: () {
-                        Get.to(() =>
-                            ImagesViewer(initialIndex: 3, images: images));
+                        Get.to(() => OnlineImagesViewer(
+                            initialIndex: 3, images: images));
                       },
-                      child: Container(
-                        height: 150,
-                        color: Colors.black.withOpacity(0.3),
-                        child: CustomText(
-                          fontSize: 18,
-                          color: Colors.white,
-                          alignment: AlignmentDirectional.center,
-                          text: '${images.length - 3}+',
+                      child: Visibility(
+                        visible: images.length > 4,
+                        child: Container(
+                          height: 200,
+                          color: Colors.black.withOpacity(0.3),
+                          child: CustomText(
+                            fontSize: 18,
+                            color: Colors.white,
+                            alignment: AlignmentDirectional.center,
+                            text: '${images.length - 3}+',
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                flex: 2,
               ),
             ],
           ),

@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/api/api_service.dart';
+import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/screens/notifications/notifications_screen.dart';
 
 class PushNotificationsManager {
@@ -24,8 +25,20 @@ class PushNotificationsManager {
 
   Future<void> init(BuildContext context) async {
     _firebaseMessaging.getToken().then((token) {
-      print("FirebaseMessaging token: $token");
-      ApiService().sendFirebaseToken(firebaseToken: token);
+      String fireToken = LocalStorage().getString(LocalStorage.firebaseToken);
+      if (fireToken == null) {
+        fireToken = token;
+        LocalStorage().setString(LocalStorage.firebaseToken, fireToken);
+        print("FirebaseMessaging token: $token");
+        ApiService().sendFirebaseToken(firebaseToken: token);
+      } else {
+        if (fireToken != token) {
+          fireToken = token;
+          LocalStorage().setString(LocalStorage.firebaseToken, fireToken);
+          print("FirebaseMessaging token: $token");
+          ApiService().sendFirebaseToken(firebaseToken: token);
+        }
+      }
     });
     if (!_initialized) {
       var initializationSettingsAndroid =

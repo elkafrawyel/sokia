@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:animate_do/animate_do.dart';
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:sokia_app/controllers/chat_controller.dart';
 import 'package:sokia_app/helper/Constant.dart';
@@ -147,31 +150,109 @@ class _SendMessageViewState extends State<SendMessageView> {
                                   ),
                                 ),
                         ),
-                        Visibility(
-                          visible: !canSendMessage,
-                          child: LocalStorage().isArabicLanguage()
-                              ? SlideInLeft(
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.attach_file,
-                                      color: Colors.grey,
-                                    ),
-                                    onPressed: () {
-                                      _openFiles();
-                                    },
-                                  ),
-                                )
-                              : SlideInRight(
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.attach_file,
-                                      color: Colors.grey,
-                                    ),
-                                    onPressed: () {
-                                      _openFiles();
-                                    },
+                        // Visibility(
+                        //   visible: !canSendMessage,
+                        //   child: LocalStorage().isArabicLanguage()
+                        //       ? SlideInLeft(
+                        //           child: IconButton(
+                        //             icon: Icon(
+                        //               Icons.attach_file,
+                        //               color: Colors.grey,
+                        //             ),
+                        //             onPressed: () {
+                        //               _openFiles();
+                        //             },
+                        //           ),
+                        //         )
+                        //       : SlideInRight(
+                        //           child: IconButton(
+                        //             icon: Icon(
+                        //               Icons.attach_file,
+                        //               color: Colors.grey,
+                        //             ),
+                        //             onPressed: () {
+                        //               _openFiles();
+                        //             },
+                        //           ),
+                        //         ),
+                        // ),
+                        FocusedMenuHolder(
+                          blurBackgroundColor: Colors.black,
+                          blurSize: 0.5,
+                          openWithTap: true,
+                          onPressed: () {},
+                          menuItems: [
+                            FocusedMenuItem(
+                                title: Expanded(
+                                  child: Text(
+                                    'Image',
                                   ),
                                 ),
+                                trailingIcon: Icon(
+                                  Icons.image,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () async {
+                                  List<Media> media = await ImagesPicker.pick(
+                                    count: 5,
+                                    pickType: PickType.image,
+                                  );
+
+                                  chatController.sendChatMessage(
+                                      controller.text.isEmpty
+                                          ? null
+                                          : controller.text.trim(),
+                                      media, uiState: (dataState) {
+                                    if (dataState is SuccessState) {
+                                      setState(() {
+                                        controller.text = '';
+                                        canSendMessage = false;
+                                      });
+                                    }
+                                  });
+                                }),
+                            FocusedMenuItem(
+                                title: Expanded(
+                                  child: Text(
+                                    'Video',
+                                  ),
+                                ),
+                                trailingIcon: Icon(
+                                  Icons.video_call,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () async {
+                                  List<Media> media = await ImagesPicker.pick(
+                                    count: 1,
+                                    pickType: PickType.video,
+                                  );
+
+                                  chatController.sendChatMessage(
+                                      controller.text.isEmpty
+                                          ? null
+                                          : controller.text.trim(),
+                                      media, uiState: (dataState) {
+                                    if (dataState is SuccessState) {
+                                      setState(() {
+                                        controller.text = '';
+                                        canSendMessage = false;
+                                      });
+                                    }
+                                  });
+                                }),
+                          ],
+                          menuOffset: 10,
+                          menuWidth: MediaQuery.of(context).size.width / 2,
+                          duration: Duration(milliseconds: 500),
+                          // blurSize: 0,
+                          // menuItemExtent: 80, //item height
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.attach_file,
+                              color: Colors.grey,
+                            ),
+                            onPressed: null,
+                          ),
                         ),
                       ],
                     ),
@@ -184,7 +265,10 @@ class _SendMessageViewState extends State<SendMessageView> {
                         onTap: () {
                           debounce(() {
                             chatController.sendChatMessage(
-                                controller.text.trim(), uiState: (dataState) {
+                                controller.text.isEmpty
+                                    ? null
+                                    : controller.text.trim(),
+                                [], uiState: (dataState) {
                               if (dataState is SuccessState) {
                                 setState(() {
                                   controller.text = '';
@@ -236,11 +320,11 @@ class _SendMessageViewState extends State<SendMessageView> {
                 EmojiPicker(
                   rows: 4,
                   columns: 7,
-                  // buttonMode: Platform.isAndroid
-                  //     ? ButtonMode.MATERIAL
-                  //     : ButtonMode.CUPERTINO,
-                  // // recommendKeywords: ["racing", "horse"],
-                  // numRecommended: 10,
+                  buttonMode: Platform.isAndroid
+                      ? ButtonMode.MATERIAL
+                      : ButtonMode.CUPERTINO,
+                  // recommendKeywords: ["racing", "horse"],
+                  numRecommended: 10,
                   onEmojiSelected: (emoji, category) {
                     controller.text = controller.text + emoji.emoji;
                     setState(() {
@@ -311,16 +395,16 @@ class _SendMessageViewState extends State<SendMessageView> {
       pickType: PickType.all,
       maxTime: 15, // record video max time
     );
-  }
 
-  void _openFiles() async {
-    List<Media> res = await ImagesPicker.pick(
-      count: 5,
-      pickType: PickType.all,
-    );
-// Media
-// .path
-// .thumbPath (path for video thumb)
-// .size (kb)
+    chatController.sendChatMessage(
+        controller.text.isEmpty ? null : controller.text.trim(), media,
+        uiState: (dataState) {
+      if (dataState is SuccessState) {
+        setState(() {
+          controller.text = '';
+          canSendMessage = false;
+        });
+      }
+    });
   }
 }

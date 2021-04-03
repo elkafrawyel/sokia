@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: kPrimaryColor,
         accentColor: kAccentColor,
       ),
-      home: ChatScreen(),
+      home: HomeScreen(),
     );
   }
 }

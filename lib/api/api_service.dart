@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:images_picker/images_picker.dart';
 import 'package:sokia_app/data/data_models/create_order_request.dart';
 import 'package:sokia_app/data/responses/about_app_response.dart';
 import 'package:sokia_app/data/responses/auth_response.dart';
@@ -13,6 +14,7 @@ import 'package:sokia_app/data/responses/info_response.dart';
 import 'package:sokia_app/data/responses/messages_response.dart';
 import 'package:sokia_app/data/responses/my_orders_response.dart';
 import 'package:sokia_app/data/responses/notifications_response.dart';
+import 'package:sokia_app/data/responses/send_message_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/data_states.dart';
 import 'package:sokia_app/helper/local_storage.dart';
@@ -33,8 +35,8 @@ class ApiService {
         HttpHeaders.authorizationHeader: 'Bearer $apiToken',
         'uuid': uuid,
       },
-      connectTimeout: 10000,
-      receiveTimeout: 10000,
+      connectTimeout: 50000,
+      receiveTimeout: 50000,
     );
 
     Dio _dio = Dio(options);
@@ -595,21 +597,36 @@ class ApiService {
 
   sendMessage({
     @required String message,
+    @required List<Media> media,
+    @required Function(String progress) onUploadProgress,
     @required Function(DataState dataState) state,
   }) async {
     if (await _checkNetwork()) {
       try {
+        List<MultipartFile> files = [];
+        for (var file in media) {
+          files.add(
+            await MultipartFile.fromFile(file.path),
+          );
+        }
+
+        FormData formData =
+            FormData.fromMap({"message": message, "media": files});
+
         Response response = await (await _getDioClient()).post(
           "/sendMessage",
-          data: {
-            "message": message,
+          data: formData,
+          onSendProgress: (count, total) {
+            final progress = ((count / total) * 100).toStringAsFixed(0);
+            onUploadProgress(progress);
           },
         );
 
         if (response.statusCode == 200) {
-          InfoResponse infoResponse = InfoResponse.fromJson(response.data);
-          if (infoResponse.status) {
-            state(SuccessState(true));
+          SendMessageResponse sendMessageResponse =
+              SendMessageResponse.fromJson(response.data);
+          if (sendMessageResponse.status) {
+            state(SuccessState(sendMessageResponse.chatMessage));
           } else {
             state(ErrorState());
           }
