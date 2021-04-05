@@ -2,6 +2,7 @@ import UIKit
 import Flutter
 import GoogleMaps
 import SafariServices
+import SCSDKLoginKit
 
 @available(iOS 9.0, *)
 @UIApplicationMain
@@ -151,14 +152,22 @@ import SafariServices
     }
     
     override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    
+
         print("urlscheme:" + (url.scheme)!)
+        
+//        payment
         var handler:Bool = false
         if url.scheme?.caseInsensitiveCompare("com.sokia.app") == .orderedSame {
             didReceiveAsynchronousPaymentCallback(result: self.Presult!)
             handler = true
         }
+//        snapchat
+        else if url.scheme?.localizedCaseInsensitiveCompare("sokia") == .orderedSame{
+            return SCSDKLoginClient.application(app, open: url, options: options)
+        }
+        
         return handler
+
     }
     
 

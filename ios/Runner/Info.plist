@@ -22,6 +22,19 @@
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
+        
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <!--   sokia://snap/auth     -->
+                <string>sokia-app</string>
+                <string>snap-kit</string>
+                <string>auth</string>
+            </array>
+        </dict>
+        
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -88,5 +101,29 @@
       <true/>
     </dict>
 
+    
+<!--    snapchat-->
+    
+    <key>SCSDKRedirectUrl</key>
+    <string>sokia-app://snap-kit/auth</string>
+
+    <key>SCSDKClientId</key>
+    <string>eb1b748e-56c6-4d47-8d44-33ae193a3878</string>
+
+    <key>LSApplicationQueriesSchemes</key>
+        <array>
+            <string>snapchat</string>
+            <string>bitmoji-sdk</string>
+            <string>itms-apps</string>
+        </array>
+
+    <key>SCSDKScopes</key>
+        <array>
+            <string>https://auth.snapchat.com/oauth2/api/user.external_id</string>
+            <string>https://auth.snapchat.com/oauth2/api/user.display_name</string>
+            <string>https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar</string>
+        </array>
+
+<!--end snapchat-->
 </dict>
 </plist>

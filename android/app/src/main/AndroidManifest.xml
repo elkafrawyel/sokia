@@ -119,7 +119,7 @@
             android:value="eb1b748e-56c6-4d47-8d44-33ae193a3878" />
         <meta-data
             android:name="com.snapchat.kit.sdk.redirectUrl"
-            android:value="sokia://snap/auth" />
+            android:value="sokia-app://snap-kit/auth" />
         <meta-data
             android:name="com.snapchat.kit.sdk.scopes"
             android:resource="@array/snap_connect_scopes" />
@@ -145,12 +145,12 @@
                     android:host="snap-kit"
                     android:path="oauth2"
 
-                    sokia://snap/auth
+                    sokia-App://Snap-Kit/auth
                 !-->
                 <data
-                    android:host="snap"
+                    android:host="snap-kit"
                     android:path="/auth"
-                    android:scheme="sokia" />
+                    android:scheme="sokia-app" />
             </intent-filter>
         </activity>
 

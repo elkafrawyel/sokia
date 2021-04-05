@@ -108,9 +108,37 @@ PODS:
   - nanopb/encode (2.30907.0)
   - path_provider (0.0.1):
     - Flutter
+  - PINCache (3.0.3):
+    - PINCache/Arc-exception-safe (= 3.0.3)
+    - PINCache/Core (= 3.0.3)
+  - PINCache/Arc-exception-safe (3.0.3):
+    - PINCache/Core
+  - PINCache/Core (3.0.3):
+    - PINOperation (~> 1.2.1)
+  - PINOperation (1.2.1)
   - PromisesObjC (1.2.12)
   - shared_preferences (0.0.1):
     - Flutter
+  - snapchat_flutter_plugin (0.0.1):
+    - Flutter
+    - SnapSDK
+  - SnapSDK (1.8.0):
+    - SnapSDK/SCSDKBitmojiKit (= 1.8.0)
+    - SnapSDK/SCSDKCoreKit (= 1.8.0)
+    - SnapSDK/SCSDKCreativeKit (= 1.8.0)
+    - SnapSDK/SCSDKLoginKit (= 1.8.0)
+    - SnapSDK/SCSDKStoryKit (= 1.8.0)
+  - SnapSDK/SCSDKBitmojiKit (1.8.0):
+    - PINCache (< 3.1, >= 2.3)
+    - PINOperation (~> 1.2.1)
+    - SnapSDK/SCSDKCoreKit
+  - SnapSDK/SCSDKCoreKit (1.8.0)
+  - SnapSDK/SCSDKCreativeKit (1.8.0):
+    - SnapSDK/SCSDKCoreKit
+  - SnapSDK/SCSDKLoginKit (1.8.0):
+    - SnapSDK/SCSDKCoreKit
+  - SnapSDK/SCSDKStoryKit (1.8.0):
+    - SnapSDK/SCSDKCoreKit
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
@@ -137,6 +165,8 @@ DEPENDENCIES:
   - images_picker (from `.symlinks/plugins/images_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - snapchat_flutter_plugin (from `.symlinks/plugins/snapchat_flutter_plugin/ios`)
+  - SnapSDK
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
@@ -159,7 +189,10 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - nanopb
+    - PINCache
+    - PINOperation
     - PromisesObjC
+    - SnapSDK
     - ZLPhotoBrowser
 
 EXTERNAL SOURCES:
@@ -187,6 +220,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  snapchat_flutter_plugin:
+    :path: ".symlinks/plugins/snapchat_flutter_plugin/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher:
@@ -223,14 +258,18 @@ SPEC CHECKSUMS:
   images_picker: eb05ebd660218fba40842f7d26bc75d946c682e5
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
+  PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  snapchat_flutter_plugin: d6e68cc5032c234cc74feef33c439985cb8c83df
+  SnapSDK: 2cad9dadf8a2cfe196d159d3dd8b090be51fdccf
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   ZLPhotoBrowser: 559062abac47b41ef140cff6ea2370e73623b05f
 
-PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea
+PODFILE CHECKSUM: b0231fe2d66cf639bf614aea2da8ca56e9600854
 
 COCOAPODS: 1.10.1
