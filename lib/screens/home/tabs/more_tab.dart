@@ -43,8 +43,8 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                   GestureDetector(
                     onTap: () {
                       controller.user != null
-                          ? Get.to(AccountScreen())
-                          : Get.to(SocialLogin());
+                          ? Get.to(()=>AccountScreen())
+                          : Get.to(()=>SocialLogin());
                     },
                     child: Row(
                       children: [
@@ -79,8 +79,8 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                   GestureDetector(
                     onTap: () {
                       controller.user != null
-                          ? Get.to(AccountScreen())
-                          : Get.to(SocialLogin());
+                          ? Get.to(()=>AccountScreen())
+                          : Get.to(()=>SocialLogin());
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -173,7 +173,7 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                   _line(),
                   GestureDetector(
                     onTap: () {
-                      Get.to(LanguageScreen());
+                      Get.to(()=>LanguageScreen());
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -198,7 +198,7 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                   _line(),
                   GestureDetector(
                     onTap: () {
-                      Get.to(HelpScreen());
+                      Get.to(()=>HelpScreen());
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -224,7 +224,7 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                   _line(),
                   GestureDetector(
                     onTap: () {
-                      Get.to(AboutScreen());
+                      Get.to(()=>AboutScreen());
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -249,7 +249,7 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                   _line(),
                   GestureDetector(
                     onTap: () {
-                      Get.to(RateAppScreen());
+                      Get.to(()=>RateAppScreen());
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -284,7 +284,7 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                   _line(),
                   GestureDetector(
                     onTap: () {
-                      Get.to(ContactUsScreen());
+                      Get.to(()=>ContactUsScreen());
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),

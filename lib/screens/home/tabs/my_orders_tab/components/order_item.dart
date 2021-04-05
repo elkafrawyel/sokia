@@ -119,7 +119,7 @@ class OrderItem extends StatelessWidget {
 
   _orderStatus(String orderStatus) {
     switch (order.orderStatus) {
-      case 'running':
+      case 'active':
         return 'running'.tr;
       case 'cancelled':
         return 'cancelled'.tr;
@@ -130,7 +130,7 @@ class OrderItem extends StatelessWidget {
 
   _orderStatusColor(String orderStatus) {
     switch (order.orderStatus) {
-      case 'running':
+      case 'active':
         return kPrimaryColor;
       case 'cancelled':
         return Colors.red;

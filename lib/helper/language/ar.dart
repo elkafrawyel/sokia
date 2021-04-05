@@ -141,6 +141,7 @@ Map<String, String> ar = {
   'mainProp': 'الخصائص الرئيسية',
   'subProp': 'الخصائص الفرعية',
   'image': 'صورة',
+  'video':'فيديو',
   'mainImage': 'الصورة الاولي هي صور البانر',
   'discountValue': 'نسبة الخصم',
   'emailOrPhone': 'الايمل او رقم الهاتف',

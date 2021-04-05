@@ -15,6 +15,7 @@ import 'package:sokia_app/data/responses/messages_response.dart';
 import 'package:sokia_app/data/responses/my_orders_response.dart';
 import 'package:sokia_app/data/responses/notifications_response.dart';
 import 'package:sokia_app/data/responses/send_message_response.dart';
+import 'package:sokia_app/data/responses/static_data_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/data_states.dart';
 import 'package:sokia_app/helper/local_storage.dart';
@@ -658,6 +659,35 @@ class ApiService {
               MessagesResponse.fromJson(response.data);
           if (messagesResponse.status) {
             state(SuccessState(messagesResponse.chat));
+          } else {
+            state(ErrorState());
+          }
+        } else {
+          CommonMethods().showGeneralError();
+          state(ErrorState());
+        }
+      } on DioError catch (ex) {
+        CommonMethods().showGeneralError();
+        state(ErrorState());
+      }
+    } else {
+      state(NoConnectionState());
+    }
+  }
+
+  getStaticData({
+    @required Function(DataState dataState) state,
+  }) async {
+    if (await _checkNetwork()) {
+      try {
+        Response response = await (await _getDioClient()).get(
+          "/project_constInfo",
+        );
+
+        if (response.statusCode == 200) {
+          StaticData staticData = StaticData.fromJson(response.data);
+          if (staticData.status) {
+            state(SuccessState(staticData.data));
           } else {
             state(ErrorState());
           }

@@ -4,6 +4,7 @@ import 'package:sokia_app/controllers/home_controller.dart';
 import 'package:sokia_app/data/data_models/create_order_request.dart';
 import 'package:sokia_app/data/data_models/order_model.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
+import 'package:sokia_app/data/responses/static_data_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/data_states.dart';
 import 'package:sokia_app/screens/order_completed_screen.dart';
@@ -14,12 +15,35 @@ class CreateOrderController extends GetxController {
 
   Map<int, OrderModel> orderMap = {};
   bool cash = true;
-  double fee = 10.00;
-  double shipping = 15.0;
+  double fee = 0.0;
+  double shipping = 0.0;
   double totalPriceForAllOrders = 0.0;
   double totalPrice = 0.0;
   String checkoutId;
   final homeController = Get.find<HomeController>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    getStaticData();
+  }
+
+  getStaticData() {
+    ApiService().getStaticData(state: (dataState) {
+      if (dataState is SuccessState) {
+        StaticDataModel dataModel = dataState.data as StaticDataModel;
+        shipping = double.parse(dataModel.shipping.toString());
+        fee = double.parse(dataModel.fee.toString());
+        update();
+      } else if (dataState is ErrorState) {
+        error = true;
+        update();
+      } else if (dataState is NoConnectionState) {
+        update();
+        CommonMethods().goOffline();
+      }
+    });
+  }
 
   void addOrders(List<Mosque> mosques, Category category) {
     mosques.forEach((mosque) {

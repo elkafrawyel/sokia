@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -36,9 +35,8 @@ class ChatController extends GetxController {
 
   sendChatMessage(
     String message,
-    List<Media> media, {
-    @required Function(DataState dataState) uiState,
-  }) {
+    List<Media> media,
+  ) {
     if (sendingMessage) return;
 
     sendingMessage = true;
@@ -68,7 +66,9 @@ class ChatController extends GetxController {
         time: id);
 
     chatMessages.insert(0, localMessage);
+
     update();
+
     ApiService().sendMessage(
         message: message,
         media: media,
@@ -85,8 +85,11 @@ class ChatController extends GetxController {
             sendingMessage = false;
             empty = false;
             update();
-            uiState(SuccessState(true));
           } else if (dataState is ErrorState) {
+            chatMessages.removeAt(chatMessages.indexOf(
+                chatMessages.singleWhere((element) => element.id == id)));
+            error = true;
+            update();
           } else if (dataState is NoConnectionState) {
             CommonMethods().goOffline();
           }

@@ -148,6 +148,7 @@ Map<String, String> en = {
   'mainProp': 'Main Properities',
   'subProp': 'Sub Properities',
   'image': 'Image',
+  'video':'Video',
   'mainImage': 'First image is banner image',
   'discountValue': 'Discount Value',
   'invalidNumber': 'Invalid Number',

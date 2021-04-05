@@ -22,6 +22,7 @@ class _SendMessageViewState extends State<SendMessageView> {
   var canSendMessage = false;
   final chatController = Get.find<ChatController>();
   var emojiOpened = false;
+  var showPickFileView = false;
   var keyboardOpeded = false;
   Timer debouncer;
   FocusNode focusNode = FocusNode();
@@ -42,6 +43,7 @@ class _SendMessageViewState extends State<SendMessageView> {
       if (focusNode.hasFocus) {
         setState(() {
           emojiOpened = false;
+          showPickFileView = false;
         });
       }
     });
@@ -91,6 +93,7 @@ class _SendMessageViewState extends State<SendMessageView> {
                               focusNode.canRequestFocus = false;
                               setState(() {
                                 emojiOpened = !emojiOpened;
+                                showPickFileView = false;
                               });
                             }),
                         Expanded(
@@ -176,83 +179,19 @@ class _SendMessageViewState extends State<SendMessageView> {
                         //           ),
                         //         ),
                         // ),
-                        FocusedMenuHolder(
-                          blurBackgroundColor: Colors.black,
-                          blurSize: 0.5,
-                          openWithTap: true,
-                          onPressed: () {},
-                          menuItems: [
-                            FocusedMenuItem(
-                                title: Expanded(
-                                  child: Text(
-                                    'Image',
-                                  ),
-                                ),
-                                trailingIcon: Icon(
-                                  Icons.image,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () async {
-                                  List<Media> media = await ImagesPicker.pick(
-                                    count: 5,
-                                    pickType: PickType.image,
-                                  );
-
-                                  chatController.sendChatMessage(
-                                      controller.text.isEmpty
-                                          ? null
-                                          : controller.text.trim(),
-                                      media, uiState: (dataState) {
-                                    if (dataState is SuccessState) {
-                                      setState(() {
-                                        controller.text = '';
-                                        canSendMessage = false;
-                                      });
-                                    }
-                                  });
-                                }),
-                            FocusedMenuItem(
-                                title: Expanded(
-                                  child: Text(
-                                    'Video',
-                                  ),
-                                ),
-                                trailingIcon: Icon(
-                                  Icons.video_call,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () async {
-                                  List<Media> media = await ImagesPicker.pick(
-                                    count: 1,
-                                    pickType: PickType.video,
-                                  );
-
-                                  chatController.sendChatMessage(
-                                      controller.text.isEmpty
-                                          ? null
-                                          : controller.text.trim(),
-                                      media, uiState: (dataState) {
-                                    if (dataState is SuccessState) {
-                                      setState(() {
-                                        controller.text = '';
-                                        canSendMessage = false;
-                                      });
-                                    }
-                                  });
-                                }),
-                          ],
-                          menuOffset: 10,
-                          menuWidth: MediaQuery.of(context).size.width / 2,
-                          duration: Duration(milliseconds: 500),
-                          // blurSize: 0,
-                          // menuItemExtent: 80, //item height
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.attach_file,
-                              color: Colors.grey,
-                            ),
-                            onPressed: null,
+                        IconButton(
+                          icon: Icon(
+                            Icons.attach_file,
+                            color: Colors.grey,
                           ),
+                          onPressed: () {
+                            focusNode.unfocus();
+                            focusNode.canRequestFocus = false;
+                            setState(() {
+                              showPickFileView = !showPickFileView;
+                              emojiOpened = false;
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -263,20 +202,7 @@ class _SendMessageViewState extends State<SendMessageView> {
                     ? InkWell(
                         key: UniqueKey(),
                         onTap: () {
-                          debounce(() {
-                            chatController.sendChatMessage(
-                                controller.text.isEmpty
-                                    ? null
-                                    : controller.text.trim(),
-                                [], uiState: (dataState) {
-                              if (dataState is SuccessState) {
-                                setState(() {
-                                  controller.text = '';
-                                  canSendMessage = false;
-                                });
-                              }
-                            });
-                          });
+                          _sendMessage();
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -358,7 +284,6 @@ class _SendMessageViewState extends State<SendMessageView> {
                         },
                         onLongPress: () {
                           controller.text = '';
-
                           setState(() {
                             canSendMessage = false;
                           });
@@ -370,6 +295,63 @@ class _SendMessageViewState extends State<SendMessageView> {
               ],
             ),
           ),
+          Visibility(
+            visible: showPickFileView,
+            child: Container(
+              alignment: AlignmentDirectional.center,
+              height: MediaQuery.of(context).size.height * 0.3,
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.image,
+                          size: 70,
+                          color: Colors.grey.shade600,
+                        ),
+                        Text(
+                          'image'.tr,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () async {
+                      _selectImages();
+                    },
+                  ),
+                  InkWell(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.video_call,
+                            size: 90,
+                            color: Colors.grey.shade600,
+                          ),
+                          Text(
+                            'video'.tr,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      onTap: () async {
+                        _selectVideo();
+                      }),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -385,6 +367,12 @@ class _SendMessageViewState extends State<SendMessageView> {
       });
 
       return Future.value(false);
+    } else if (showPickFileView) {
+      setState(() {
+        showPickFileView = false;
+      });
+
+      return Future.value(false);
     } else {
       return Future.value(true);
     }
@@ -397,14 +385,40 @@ class _SendMessageViewState extends State<SendMessageView> {
     );
 
     chatController.sendChatMessage(
-        controller.text.isEmpty ? null : controller.text.trim(), media,
-        uiState: (dataState) {
-      if (dataState is SuccessState) {
-        setState(() {
-          controller.text = '';
-          canSendMessage = false;
-        });
-      }
+      controller.text.isEmpty ? null : controller.text.trim(),
+      media,
+    );
+  }
+
+  void _selectVideo() async {
+    List<Media> media = await ImagesPicker.pick(
+      count: 1,
+      pickType: PickType.video,
+    );
+
+    chatController.sendChatMessage(
+      controller.text.isEmpty ? null : controller.text.trim(),
+      media,
+    );
+  }
+
+  void _selectImages() async {
+    List<Media> media = await ImagesPicker.pick(
+      count: 5,
+      pickType: PickType.image,
+    );
+
+    chatController.sendChatMessage(
+      controller.text.isEmpty ? null : controller.text.trim(),
+      media,
+    );
+  }
+
+  void _sendMessage() {
+    debounce(() {
+      controller.text = '';
+      canSendMessage = false;
+      chatController.sendChatMessage(controller.text.trim(), []);
     });
   }
 }

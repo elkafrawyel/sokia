@@ -341,7 +341,7 @@ class OrderDetailsScreen extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: MediaQuery.of(Get.context).size.width * 0.3,
+                width: MediaQuery.of(Get.context).size.width * 0.4,
                 child: CustomText(
                   text: 'name'.tr,
                   fontSize: 12,
@@ -367,7 +367,7 @@ class OrderDetailsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                width: MediaQuery.of(Get.context).size.width * 0.3,
+                width: MediaQuery.of(Get.context).size.width * 0.4,
                 child: CustomText(
                   text: 'location'.tr,
                   fontSize: 12,
@@ -411,7 +411,7 @@ class OrderDetailsScreen extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: MediaQuery.of(Get.context).size.width * 0.3,
+                width: MediaQuery.of(Get.context).size.width * 0.4,
                 child: CustomText(
                   text: 'workerName'.tr,
                   fontSize: 12,
@@ -438,7 +438,7 @@ class OrderDetailsScreen extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: MediaQuery.of(Get.context).size.width * 0.3,
+                width: MediaQuery.of(Get.context).size.width * 0.4,
                 child: CustomText(
                   text: 'workerNumber'.tr,
                   fontSize: 12,
@@ -533,7 +533,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
   _orderStatus(String orderStatus) {
     switch (order.orderStatus) {
-      case 'running':
+      case 'active':
         return 'running'.tr;
       case 'cancelled':
         return 'cancelled'.tr;
@@ -544,7 +544,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
   _orderStatusColor(String orderStatus) {
     switch (order.orderStatus) {
-      case 'running':
+      case 'active':
         return kPrimaryColor;
       case 'cancelled':
         return Colors.red;
