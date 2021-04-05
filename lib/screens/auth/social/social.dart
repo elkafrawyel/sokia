@@ -79,7 +79,9 @@ class SocialLogin extends StatelessWidget {
                 SocialButton(
                   imageAsset: 'src/images/snapchat_login.png',
                   text: 'loginWithSnap'.tr,
-                  onTap: () {},
+                  onTap: () {
+                    controller.signInSnapChat();
+                  },
                 ),
                 SocialButton(
                   imageAsset: 'src/images/google_login.png',

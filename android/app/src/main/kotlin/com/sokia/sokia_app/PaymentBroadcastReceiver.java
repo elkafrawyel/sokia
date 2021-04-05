@@ -10,7 +10,7 @@ import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity;
 /**
  * Broadcast receiver to listen the intents from CheckoutActivity.
  */
-public class CheckoutBroadcastReceiver extends BroadcastReceiver {
+public class PaymentBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {

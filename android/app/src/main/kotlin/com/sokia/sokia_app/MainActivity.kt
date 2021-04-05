@@ -8,8 +8,6 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
-import android.widget.Switch
-import android.widget.Toast
 import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity
 import com.oppwa.mobile.connect.checkout.meta.CheckoutSettings
 import com.oppwa.mobile.connect.exception.PaymentError
@@ -23,7 +21,6 @@ import com.oppwa.mobile.connect.service.IProviderBinder
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugins.googlesignin.GoogleSignInPlugin
 import java.util.*
 
 
@@ -88,7 +85,7 @@ class MainActivity : FlutterActivity(), ITransactionListener, MethodChannel.Resu
             checkoutSettings.locale = "en_US"
 
         val componentName = ComponentName(
-                packageName, CheckoutBroadcastReceiver::class.java.name)
+                packageName, PaymentBroadcastReceiver::class.java.name)
 
 
         /* Set up the Intent and start the checkout activity. */
