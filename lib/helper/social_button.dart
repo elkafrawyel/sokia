@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 
 class SocialButton extends StatelessWidget {
   final String imageAsset;
   final Function onTap;
   final String text;
+  final Icon icon;
 
-  SocialButton(
-      {@required this.imageAsset, @required this.onTap, @required this.text});
+  SocialButton({
+    this.imageAsset,
+    @required this.onTap,
+    @required this.text,
+    this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +31,19 @@ class SocialButton extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Image.asset(
-                  imageAsset,
-                  width: 50,
-                  height: 50,
-                ),
-              ),
+              icon == null
+                  ? Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Image.asset(
+                        imageAsset,
+                        width: 50,
+                        height: 50,
+                      ),
+                    )
+                  : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: icon,
+                  ),
               Expanded(
                 child: CustomText(
                   text: text,

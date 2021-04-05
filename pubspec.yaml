@@ -15,7 +15,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons:
-  dio: ^3.0.10
+  dio: ^4.0.0
   get:
   get_storage:
   splash_screen_view:
@@ -40,6 +40,10 @@ dependencies:
   toast:
   focused_menu:
   snapchat_flutter_plugin: ^0.0.3+2
+  flutter_twitter_login: ^1.1.0
+  firebase_auth: ^1.0.1
+  flutter_facebook_login:
+
   #  for chat
   animate_do: ^2.0.0
   emoji_picker: ^0.1.0
@@ -70,12 +74,13 @@ dev_dependencies:
   flutter_native_splash:
 
 flutter_native_splash:
-  color: "#FFFFFF"
+#  color: "#0DA0B4"
   image: src/images/splash.png
+  background_image: "src/images/splash_bg.png"
   android: true
   ios: true
-  android_gravity: fill
-  ios_content_mode: scaleAspectFill
+#  android_gravity: fill
+#  ios_content_mode: scaleAspectFill
 
   # run this command
   #  flutter pub run flutter_native_splash:create

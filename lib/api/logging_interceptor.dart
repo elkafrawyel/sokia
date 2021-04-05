@@ -9,20 +9,20 @@ class LoggingInterceptor extends Interceptor {
   int _maxCharactersPerLine = 200;
 
   @override
-  Future onRequest(RequestOptions options) {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     print("<-- HTTP -->");
     print("--> ${options.headers}");
     print("--> ${options.method}");
     print("--> ${options.path}");
     print("--> ${options.contentType}");
     print("<-- END HTTP -->");
-    return super.onRequest(options);
+    super.onRequest(options, handler);
   }
 
   @override
-  Future onResponse(Response response) {
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
     print(
-        "<-- ${response.statusCode} ${response.request.method} ${response.request.path}");
+        "<-- ${response.statusCode} ${response.requestOptions.method} ${response.requestOptions.path}");
     String responseAsString = response.data.toString();
     if (responseAsString.length > _maxCharactersPerLine) {
       int iterations =
@@ -41,11 +41,11 @@ class LoggingInterceptor extends Interceptor {
 
     print("<-- END HTTP");
 
-    return super.onResponse(response);
+    return super.onResponse(response, handler);
   }
 
   @override
-  Future onError(DioError err) {
+  void onError(DioError err, ErrorInterceptorHandler handler) {
     print("<-- Error -->");
     if (err.error.toString().contains('Http status error [401]')) {
       LocalStorage().clear();
@@ -55,6 +55,6 @@ class LoggingInterceptor extends Interceptor {
     }
     print(err.error);
     print(err.message);
-    return super.onError(err);
+    super.onError(err, handler);
   }
 }

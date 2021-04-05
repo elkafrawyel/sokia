@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sokia_app/controllers/auth_controller.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
@@ -70,25 +71,22 @@ class SocialLogin extends StatelessWidget {
                   height: 20,
                 ),
                 SocialButton(
-                  imageAsset: 'src/images/phone.png',
                   text: 'loginWithPhone'.tr,
                   onTap: () {
                     Get.to(() => LoginScreen());
                   },
+                  icon: Icon(
+                    MdiIcons.phone,
+                    color: Colors.black,
+                    size: 40,
+                  ),
                 ),
                 SocialButton(
-                  imageAsset: 'src/images/snapchat_login.png',
-                  text: 'loginWithSnap'.tr,
-                  onTap: () {
-                    controller.signInSnapChat();
-                  },
-                ),
-                SocialButton(
-                  imageAsset: 'src/images/google_login.png',
                   text: 'loginWithGoogle'.tr,
                   onTap: () {
                     controller.signInGoogle();
                   },
+                  imageAsset: 'src/images/google_login.png',
                 ),
                 SocialButton(
                   text: 'loginWithApple'.tr,
@@ -96,21 +94,45 @@ class SocialLogin extends StatelessWidget {
                     controller.signInApple();
                   },
                   imageAsset: 'src/images/apple_login.png',
+                  icon: Icon(
+                    MdiIcons.apple,
+                    color: Colors.black,
+                    size: 40,
+                  ),
                 ),
-                // SocialButton(
-                //   text: 'loginWithFacebook'.tr,
-                //   onTap: () {
-                //     controller.signInGoogle();
-                //   },
-                //   imageAsset: 'src/images/google.png',
-                // ),
-                // SocialButton(
-                //   text: 'loginWithTwitter'.tr,
-                //   onTap: () {
-                //     controller.signInGoogle();
-                //   },
-                //   imageAsset: 'src/images/google.png',
-                // ),
+                SocialButton(
+                  text: 'loginWithFacebook'.tr,
+                  onTap: () {
+                    controller.signInFacebook();
+                  },
+                  icon: Icon(
+                    MdiIcons.facebook,
+                    color: Colors.blue,
+                    size: 40,
+                  ),
+                ),
+                SocialButton(
+                  text: 'loginWithTwitter'.tr,
+                  onTap: () {
+                    controller.signInTwitter();
+                  },
+                  icon: Icon(
+                    MdiIcons.twitter,
+                    color: Colors.lightBlue,
+                    size: 40,
+                  ),
+                ),
+                SocialButton(
+                  text: 'loginWithSnap'.tr,
+                  onTap: () {
+                    controller.signInSnapChat();
+                  },
+                  icon: Icon(
+                    MdiIcons.snapchat,
+                    color: Colors.yellow,
+                    size: 40,
+                  ),
+                ),
                 SizedBox(
                   height: 20,
                 ),
