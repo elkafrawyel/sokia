@@ -416,9 +416,10 @@ class _SendMessageViewState extends State<SendMessageView> {
 
   void _sendMessage() {
     debounce(() {
+
+      chatController.sendChatMessage(controller.text.trim(), []);
       controller.text = '';
       canSendMessage = false;
-      chatController.sendChatMessage(controller.text.trim(), []);
     });
   }
 }

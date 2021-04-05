@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sokia_app/controllers/chat_controller.dart';
-import 'package:sokia_app/helper/Constant.dart';
-import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
-import 'file:///D:/Work/Apps/Sokia-App/lib/screens/chat/components/messages_list.dart';
-import 'file:///D:/Work/Apps/Sokia-App/lib/screens/chat/components/send_message_view.dart';
 import 'package:get/get.dart';
+import 'package:sokia_app/screens/chat/components/messages_list.dart';
+import 'package:sokia_app/screens/chat/components/send_message_view.dart';
 
 class ChatScreen extends StatelessWidget {
   final chatController = Get.put(ChatController());

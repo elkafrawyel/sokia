@@ -101,33 +101,35 @@ class AuthController extends GetxController {
         break;
       case DataConnectionStatus.connected:
         final GoogleSignInAccount user =
-            await GoogleSignIn(scopes: ['profile']).signIn();
-        ApiService().registerWithSocialAccount(
-          name: user.displayName,
-          email: user.email,
-          socialType: 'google',
-          state: (dataState) async {
-            if (dataState is SuccessState) {
-              UserModel userModel = dataState.data as UserModel;
+        await GoogleSignIn(scopes: ['profile']).signIn();
+        if (user != null) {
+          ApiService().registerWithSocialAccount(
+            name: user.displayName,
+            email: user.email,
+            socialType: 'google',
+            state: (dataState) async {
+              if (dataState is SuccessState) {
+                UserModel userModel = dataState.data as UserModel;
 
-              saveUserState(userModel);
+                saveUserState(userModel);
 
-              loading = false;
-              update();
+                loading = false;
+                update();
 
-              await Get.offAll(() => HomeScreen());
-            } else if (dataState is ErrorState) {
-              loading = false;
-              error = true;
-              update();
-            } else if (dataState is NoConnectionState) {
-              loading = false;
-              CommonMethods().goOffline();
-              update();
-            }
-          },
-        );
-        break;
+                await Get.offAll(() => HomeScreen());
+              } else if (dataState is ErrorState) {
+                loading = false;
+                error = true;
+                update();
+              } else if (dataState is NoConnectionState) {
+                loading = false;
+                CommonMethods().goOffline();
+                update();
+              }
+            },
+          );
+          break;
+        }
     }
   }
 
