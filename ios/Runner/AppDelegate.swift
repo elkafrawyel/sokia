@@ -3,6 +3,7 @@ import Flutter
 import GoogleMaps
 import SafariServices
 import SCSDKLoginKit
+import Firebase
 
 @available(iOS 9.0, *)
 @UIApplicationMain
@@ -57,6 +58,7 @@ import SCSDKLoginKit
         //        ================== End Payment ==============
         
         GMSServices.provideAPIKey("AIzaSyAlD-AjHc-bdnyomHFsHtlkXy8gO_neVgg")
+        FirebaseApp.configure()
         GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
@@ -156,18 +158,16 @@ import SCSDKLoginKit
         print("urlscheme:" + (url.scheme)!)
         
 //        payment
-        var handler:Bool = false
         if url.scheme?.caseInsensitiveCompare("com.sokia.app") == .orderedSame {
             didReceiveAsynchronousPaymentCallback(result: self.Presult!)
-            handler = true
+           return true
         }
 //        snapchat
         else if url.scheme?.localizedCaseInsensitiveCompare("sokia") == .orderedSame{
             return SCSDKLoginClient.application(app, open: url, options: options)
+        }else{
+            return true
         }
-        
-        return handler
-
     }
     
 

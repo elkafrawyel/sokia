@@ -42,3 +42,9 @@ post_install do |installer|
 end
 
 pod 'SnapSDK'
+pod 'TwitterKit'
+
+#pod 'Firebase/Analytics'
+#pod 'Firebase/Auth'
+#pod 'Firebase/Messaging'
+#pod 'Firebase/Core'

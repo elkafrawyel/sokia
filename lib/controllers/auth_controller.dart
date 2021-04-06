@@ -171,9 +171,9 @@ class AuthController extends GetxController {
   signInTwitter() async {
     var twitterLogin = new TwitterLogin(
       //api key
-      consumerKey: 'Nag4Lqu7AsXeL3jR8r8PMOKp3',
+      consumerKey: 'IZ0zO9cnnaUYRuH9C1VwwMIW7',
       //secret key
-      consumerSecret: '0044PRJB20qmZbNDgeuCSDCYmn85g8BQy6JW30gDbDHkbN54gT',
+      consumerSecret: 'PbYOnz94nFc43S3EW5Y7Z3HmYKCUSaW5y1AOmQGFStqLelCeu4',
     );
 
     switch (await DataConnectionChecker().connectionStatus) {
