@@ -60,7 +60,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     ),
                     CustomText(
                       text: _orderStatus(order.orderStatus),
-                      fontSize: fontSize18,
+                      fontSize: fontSize16,
                       color: _orderStatusColor(order.orderStatus),
                       maxLines: 1,
                       alignment: AlignmentDirectional.bottomEnd,
@@ -163,7 +163,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: CustomText(
                         text: CommonMethods().getDateStringYMd(order.unixTime),
-                        fontSize: 12,
+                        fontSize: 14,
                         maxLines: 2,
                         color: Colors.black,
                       ),
@@ -281,6 +281,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       child: CustomText(
                         text: 'orderTotalPrice'.tr,
                         fontSize: fontSize14,
+                        maxLines: 2,
                         color: Colors.black,
                       ),
                     ),

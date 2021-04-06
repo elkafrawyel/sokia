@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:animate_do/animate_do.dart';
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:focused_menu/focused_menu.dart';
-import 'package:focused_menu/modals.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:sokia_app/controllers/chat_controller.dart';
+import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:get/get.dart';
-import 'package:sokia_app/helper/data_states.dart';
 import 'package:sokia_app/helper/local_storage.dart';
 
 class SendMessageView extends StatefulWidget {
@@ -22,7 +20,6 @@ class _SendMessageViewState extends State<SendMessageView> {
   var canSendMessage = false;
   final chatController = Get.find<ChatController>();
   var emojiOpened = false;
-  var showPickFileView = false;
   var keyboardOpeded = false;
   Timer debouncer;
   FocusNode focusNode = FocusNode();
@@ -43,7 +40,6 @@ class _SendMessageViewState extends State<SendMessageView> {
       if (focusNode.hasFocus) {
         setState(() {
           emojiOpened = false;
-          showPickFileView = false;
         });
       }
     });
@@ -93,7 +89,6 @@ class _SendMessageViewState extends State<SendMessageView> {
                               focusNode.canRequestFocus = false;
                               setState(() {
                                 emojiOpened = !emojiOpened;
-                                showPickFileView = false;
                               });
                             }),
                         Expanded(
@@ -153,32 +148,6 @@ class _SendMessageViewState extends State<SendMessageView> {
                                   ),
                                 ),
                         ),
-                        // Visibility(
-                        //   visible: !canSendMessage,
-                        //   child: LocalStorage().isArabicLanguage()
-                        //       ? SlideInLeft(
-                        //           child: IconButton(
-                        //             icon: Icon(
-                        //               Icons.attach_file,
-                        //               color: Colors.grey,
-                        //             ),
-                        //             onPressed: () {
-                        //               _openFiles();
-                        //             },
-                        //           ),
-                        //         )
-                        //       : SlideInRight(
-                        //           child: IconButton(
-                        //             icon: Icon(
-                        //               Icons.attach_file,
-                        //               color: Colors.grey,
-                        //             ),
-                        //             onPressed: () {
-                        //               _openFiles();
-                        //             },
-                        //           ),
-                        //         ),
-                        // ),
                         IconButton(
                           icon: Icon(
                             Icons.attach_file,
@@ -188,9 +157,10 @@ class _SendMessageViewState extends State<SendMessageView> {
                             focusNode.unfocus();
                             focusNode.canRequestFocus = false;
                             setState(() {
-                              showPickFileView = !showPickFileView;
                               emojiOpened = false;
                             });
+
+                            _openBottomSheet();
                           },
                         ),
                       ],
@@ -198,41 +168,40 @@ class _SendMessageViewState extends State<SendMessageView> {
                   ),
                 ),
                 SizedBox(width: 10),
-                canSendMessage
-                    ? InkWell(
-                        key: UniqueKey(),
-                        onTap: () {
-                          _sendMessage();
+                InkWell(
+                  key: UniqueKey(),
+                  onTap: !canSendMessage
+                      ? null
+                      : () {
+                          _sendMessage(
+                            text: controller.text.isEmpty
+                                ? null
+                                : controller.text.trim(),
+                            media: [],
+                          );
+                          setState(() {
+                            controller.text = '';
+                            canSendMessage = false;
+                          });
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: kPrimaryColor, shape: BoxShape.circle),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Directionality(
-                              textDirection: LocalStorage().isArabicLanguage()
-                                  ? TextDirection.rtl
-                                  : TextDirection.ltr,
-                              child: Icon(
-                                Icons.send,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                            color: kPrimaryColor, shape: BoxShape.circle),
-                        child: InkWell(
-                          child: Icon(
-                            Icons.keyboard_voice,
-                            color: Colors.white,
-                          ),
-                          onLongPress: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: canSendMessage ? kPrimaryColor : Colors.grey,
+                        shape: BoxShape.circle),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Directionality(
+                        textDirection: LocalStorage().isArabicLanguage()
+                            ? TextDirection.rtl
+                            : TextDirection.ltr,
+                        child: Icon(
+                          Icons.send,
+                          color: Colors.white,
                         ),
                       ),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   width: 5,
                 ),
@@ -295,63 +264,6 @@ class _SendMessageViewState extends State<SendMessageView> {
               ],
             ),
           ),
-          Visibility(
-            visible: showPickFileView,
-            child: Container(
-              alignment: AlignmentDirectional.center,
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.image,
-                          size: 70,
-                          color: Colors.grey.shade600,
-                        ),
-                        Text(
-                          'image'.tr,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () async {
-                      _selectImages();
-                    },
-                  ),
-                  InkWell(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.video_call,
-                            size: 90,
-                            color: Colors.grey.shade600,
-                          ),
-                          Text(
-                            'video'.tr,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () async {
-                        _selectVideo();
-                      }),
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );
@@ -365,13 +277,6 @@ class _SendMessageViewState extends State<SendMessageView> {
       setState(() {
         emojiOpened = false;
       });
-
-      return Future.value(false);
-    } else if (showPickFileView) {
-      setState(() {
-        showPickFileView = false;
-      });
-
       return Future.value(false);
     } else {
       return Future.value(true);
@@ -384,10 +289,14 @@ class _SendMessageViewState extends State<SendMessageView> {
       maxTime: 15, // record video max time
     );
 
-    chatController.sendChatMessage(
-      controller.text.isEmpty ? null : controller.text.trim(),
-      media,
+    _sendMessage(
+      text: controller.text.isEmpty ? null : controller.text.trim(),
+      media: media,
     );
+    setState(() {
+      controller.text = '';
+      canSendMessage = false;
+    });
   }
 
   void _selectVideo() async {
@@ -395,31 +304,98 @@ class _SendMessageViewState extends State<SendMessageView> {
       count: 1,
       pickType: PickType.video,
     );
-
-    chatController.sendChatMessage(
-      controller.text.isEmpty ? null : controller.text.trim(),
-      media,
+    _sendMessage(
+      text: controller.text.isEmpty ? null : controller.text.trim(),
+      media: media,
     );
+    setState(() {
+      controller.text = '';
+      canSendMessage = false;
+    });
   }
 
   void _selectImages() async {
     List<Media> media = await ImagesPicker.pick(
-      count: 5,
+      count: 10,
       pickType: PickType.image,
     );
 
-    chatController.sendChatMessage(
-      controller.text.isEmpty ? null : controller.text.trim(),
-      media,
+    _sendMessage(
+      text: controller.text.isEmpty ? null : controller.text.trim(),
+      media: media,
     );
-  }
-
-  void _sendMessage() {
-    debounce(() {
-
-      chatController.sendChatMessage(controller.text.trim(), []);
+    setState(() {
       controller.text = '';
       canSendMessage = false;
     });
+  }
+
+  void _sendMessage({String text, List<Media> media}) {
+    debounce(() {
+      chatController.sendChatMessage(text, media);
+    });
+  }
+
+  void _openBottomSheet() {
+    CommonMethods().showBottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          InkWell(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Icon(
+                    Icons.image,
+                    color: kPrimaryColor,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'image'.tr,
+                    style: TextStyle(fontSize: 16, color: kPrimaryColor),
+                  ),
+                ],
+              ),
+            ),
+            onTap: () async {
+              _selectImages();
+              Get.back();
+            },
+          ),
+          InkWell(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(Icons.video_call, color: kPrimaryColor),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'video'.tr,
+                      style: TextStyle(fontSize: 16, color: kPrimaryColor),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () async {
+                _selectVideo();
+                Get.back();
+              }),
+        ],
+      ),
+    );
   }
 }

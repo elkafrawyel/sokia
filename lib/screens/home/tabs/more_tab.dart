@@ -123,34 +123,34 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                   //     ],
                   //   ),
                   // ),
-                  _line(),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'orderList'.tr,
-                          style: TextStyle(
-                              fontSize: fontSize14,
-                              color: Colors.grey.shade500),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.white),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              '20',
-                              style: TextStyle(
-                                  fontSize: fontSize16, color: kPrimaryColor),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // _line(),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(4.0),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Text(
+                  //         'orderList'.tr,
+                  //         style: TextStyle(
+                  //             fontSize: fontSize14,
+                  //             color: Colors.grey.shade500),
+                  //       ),
+                  //       Container(
+                  //         decoration: BoxDecoration(
+                  //             borderRadius: BorderRadius.circular(100),
+                  //             color: Colors.white),
+                  //         child: Padding(
+                  //           padding: const EdgeInsets.all(8.0),
+                  //           child: Text(
+                  //             '20',
+                  //             style: TextStyle(
+                  //                 fontSize: fontSize16, color: kPrimaryColor),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   // _line(),
                   // GestureDetector(
                   //   onTap: () {

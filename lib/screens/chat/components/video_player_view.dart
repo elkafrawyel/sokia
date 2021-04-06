@@ -12,7 +12,11 @@ class VideoPlayerView extends StatefulWidget {
   final String mUrl;
   final bool local, uploading;
 
-  VideoPlayerView({this.mUrl, this.local, this.uploading});
+  VideoPlayerView({
+    this.mUrl,
+    this.local,
+    this.uploading,
+  });
 
   @override
   _VideoPlayerViewState createState() => _VideoPlayerViewState();
@@ -69,7 +73,7 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
           end: 0.0,
           bottom: 0.0,
           child: Visibility(
-            visible: controller.sendingMessage,
+            visible: widget.uploading,
             child: InkWell(
               onTap: null,
               child: Container(

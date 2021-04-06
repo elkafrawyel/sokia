@@ -122,17 +122,6 @@ class SocialLogin extends StatelessWidget {
                     size: 40,
                   ),
                 ),
-                SocialButton(
-                  text: 'loginWithSnap'.tr,
-                  onTap: () {
-                    controller.signInSnapChat();
-                  },
-                  icon: Icon(
-                    MdiIcons.snapchat,
-                    color: Colors.yellow,
-                    size: 40,
-                  ),
-                ),
                 SizedBox(
                   height: 20,
                 ),

@@ -19,7 +19,6 @@ class ChatController extends GetxController {
   bool error = false;
   bool loadingMore = false;
   String uploadProgress = '0';
-  bool sendingMessage = false;
 
   bool isImage(String path) {
     final mimeType = lookupMimeType(path);
@@ -37,63 +36,99 @@ class ChatController extends GetxController {
     String message,
     List<Media> media,
   ) {
-    if (sendingMessage) return;
-
-    sendingMessage = true;
-
     int id = DateTime.now().millisecondsSinceEpoch;
-    List<File> images = [];
-    List<File> videos = [];
 
-    images = media
-        .where((element) => isImage(element.path))
-        .map((e) => File(e.path))
-        .toList();
+    //with media message
+    if (media.isNotEmpty) {
+      List<File> images = [];
+      List<File> videos = [];
 
-    videos = media
-        .where((element) => isVideo(element.path))
-        .map((e) => File(e.path))
-        .toList();
+      images = media
+          .where((element) => isImage(element.path))
+          .map((e) => File(e.path))
+          .toList();
 
-    LocalMessage localMessage = LocalMessage(
-        id: id,
-        to: 'management',
-        messageText: message,
-        seen: false,
-        videoFiles: videos,
-        uploading: true,
-        imagesFiles: images,
-        time: id);
+      videos = media
+          .where((element) => isVideo(element.path))
+          .map((e) => File(e.path))
+          .toList();
 
-    chatMessages.insert(0, localMessage);
+      LocalMessage localMessage = LocalMessage(
+          id: id,
+          to: 'management',
+          messageText: message,
+          seen: false,
+          videoFiles: videos,
+          uploading: true,
+          imagesFiles: images,
+          time: id);
 
-    update();
+      chatMessages.insert(0, localMessage);
 
-    ApiService().sendMessage(
-        message: message,
-        media: media,
-        onUploadProgress: (progress) {
-          uploadProgress = progress;
-          update(['upload']);
-        },
-        state: (dataState) {
-          if (dataState is SuccessState) {
-            localMessage.uploading = false;
-            chatMessages[chatMessages.indexOf(
-                    chatMessages.singleWhere((element) => element.id == id))] =
-                localMessage;
-            sendingMessage = false;
-            empty = false;
-            update();
-          } else if (dataState is ErrorState) {
-            chatMessages.removeAt(chatMessages.indexOf(
-                chatMessages.singleWhere((element) => element.id == id)));
-            error = true;
-            update();
-          } else if (dataState is NoConnectionState) {
-            CommonMethods().goOffline();
-          }
-        });
+      update();
+
+      ApiService().sendMessage(
+          message: message,
+          media: media,
+          onUploadProgress: (progress) {
+            uploadProgress = progress;
+            update(['upload']);
+          },
+          state: (dataState) {
+            if (dataState is SuccessState) {
+              localMessage.uploading = false;
+              chatMessages[chatMessages.indexOf(chatMessages
+                  .singleWhere((element) => element.id == id))] = localMessage;
+              empty = false;
+              update();
+            } else if (dataState is ErrorState) {
+              chatMessages.removeAt(chatMessages.indexOf(
+                  chatMessages.singleWhere((element) => element.id == id)));
+              error = true;
+              update();
+            } else if (dataState is NoConnectionState) {
+              CommonMethods().goOffline();
+            }
+          });
+    } else {
+      LocalMessage localMessage = LocalMessage(
+          id: id,
+          to: 'management',
+          messageText: message,
+          seen: false,
+          videoFiles: [],
+          uploading: true,
+          imagesFiles: [],
+          time: id);
+
+      chatMessages.insert(0, localMessage);
+
+      update();
+
+      ApiService().sendMessage(
+          message: message,
+          media: media,
+          onUploadProgress: (progress) {
+            uploadProgress = progress;
+            update(['upload']);
+          },
+          state: (dataState) {
+            if (dataState is SuccessState) {
+              localMessage.uploading = false;
+              chatMessages[chatMessages.indexOf(chatMessages
+                  .singleWhere((element) => element.id == id))] = localMessage;
+              empty = false;
+              update();
+            } else if (dataState is ErrorState) {
+              chatMessages.removeAt(chatMessages.indexOf(
+                  chatMessages.singleWhere((element) => element.id == id)));
+              error = true;
+              update();
+            } else if (dataState is NoConnectionState) {
+              CommonMethods().goOffline();
+            }
+          });
+    }
   }
 
   getChatMessages() {

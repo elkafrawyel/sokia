@@ -612,7 +612,7 @@ class ApiService {
         }
 
         FormData formData =
-            FormData.fromMap({"message": message, "media": files});
+            FormData.fromMap({"message": message, "media[]": files});
 
         Response response = await (await _getDioClient()).post(
           "/sendMessage",

@@ -12,6 +12,7 @@ import 'package:sokia_app/helper/custom_widgets/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_outline_text_form_field.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
+import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/helper/payment/payment_api.dart';
 import 'package:sokia_app/screens/create_order/components/single_item_card.dart';
 
@@ -385,16 +386,22 @@ class CreateOrderScreen extends StatelessWidget {
 
       if (paymentApi.checkoutId != null) {
         _orderController.checkoutId = paymentApi.checkoutId;
-        CommonMethods().showSnackBar('Payment Completed');
+        CommonMethods().showSnackBar(LocalStorage().isArabicLanguage()
+            ? 'تمت عملية الدفع بنجاح'
+            : 'Payment Completed Successfully');
         // getPaymentStatus();
       }
     } else if (status == "cancelled") {
-      CommonMethods().showSnackBar('Payment Cancelled');
+      CommonMethods().showSnackBar(LocalStorage().isArabicLanguage()
+          ? 'تم الغاء العملية'
+          : 'Payment Cancelled');
 
       print('Sokia transactionStatus ----> $status');
     } else if (status.contains("false")) {
       //remove false from string
-      CommonMethods().showSnackBar('Payment Failed');
+      CommonMethods().showSnackBar(LocalStorage().isArabicLanguage()
+          ? 'عملية الدفع لم تكتمل'
+          : 'Payment Failed');
 
       //error
       print('Sokia transactionStatus ----> $status');

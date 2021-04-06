@@ -1,16 +1,10 @@
 import 'package:bubble/bubble.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:get/get.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:sokia_app/controllers/chat_controller.dart';
-import 'package:sokia_app/data/data_models/chat_message.dart';
 import 'package:sokia_app/data/data_models/super_message.dart';
-import 'package:sokia_app/data/responses/messages_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
+import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/local_storage.dart';
-import 'package:sokia_app/screens/chat/components/images_online_viewer.dart';
 import 'package:sokia_app/screens/chat/components/images_offline_grid.dart';
 import 'package:sokia_app/screens/chat/components/images_online_grid.dart';
 import 'package:sokia_app/screens/chat/components/video_player_view.dart';
@@ -34,11 +28,11 @@ class BubbleChat extends StatelessWidget {
   Widget build(BuildContext context) {
     final _isMe = chatMessage.to == 'management';
     final bg = _isMe
-        ? Color.fromRGBO(225, 255, 199, 1)
+        ? kPrimaryColor
         : Color.fromRGBO(255, 255, 255, 100);
     final icon = chatMessage.seen ? Icons.done_all : Icons.done;
-    final iconColor = chatMessage.seen ? Colors.green : Colors.grey;
-    final textColor = _isMe ? Colors.black : Colors.black;
+    final iconColor =  chatMessage.seen ? Colors.white : Colors.white;
+    final textColor = _isMe ? Colors.white : Colors.black;
     return Bubble(
       margin: BubbleEdges.only(top: 10),
       alignment:
@@ -94,7 +88,7 @@ class BubbleChat extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .caption
-                        .apply(color: Colors.grey.shade600),
+                        .apply(color: _isMe ? Colors.white : Colors.black),
                   ),
                 ),
                 SizedBox(width: 3.0),
@@ -147,7 +141,7 @@ class BubbleChat extends StatelessWidget {
           : VideoPlayerView(
               mUrl: localMessage.videosFiles[0].path,
               local: true,
-              uploading: true,
+              uploading: localMessage.uploading,
             );
     }
   }

@@ -29,12 +29,10 @@ class NotificationsScreen extends StatelessWidget {
           builder: (controller) => controller.loading
               ? LoadingView()
               : controller.empty
-                  ? Center(
-                    child: EmptyView(
-                        emptyViews: EmptyViews.Magnifier,
-                        textColor: Colors.black,
-                      ),
-                  )
+                  ? EmptyView(
+                      emptyViews: EmptyViews.Magnifier,
+                      textColor: Colors.black,
+                    )
                   : ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) {

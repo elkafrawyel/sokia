@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sokia_app/controllers/chat_controller.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
-import 'package:sokia_app/screens/chat/components/images_online_viewer.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/screens/chat/components/images_offline_viewer.dart';
 
@@ -151,27 +150,25 @@ class ImagesOfflineGrid extends StatelessWidget {
       id: 'upload',
       builder: (controller) => Visibility(
         visible: uploading,
-        child: Opacity(
-          opacity: double.parse(controller.uploadProgress) / 100,
-          child: Container(
-            height: 200,
-            width: 200,
-            child: Center(
-              child: CircularPercentIndicator(
-                radius: 70.0,
-                lineWidth: 5.0,
-                percent: 1.0,
-                animationDuration: 1000,
-                animation: true,
-                center: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    '${controller.uploadProgress} %',
-                    style: TextStyle(fontSize: 14, color: Colors.white),
-                  ),
+        child: Container(
+          height: 200,
+          width: 200,
+          color: Colors.black45,
+          child: Center(
+            child: CircularPercentIndicator(
+              radius: 70.0,
+              lineWidth: 5.0,
+              percent: 1.0,
+              animationDuration: 1000,
+              animation: true,
+              center: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  '${controller.uploadProgress} %',
+                  style: TextStyle(fontSize: 14, color: Colors.white),
                 ),
-                progressColor: Colors.green,
               ),
+              progressColor: Colors.green,
             ),
           ),
         ),

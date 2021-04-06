@@ -27,7 +27,7 @@ class CommonMethods {
           color: Colors.white,
           size: 30,
         ),
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 5),
       ),
     );
   }
