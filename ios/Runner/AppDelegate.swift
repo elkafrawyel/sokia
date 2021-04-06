@@ -4,6 +4,7 @@ import GoogleMaps
 import SafariServices
 import SCSDKLoginKit
 import Firebase
+import TwitterKit
 
 @available(iOS 9.0, *)
 @UIApplicationMain
@@ -157,14 +158,23 @@ import Firebase
 
         print("urlscheme:" + (url.scheme)!)
         
-//        payment
+        //        payment
         if url.scheme?.caseInsensitiveCompare("com.sokia.app") == .orderedSame {
+            print("Payment is back")
             didReceiveAsynchronousPaymentCallback(result: self.Presult!)
-           return true
+            return true
         }
-//        snapchat
+        //        snapchat
         else if url.scheme?.localizedCaseInsensitiveCompare("sokia") == .orderedSame{
-            return SCSDKLoginClient.application(app, open: url, options: options)
+             print("Snapchat is back")
+             SCSDKLoginClient.application(app, open: url, options: options)
+             return true
+        }
+        //        twitter
+        else if url.scheme?.localizedCaseInsensitiveCompare("twitterkit-iz0zo9cnnauyruh9c1vwwmiw7") == .orderedSame{
+            print("Twitter is back")
+            TWTRTwitter.sharedInstance().application(app, open: url, options: options)
+            return true
         }else{
             return true
         }

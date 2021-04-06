@@ -57,10 +57,10 @@
            <string>Editor</string>
            <key>CFBundleURLSchemes</key>
            <array>
-           <string>twitterkit-IZ0zO9cnnaUYRuH9C1VwwMIW7://</string>
+           <string>twitterkit-IZ0zO9cnnaUYRuH9C1VwwMIW7</string>
            </array>
            </dict>
-		</array>
+		</array>	
         
         
         
