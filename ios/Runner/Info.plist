@@ -27,17 +27,6 @@
 				<string>Editor</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
-					<!--   sokia://snap/auth     -->
-					<string>sokia-app</string>
-					<string>snap-kit</string>
-					<string>auth</string>
-				</array>
-			</dict>
-			<dict>
-				<key>CFBundleTypeRole</key>
-				<string>Editor</string>
-				<key>CFBundleURLSchemes</key>
-				<array>
 					<string>com.googleusercontent.apps.638238450713-bpsopv8jksaturu02g1rfl49bmc31ok3</string>
 				</array>
 			</dict>
@@ -83,6 +72,10 @@
 		</array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+
+
+
+
 		<key>io.flutter.embedded_views_preview</key>
 		<string>YES</string>
 		<key>NSCameraUsageDescription</key>
