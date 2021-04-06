@@ -6,11 +6,28 @@ PODS:
   - AppAuth/ExternalUserAgent (1.4.0)
   - emoji_picker (0.0.3):
     - Flutter
+  - FBSDKCoreKit (5.15.1):
+    - FBSDKCoreKit/Basics (= 5.15.1)
+    - FBSDKCoreKit/Core (= 5.15.1)
+  - FBSDKCoreKit/Basics (5.15.1)
+  - FBSDKCoreKit/Core (5.15.1):
+    - FBSDKCoreKit/Basics
+  - FBSDKLoginKit (5.15.1):
+    - FBSDKLoginKit/Login (= 5.15.1)
+  - FBSDKLoginKit/Login (5.15.1):
+    - FBSDKCoreKit (~> 5.0)
+  - Firebase/Auth (7.3.0):
+    - Firebase/CoreOnly
+    - FirebaseAuth (~> 7.3.0)
   - Firebase/CoreOnly (7.3.0):
     - FirebaseCore (= 7.3.0)
   - Firebase/Messaging (7.3.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 7.3.0)
+  - firebase_auth (1.0.1):
+    - Firebase/Auth (= 7.3.0)
+    - firebase_core
+    - Flutter
   - firebase_core (1.0.2):
     - Firebase/CoreOnly (= 7.3.0)
     - Flutter
@@ -18,6 +35,11 @@ PODS:
     - Firebase/Messaging (= 7.3.0)
     - firebase_core
     - Flutter
+  - FirebaseAuth (7.3.0):
+    - FirebaseCore (~> 7.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
+    - GoogleUtilities/Environment (~> 7.0)
+    - GTMSessionFetcher/Core (~> 1.4)
   - FirebaseCore (7.3.0):
     - FirebaseCoreDiagnostics (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
@@ -45,10 +67,17 @@ PODS:
     - GoogleUtilities/Reachability (~> 7.0)
     - GoogleUtilities/UserDefaults (~> 7.0)
   - Flutter (1.0.0)
+  - flutter_facebook_login (0.0.1):
+    - FBSDKCoreKit (~> 5.5)
+    - FBSDKLoginKit (~> 5.5)
+    - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
   - flutter_ringtone_player (0.0.1):
     - Flutter
+  - flutter_twitter_login (0.0.1):
+    - Flutter
+    - TwitterKit
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -142,6 +171,9 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
+  - TwitterCore (3.2.0)
+  - TwitterKit (3.4.2):
+    - TwitterCore (>= 3.2.0)
   - url_launcher (0.0.1):
     - Flutter
   - video_player (0.0.1):
@@ -154,11 +186,14 @@ PODS:
 
 DEPENDENCIES:
   - emoji_picker (from `.symlinks/plugins/emoji_picker/ios`)
+  - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
+  - flutter_facebook_login (from `.symlinks/plugins/flutter_facebook_login/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_ringtone_player (from `.symlinks/plugins/flutter_ringtone_player/ios`)
+  - flutter_twitter_login (from `.symlinks/plugins/flutter_twitter_login/ios`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
@@ -168,6 +203,7 @@ DEPENDENCIES:
   - snapchat_flutter_plugin (from `.symlinks/plugins/snapchat_flutter_plugin/ios`)
   - SnapSDK
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - TwitterKit
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
@@ -175,7 +211,10 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
+    - FBSDKCoreKit
+    - FBSDKLoginKit
     - Firebase
+    - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseInstallations
@@ -193,21 +232,29 @@ SPEC REPOS:
     - PINOperation
     - PromisesObjC
     - SnapSDK
+    - TwitterCore
+    - TwitterKit
     - ZLPhotoBrowser
 
 EXTERNAL SOURCES:
   emoji_picker:
     :path: ".symlinks/plugins/emoji_picker/ios"
+  firebase_auth:
+    :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
+  flutter_facebook_login:
+    :path: ".symlinks/plugins/flutter_facebook_login/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_ringtone_player:
     :path: ".symlinks/plugins/flutter_ringtone_player/ios"
+  flutter_twitter_login:
+    :path: ".symlinks/plugins/flutter_twitter_login/ios"
   geolocator:
     :path: ".symlinks/plugins/geolocator/ios"
   google_maps_flutter:
@@ -234,17 +281,23 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   emoji_picker: 0e868059aa18f9473d234f3d0701fbd4d5fd310c
+  FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
+  FBSDKLoginKit: f1ea8026a58b52d30c9f2e6a58ca7d813619fb83
   Firebase: 26223c695fe322633274198cb19dca8cb7e54416
+  firebase_auth: 9f6491ea8e44570323361ae713a2ae3175b3f21a
   firebase_core: e6cbb0d1f7091edfcae31559e58224bfc1e455dc
   firebase_messaging: 446f8b30023ace26f162a9309b5bd1fdff78c011
+  FirebaseAuth: c224a0cf1afa0949bd5c7bfcf154b4f5ce8ddef2
   FirebaseCore: 4d3c72622ce0e2106aaa07bb4b2935ba2c370972
   FirebaseCoreDiagnostics: 066f996579cf097bdad3d7dc9a918d6b9e129c50
   FirebaseInstallations: 7f7ed0e7e27fb51f57291e1876e2ddb1524126c1
   FirebaseInstanceID: aaecc93b4528bbcafea12c477e26827719ca1183
   FirebaseMessaging: 68d1bcb14880189558a8ae57167abe0b7e417232
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_facebook_login: cfb5659f686b1c575ef205c6b6fd20db9679d3c4
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_ringtone_player: 15eba85187230b87b2512f0e1b92225618bc03e7
+  flutter_twitter_login: acf71258bca3b35b6ac06681f7a33b48f4acc0bd
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
   google_maps_flutter: c7f9c73576de1fbe152a227bfd6e6c4ae8088619
@@ -265,11 +318,13 @@ SPEC CHECKSUMS:
   snapchat_flutter_plugin: d6e68cc5032c234cc74feef33c439985cb8c83df
   SnapSDK: 2cad9dadf8a2cfe196d159d3dd8b090be51fdccf
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
+  TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   ZLPhotoBrowser: 559062abac47b41ef140cff6ea2370e73623b05f
 
-PODFILE CHECKSUM: b0231fe2d66cf639bf614aea2da8ca56e9600854
+PODFILE CHECKSUM: baa141d31fb821f5938ff3b3a79eef55745ce4d5
 
 COCOAPODS: 1.10.1

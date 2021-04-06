@@ -3,6 +3,8 @@ import Flutter
 import GoogleMaps
 import SafariServices
 import SCSDKLoginKit
+import Firebase
+import TwitterKit
 
 @available(iOS 9.0, *)
 @UIApplicationMain
@@ -57,6 +59,7 @@ import SCSDKLoginKit
         //        ================== End Payment ==============
         
         GMSServices.provideAPIKey("AIzaSyAlD-AjHc-bdnyomHFsHtlkXy8gO_neVgg")
+        FirebaseApp.configure()
         GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
@@ -155,19 +158,26 @@ import SCSDKLoginKit
 
         print("urlscheme:" + (url.scheme)!)
         
-//        payment
-        var handler:Bool = false
+        //        payment
         if url.scheme?.caseInsensitiveCompare("com.sokia.app") == .orderedSame {
+            print("Payment is back")
             didReceiveAsynchronousPaymentCallback(result: self.Presult!)
-            handler = true
+            return true
         }
-//        snapchat
+        //        snapchat
         else if url.scheme?.localizedCaseInsensitiveCompare("sokia") == .orderedSame{
-            return SCSDKLoginClient.application(app, open: url, options: options)
+             print("Snapchat is back")
+             SCSDKLoginClient.application(app, open: url, options: options)
+             return true
         }
-        
-        return handler
-
+        //        twitter
+        else if url.scheme?.localizedCaseInsensitiveCompare("twitterkit-iz0zo9cnnauyruh9c1vwwmiw7") == .orderedSame{
+            print("Twitter is back")
+            TWTRTwitter.sharedInstance().application(app, open: url, options: options)
+            return true
+        }else{
+            return true
+        }
     }
     
 
