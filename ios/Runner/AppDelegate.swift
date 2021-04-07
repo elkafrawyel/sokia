@@ -2,7 +2,6 @@ import UIKit
 import Flutter
 import GoogleMaps
 import SafariServices
-import SCSDKLoginKit
 import Firebase
 import TwitterKit
 
@@ -164,14 +163,9 @@ import TwitterKit
             didReceiveAsynchronousPaymentCallback(result: self.Presult!)
             return true
         }
-        //        snapchat
-        else if url.scheme?.localizedCaseInsensitiveCompare("sokia") == .orderedSame{
-             print("Snapchat is back")
-             SCSDKLoginClient.application(app, open: url, options: options)
-             return true
-        }
+    
         //        twitter
-        else if url.scheme?.localizedCaseInsensitiveCompare("twitterkit-iz0zo9cnnauyruh9c1vwwmiw7") == .orderedSame{
+        else if url.scheme?.localizedCaseInsensitiveCompare("twitterkit-ziSFdNJZge9owWzweU5QeoVkY") == .orderedSame{
             print("Twitter is back")
             TWTRTwitter.sharedInstance().application(app, open: url, options: options)
             return true

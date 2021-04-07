@@ -78,6 +78,9 @@ PODS:
   - flutter_twitter_login (0.0.1):
     - Flutter
     - TwitterKit
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -137,40 +140,13 @@ PODS:
   - nanopb/encode (2.30907.0)
   - path_provider (0.0.1):
     - Flutter
-  - PINCache (3.0.3):
-    - PINCache/Arc-exception-safe (= 3.0.3)
-    - PINCache/Core (= 3.0.3)
-  - PINCache/Arc-exception-safe (3.0.3):
-    - PINCache/Core
-  - PINCache/Core (3.0.3):
-    - PINOperation (~> 1.2.1)
-  - PINOperation (1.2.1)
   - PromisesObjC (1.2.12)
   - shared_preferences (0.0.1):
     - Flutter
-  - snapchat_flutter_plugin (0.0.1):
-    - Flutter
-    - SnapSDK
-  - SnapSDK (1.8.0):
-    - SnapSDK/SCSDKBitmojiKit (= 1.8.0)
-    - SnapSDK/SCSDKCoreKit (= 1.8.0)
-    - SnapSDK/SCSDKCreativeKit (= 1.8.0)
-    - SnapSDK/SCSDKLoginKit (= 1.8.0)
-    - SnapSDK/SCSDKStoryKit (= 1.8.0)
-  - SnapSDK/SCSDKBitmojiKit (1.8.0):
-    - PINCache (< 3.1, >= 2.3)
-    - PINOperation (~> 1.2.1)
-    - SnapSDK/SCSDKCoreKit
-  - SnapSDK/SCSDKCoreKit (1.8.0)
-  - SnapSDK/SCSDKCreativeKit (1.8.0):
-    - SnapSDK/SCSDKCoreKit
-  - SnapSDK/SCSDKLoginKit (1.8.0):
-    - SnapSDK/SCSDKCoreKit
-  - SnapSDK/SCSDKStoryKit (1.8.0):
-    - SnapSDK/SCSDKCoreKit
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
+  - Toast (4.0.0)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.2):
     - TwitterCore (>= 3.2.0)
@@ -194,14 +170,13 @@ DEPENDENCIES:
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_ringtone_player (from `.symlinks/plugins/flutter_ringtone_player/ios`)
   - flutter_twitter_login (from `.symlinks/plugins/flutter_twitter_login/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - images_picker (from `.symlinks/plugins/images_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - snapchat_flutter_plugin (from `.symlinks/plugins/snapchat_flutter_plugin/ios`)
-  - SnapSDK
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - TwitterKit
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
@@ -228,10 +203,8 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - nanopb
-    - PINCache
-    - PINOperation
     - PromisesObjC
-    - SnapSDK
+    - Toast
     - TwitterCore
     - TwitterKit
     - ZLPhotoBrowser
@@ -255,6 +228,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_ringtone_player/ios"
   flutter_twitter_login:
     :path: ".symlinks/plugins/flutter_twitter_login/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
   geolocator:
     :path: ".symlinks/plugins/geolocator/ios"
   google_maps_flutter:
@@ -267,8 +242,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  snapchat_flutter_plugin:
-    :path: ".symlinks/plugins/snapchat_flutter_plugin/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher:
@@ -298,6 +271,7 @@ SPEC CHECKSUMS:
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_ringtone_player: 15eba85187230b87b2512f0e1b92225618bc03e7
   flutter_twitter_login: acf71258bca3b35b6ac06681f7a33b48f4acc0bd
+  fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
   google_maps_flutter: c7f9c73576de1fbe152a227bfd6e6c4ae8088619
@@ -311,13 +285,10 @@ SPEC CHECKSUMS:
   images_picker: eb05ebd660218fba40842f7d26bc75d946c682e5
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
-  PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
-  PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  snapchat_flutter_plugin: d6e68cc5032c234cc74feef33c439985cb8c83df
-  SnapSDK: 2cad9dadf8a2cfe196d159d3dd8b090be51fdccf
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
@@ -325,6 +296,6 @@ SPEC CHECKSUMS:
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   ZLPhotoBrowser: 559062abac47b41ef140cff6ea2370e73623b05f
 
-PODFILE CHECKSUM: baa141d31fb821f5938ff3b3a79eef55745ce4d5
+PODFILE CHECKSUM: 784b204afb4d0130c703660f010cde3dcbe87652
 
 COCOAPODS: 1.10.1

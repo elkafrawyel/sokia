@@ -1,2 +1,2 @@
-final twitterConsumerKey = 'Nag4Lqu7AsXeL3jR8r8PMOKp3';
-final twitterConsumerSecret = '0044PRJB20qmZbNDgeuCSDCYmn85g8BQy6JW30gDbDHkbN54gT';
+final twitterConsumerKey = 'ziSFdNJZge9owWzweU5QeoVkY';
+final twitterConsumerSecret = 'pxhRlKkgOsHj3YGByvQ0q2A0JEiG7QOr40JNAjpY0DTzhdHXlY';
