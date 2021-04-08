@@ -30,20 +30,18 @@ class UserInfo extends StatelessWidget {
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'labelWelcome'.tr,
-                      style:
-                          TextStyle(fontSize: fontSize14, color: Colors.white),
-                    ),
+                  Text(
+                    'labelWelcome'.tr,
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                  SizedBox(
+                    height: 5,
                   ),
                   GetBuilder<UserController>(
                     builder: (controller) => Text(
-                      controller.user != null
-                          ? controller.user.name
-                          : 'inSokia'.tr,
+                      controller.user != null ? controller.user.name : '',
                       style:
                           TextStyle(fontSize: fontSize14, color: Colors.white),
                     ),

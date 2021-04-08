@@ -1,6 +1,6 @@
 Map<String, String> ar = {
   'appName': "سقيا",
-  'labelWelcome': "اهلا وسهلا بك ",
+  'labelWelcome': "اهلا وسهلا بك",
   'pickImage': "أختر صورة",
   'loading': "يتم التحميل",
   'pleaseWait': "انتظر من فضلك",

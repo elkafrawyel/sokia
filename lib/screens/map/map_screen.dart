@@ -141,7 +141,7 @@ class _MapScreenState extends State<MapScreen> {
                       _mapController.getSelectedPlacesAsMosques();
                   if (mosques.isEmpty) {
                     CommonMethods()
-                        .showToast(message: 'Select First', context: context);
+                        .showToast(message: 'Select First',);
                     return;
                   } else {
                     await Get.to(() => CreateOrderScreen(
@@ -150,7 +150,7 @@ class _MapScreenState extends State<MapScreen> {
                   }
                 } else {
                   CommonMethods()
-                      .showToast(message: 'youMustLogin'.tr, context: context);
+                      .showToast(message: 'youMustLogin'.tr,);
                 }
               },
             ),
@@ -211,7 +211,7 @@ class _MapScreenState extends State<MapScreen> {
                     icon: Icon(
                       Icons.my_location,
                     ),
-                    color: Colors.grey.shade700,
+                    color: kPrimaryColor,
                     onPressed: () {
                       _goTo(_mainController.userLatLng);
                     }),
@@ -243,7 +243,7 @@ class _MapScreenState extends State<MapScreen> {
                   backgroundColor: Colors.white,
                   child: Icon(
                     Icons.remove_red_eye_outlined,
-                    color: Colors.grey.shade700,
+                    color: kPrimaryColor,
                   ),
                 ),
               ),

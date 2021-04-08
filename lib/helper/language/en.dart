@@ -1,6 +1,6 @@
 Map<String, String> en = {
   'appName': "Sokia",
-  'labelWelcome': 'Welcome,',
+  'labelWelcome': 'Welcome',
   'labelSelectLanguage': "Select Language",
   'labelInfo': "This is multi-languages demo application",
   'pickImage': "Choose Image",

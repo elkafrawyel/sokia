@@ -75,11 +75,8 @@ class SocialLogin extends StatelessWidget {
                   onTap: () {
                     Get.to(() => LoginScreen());
                   },
-                  icon: Icon(
-                    MdiIcons.phone,
-                    color: Colors.black,
-                    size: 40,
-                  ),
+                  imageAsset: 'src/images/phone.png',
+
                 ),
                 SocialButton(
                   text: 'loginWithGoogle'.tr,

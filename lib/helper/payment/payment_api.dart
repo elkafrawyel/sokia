@@ -4,13 +4,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sokia_app/api/logging_interceptor.dart';
+import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/helper/payment/payment_response.dart';
+import 'package:sokia_app/helper/payment/payment_status_response.dart';
 
 class PaymentApi {
   String _checkoutId;
 
-  String get checkoutId => _checkoutId;
   static const platform = const MethodChannel('com.sokia.app');
 
   String _baseUrl = 'https://test.oppwa.com/v1/checkouts';
@@ -24,6 +25,7 @@ class PaymentApi {
   String _developmentMode = 'TEST'; //LIVE
   String _paymentType = 'DB'; // PA DB CD CP RV RF
 
+  //returns checkout Id
   Future<String> openPaymentUi(
       {@required Brands brand,
       @required double amount,
@@ -75,41 +77,100 @@ class PaymentApi {
           "language": LocalStorage().isArabicLanguage() ? "ar" : "en" //ar en
         });
         transactionStatus = '$result';
+
+        if (transactionStatus != null && transactionStatus == "true") {
+          print('Sokia transactionStatus ----> $transactionStatus');
+
+          if (_checkoutId != null) {
+            bool isCompleted = await getPaymentStatus(_checkoutId);
+            if (isCompleted) {
+              {
+                CommonMethods().showToast(
+                    message: LocalStorage().isArabicLanguage()
+                        ? 'تمت عملية الدفع بنجاح'
+                        : 'Payment Completed Successfully');
+                return _checkoutId;
+              }
+            } else {
+              CommonMethods().showToast(
+                  message: LocalStorage().isArabicLanguage()
+                      ? 'عملية الدفع لم تكتمل'
+                      : 'Payment Failed');
+              return null;
+            }
+          }
+        } else if (transactionStatus == "cancelled") {
+          CommonMethods().showToast(
+              message: LocalStorage().isArabicLanguage()
+                  ? 'تم الغاء العملية'
+                  : 'Payment Cancelled');
+
+          print('Sokia transactionStatus ----> $transactionStatus');
+
+          return null;
+        } else if (transactionStatus.contains("false")) {
+          //remove false from string
+          CommonMethods().showToast(
+              message: LocalStorage().isArabicLanguage()
+                  ? 'عملية الدفع لم تكتمل'
+                  : 'Payment Failed');
+
+          //error
+          print('Sokia transactionStatus ----> $transactionStatus');
+          return null;
+        }
       } on PlatformException catch (e) {
         transactionStatus = "${e.message}";
+        CommonMethods().showToast(
+            message: LocalStorage().isArabicLanguage()
+                ? 'عملية الدفع لم تكتمل'
+                : 'Payment Failed');
+
+        return null;
       }
-      return transactionStatus;
+      return null;
     } else {
+      CommonMethods().showToast(
+          message: LocalStorage().isArabicLanguage()
+              ? 'عملية الدفع لم تكتمل'
+              : 'Payment Failed');
       return null;
     }
   }
 
-// Future<void> getPaymentStatus() async {
-//   BaseOptions options = new BaseOptions(
-//     headers: {
-//       HttpHeaders.acceptHeader: 'application/json',
-//     },
-//     connectTimeout: 10000,
-//     receiveTimeout: 10000,
-//   );
-//
-//   Dio _dio = Dio(options);
-//
-//   var status;
-//
-//   String myUrl =
-//       "http://dev.hyperpay.com/hyperpay-demo/getpaymentstatus.php?id=$_checkoutId";
-//   final response = await _dio.post(
-//     myUrl,
-//   );
-//   status = response.data.contains('error');
-//
-//   var data = json.decode(response.data);
-//
-//   print("payment_status: ${data["result"].toString()}");
-//
-//   print(data["result"].toString());
-// }
+  //return if completed or not
+  Future<bool> getPaymentStatus(String checkoutID) async {
+    BaseOptions options = new BaseOptions(
+      headers: {
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $_paymentAccessToken'
+      },
+      connectTimeout: 10000,
+      receiveTimeout: 10000,
+    );
+
+    Dio _dio = Dio(options);
+    _dio.interceptors.add(LoggingInterceptor());
+
+    String myUrl = "https://test.oppwa.com/v1/checkouts/$checkoutID/payment?entityId=$_entity";
+    final response = await _dio.get(
+      myUrl,
+    );
+    PaymentStatusResponse paymentStatusResponse =
+        PaymentStatusResponse.fromJson(response.data);
+
+    if (paymentStatusResponse.result.parameterErrors == null) {
+      if (paymentStatusResponse.result.code == '000.100.112') {
+        print(
+            "payment_status: ${paymentStatusResponse.result.description.toString()}");
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }
 
 enum Currency {

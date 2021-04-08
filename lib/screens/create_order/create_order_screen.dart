@@ -16,13 +16,12 @@ import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/helper/payment/payment_api.dart';
 import 'package:sokia_app/screens/create_order/components/single_item_card.dart';
 
-final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-final TextEditingController noteController = TextEditingController();
-
 class CreateOrderScreen extends StatelessWidget {
   final List<Mosque> mosques;
   final Category category;
   final _orderController = Get.put(CreateOrderController());
+  static GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  static TextEditingController noteController = TextEditingController();
 
   //radio switch value
   final String cash = 'cash'.tr;
@@ -78,6 +77,9 @@ class CreateOrderScreen extends StatelessWidget {
 
   Widget _buildMosqueCards() {
     return GetBuilder<CreateOrderController>(
+      dispose: (state) {
+        noteController.text = '';
+      },
       builder: (controller) => Column(
         children: controller.orderMap.values.map((order) {
           return SingleItemCard(
@@ -376,35 +378,12 @@ class CreateOrderScreen extends StatelessWidget {
 
   void _openPaymentGateWay(Brands brand) async {
     PaymentApi paymentApi = PaymentApi();
-    String status = await paymentApi.openPaymentUi(
+    String checkoutId = await paymentApi.openPaymentUi(
         brand: brand,
         amount: _orderController.totalPriceForAllOrders,
         currency: Currency.SAR);
-
-    if (status != null && status == "true") {
-      print('Sokia transactionStatus ----> $status');
-
-      if (paymentApi.checkoutId != null) {
-        _orderController.checkoutId = paymentApi.checkoutId;
-        CommonMethods().showSnackBar(LocalStorage().isArabicLanguage()
-            ? 'تمت عملية الدفع بنجاح'
-            : 'Payment Completed Successfully');
-        // getPaymentStatus();
-      }
-    } else if (status == "cancelled") {
-      CommonMethods().showSnackBar(LocalStorage().isArabicLanguage()
-          ? 'تم الغاء العملية'
-          : 'Payment Cancelled');
-
-      print('Sokia transactionStatus ----> $status');
-    } else if (status.contains("false")) {
-      //remove false from string
-      CommonMethods().showSnackBar(LocalStorage().isArabicLanguage()
-          ? 'عملية الدفع لم تكتمل'
-          : 'Payment Failed');
-
-      //error
-      print('Sokia transactionStatus ----> $status');
+    if (checkoutId != null) {
+      _orderController.checkoutId = checkoutId;
     }
   }
 }

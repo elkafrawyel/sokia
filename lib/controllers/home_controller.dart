@@ -29,7 +29,7 @@ class HomeController extends GetxController {
   search(String query) {
     if (mosques.isEmpty) {
       CommonMethods()
-          .showToast(message: 'Data not loaded yet', context: Get.context);
+          .showToast(message: 'Data not loaded yet');
       return;
     }
     if (query.isEmpty) {

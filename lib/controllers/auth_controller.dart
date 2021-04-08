@@ -1,6 +1,12 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sokia_app/api/api_service.dart';
@@ -90,16 +96,32 @@ class AuthController extends GetxController {
           idToken: googleSignInAuthentication.idToken,
         );
 
-        final UserCredential credential =
-            await FirebaseAuth.instance.signInWithCredential(authCredential);
-        if (credential.user != null) {
-          ApiService().registerWithSocialAccount(
-              name: credential.user.displayName,
-              email: credential.user.email,
-              socialType: 'google',
-              state: handleUserState);
-          break;
+        await FirebaseAuth.instance.signInWithCredential(authCredential);
+
+        User user = FirebaseAuth.instance.currentUser;
+        UserInfo userInfo = user.providerData[0];
+        print('<-- Google Login ');
+        print('Name ${userInfo.displayName}');
+        print('Email ${userInfo.email}');
+        print('Phone ${userInfo.phoneNumber}');
+        print('Photo ${userInfo.photoURL}');
+        print('uid ${userInfo.uid}');
+        print('End Google -->');
+
+        if (userInfo.email == null) {
+          Fluttertoast.showToast(
+            msg: 'Login Failed',
+            toastLength: Toast.LENGTH_LONG,
+          );
+          return;
         }
+
+        ApiService().registerWithSocialAccount(
+            name: userInfo.displayName,
+            email: userInfo.email,
+            socialType: 'Google',
+            state: handleUserState);
+        break;
     }
   }
 
@@ -115,17 +137,32 @@ class AuthController extends GetxController {
           AuthCredential authCredential =
               FacebookAuthProvider.credential(result.accessToken.token);
 
-          UserCredential credential =
-              await FirebaseAuth.instance.signInWithCredential(authCredential);
+          await FirebaseAuth.instance.signInWithCredential(authCredential);
 
-          if (credential.user != null) {
-            ApiService().registerWithSocialAccount(
-                name: credential.user.displayName,
-                email: credential.user.email,
-                socialType: 'face',
-                state: handleUserState);
-            break;
+          User user = FirebaseAuth.instance.currentUser;
+          UserInfo userInfo = user.providerData[0];
+          print('<-- Facebook Login ');
+          print('Name ${userInfo.displayName}');
+          print('Email ${userInfo.email}');
+          print('Phone ${userInfo.phoneNumber}');
+          print('Photo ${userInfo.photoURL}');
+          print('uid ${userInfo.uid}');
+          print('End Facebook -->');
+
+          if (userInfo.email == null) {
+            Fluttertoast.showToast(
+              msg: 'Login Failed',
+              toastLength: Toast.LENGTH_LONG,
+            );
+            return;
           }
+
+          ApiService().registerWithSocialAccount(
+              name: userInfo.displayName,
+              email: userInfo.email,
+              socialType: 'Facebook',
+              state: handleUserState);
+          break;
         } on FirebaseAuthException catch (e) {
           FirebaseLoginHelper().handleFirebaseError(e);
         }
@@ -133,18 +170,6 @@ class AuthController extends GetxController {
   }
 
   signInTwitter() async {
-    /*
-
-    first add these 3 urls in twitter developer
-
-    https://sokia-b46f4.firebaseapp.com/__/auth/handler
-
-    twitterkit-consumerKey://
-
-    twittersdk://
-
-    */
-
     var twitterLogin = new TwitterLogin(
       //api key
       consumerKey: twitterConsumerKey,
@@ -171,21 +196,30 @@ class AuthController extends GetxController {
                     secret: twitterSession.secret);
 
             // Once signed in, return the UserCredential
-            UserCredential credential = await FirebaseAuth.instance
+            await FirebaseAuth.instance
                 .signInWithCredential(twitterAuthCredential);
 
+            User user = FirebaseAuth.instance.currentUser;
+            UserInfo userInfo = user.providerData[0];
             print('<-- Twitter Login ');
-            print('Name ${credential.user.displayName}');
-            print('Email ${credential.user.email}');
+            print('Name ${userInfo.displayName}');
+            print('Email ${userInfo.email}');
+            print('Phone ${userInfo.phoneNumber}');
+            print('Photo ${userInfo.photoURL}');
+            print('uid ${userInfo.uid}');
             print('End Twitter -->');
 
-            if (credential.user.email == null) {
+            if (userInfo.email == null) {
+              Fluttertoast.showToast(
+                msg: 'Login Failed',
+                toastLength: Toast.LENGTH_LONG,
+              );
               return;
             }
 
             ApiService().registerWithSocialAccount(
-                name: credential.user.displayName,
-                email: credential.user.email,
+                name: userInfo.displayName,
+                email: userInfo.email,
                 socialType: 'twitter',
                 state: handleUserState);
             break;

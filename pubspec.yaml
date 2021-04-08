@@ -37,7 +37,6 @@ dependencies:
   flutter_local_notifications: ^5.0.0
   flutter_ringtone_player: ^2.0.0
   firebase_core: ^1.0.2
-  toast:
   focused_menu:
   flutter_twitter_login: ^1.1.0
   firebase_auth: ^1.0.1

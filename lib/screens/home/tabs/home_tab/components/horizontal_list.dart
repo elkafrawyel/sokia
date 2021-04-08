@@ -54,13 +54,15 @@ class HorizontalList extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(
-                      categories[index].categoryName,
-                      style: TextStyle(
-                        fontSize: 14,
+                    Expanded(
+                      child: Text(
+                        categories[index].categoryName,
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
                       ),
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
                     )
                   ],
                 ),

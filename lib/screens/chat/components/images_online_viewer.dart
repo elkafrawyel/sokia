@@ -29,7 +29,7 @@ class OnlineImagesViewer extends StatelessWidget {
           IconButton(
             icon: Icon(MdiIcons.download),
             onPressed: () {
-              CommonMethods().showToast(message: 'Soon', context: context);
+              CommonMethods().showToast(message: 'Soon',);
             },
             color: Colors.white,
           ),

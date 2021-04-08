@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sokia_app/controllers/create_order_controller.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:sokia_app/helper/local_storage.dart';
@@ -64,6 +65,7 @@ class OrderCompletedScreen extends StatelessWidget {
                           ),
                           onPressed: () {
                             // load my orders
+                            Get.find<CreateOrderController>().clearValues();
                             Get.offAll(() => HomeScreen());
                           },
                         ),

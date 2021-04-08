@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
-import 'package:toast/toast.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'local_storage.dart';
 
 class CommonMethods {
-  showToast({@required String message, @required BuildContext context}) {
-    Toast.show(message, context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+  showToast({@required String message}) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+    );
   }
 
   showSnackBar(String message, {IconData iconData = Icons.info}) {

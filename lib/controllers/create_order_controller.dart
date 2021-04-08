@@ -111,7 +111,7 @@ class CreateOrderController extends GetxController {
           workerNumber: e.workerNumber));
     });
     if (!cash && checkoutId == null) {
-      CommonMethods().showToast(message: 'Payment Error', context: Get.context);
+      CommonMethods().showToast(message: 'Payment Error');
       return;
     }
     CreateOrderRequest createOrderRequest = CreateOrderRequest(
@@ -141,5 +141,15 @@ class CreateOrderController extends GetxController {
             CommonMethods().goOffline();
           }
         });
+  }
+
+  void clearValues() {
+    orderMap.clear();
+    cash = true;
+    // fee = 0.0;
+    // shipping = 0.0;
+    totalPriceForAllOrders = 0.0;
+    totalPrice = 0.0;
+    checkoutId = null;
   }
 }
