@@ -1,6 +1,7 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:get/get.dart';
 import 'package:sokia_app/data/data_models/super_message.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
@@ -27,11 +28,9 @@ class BubbleChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _isMe = chatMessage.to == 'management';
-    final bg = _isMe
-        ? kPrimaryColor
-        : Color.fromRGBO(255, 255, 255, 100);
+    final bg = _isMe ? kPrimaryColor : Color.fromRGBO(255, 255, 255, 100);
     final icon = chatMessage.seen ? Icons.done_all : Icons.done;
-    final iconColor =  chatMessage.seen ? Colors.white : Colors.white;
+    final iconColor = chatMessage.seen ? Colors.white : Colors.white;
     final textColor = _isMe ? Colors.white : Colors.black;
     return Bubble(
       margin: BubbleEdges.only(top: 10),
@@ -48,36 +47,29 @@ class BubbleChat extends StatelessWidget {
               ? BubbleNip.rightTop
               : BubbleNip.leftTop,
       color: bg,
-      child: Container(
-        constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * .7),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment:
-              _isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: [
-            _images(),
-            _video(),
-            chatMessage.messageText == null
-                ? SizedBox()
-                : Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                        top: 8, end: 12, start: 12),
-                    child: SelectableLinkify(
-                      onOpen: (link) async {
-                        if (await canLaunch(link.url)) {
-                          await launch(link.url);
-                        } else {
-                          throw 'Could not launch $link';
-                        }
-                      },
-                      text: chatMessage.messageText,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(color: textColor, fontSize: 18),
-                      linkStyle: TextStyle(color: Colors.green),
-                    ),
-                  ),
-            Row(
+      child: Stack(
+        children: [
+          ConstrainedBox(
+            constraints: new BoxConstraints(
+                minHeight: 25,
+                minWidth: 100,
+                // maxHeight: 30.0,
+                maxWidth: MediaQuery.of(context).size.width * .7),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment:
+                  _isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              children: [
+                _images(),
+                _video(),
+                _text(textColor),
+              ],
+            ),
+          ),
+          PositionedDirectional(
+            end: 0,
+            bottom: 0,
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(width: 10),
@@ -85,10 +77,10 @@ class BubbleChat extends StatelessWidget {
                   padding: const EdgeInsetsDirectional.only(top: 10),
                   child: Text(
                     CommonMethods().getDateStringHhMmA(chatMessage.time),
-                    style: Theme.of(context)
+                    style: Theme.of(Get.context)
                         .textTheme
                         .caption
-                        .apply(color: _isMe ? Colors.white : Colors.black),
+                        .apply(color: _isMe ? Colors.white : Colors.grey),
                   ),
                 ),
                 SizedBox(width: 3.0),
@@ -101,9 +93,9 @@ class BubbleChat extends StatelessWidget {
                   ),
                 ),
               ],
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -144,5 +136,51 @@ class BubbleChat extends StatelessWidget {
               uploading: localMessage.uploading,
             );
     }
+  }
+
+  _text(textColor) {
+    return chatMessage.messageText == null
+        ? SizedBox()
+        : LayoutBuilder(builder: (context, constraints) {
+            final messagePainter = TextPainter(
+              text: TextSpan(
+                  text: chatMessage.messageText,
+                  style: TextStyle(fontSize: 20)),
+              textDirection: TextDirection.ltr,
+              textWidthBasis: TextWidthBasis.longestLine,
+            )..layout(maxWidth: constraints.maxWidth);
+
+            final timePainter = TextPainter(
+              text: TextSpan(
+                  text: chatMessage.messageText + '                 \u202F',
+                  style: TextStyle(fontSize: 20)),
+              textDirection: TextDirection.ltr,
+              textWidthBasis: TextWidthBasis.longestLine,
+            )..layout(maxWidth: constraints.maxWidth);
+
+            final changeLine = timePainter.minIntrinsicWidth.ceilToDouble() >
+                messagePainter.minIntrinsicWidth.ceilToDouble() + 0.001|| timePainter.height > messagePainter.height + 0.001;
+
+            print(chatMessage.messageText + changeLine.toString());
+            return Padding(
+              padding:
+                  const EdgeInsetsDirectional.only(start: 4, end: 8, top: 8),
+              child: SelectableLinkify(
+                onOpen: (link) async {
+                  if (await canLaunch(link.url)) {
+                    await launch(link.url);
+                  } else {
+                    throw 'Could not launch $link';
+                  }
+                },
+                text: changeLine
+                    ? chatMessage.messageText + '\n'
+                    : chatMessage.messageText + '                \u202F',
+                textAlign: TextAlign.start,
+                style: TextStyle(color: textColor, fontSize: 20),
+                linkStyle: TextStyle(color: Colors.green),
+              ),
+            );
+          });
   }
 }

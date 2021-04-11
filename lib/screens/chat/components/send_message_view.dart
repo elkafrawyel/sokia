@@ -304,6 +304,7 @@ class _SendMessageViewState extends State<SendMessageView> {
       count: 1,
       pickType: PickType.video,
     );
+
     _sendMessage(
       text: controller.text.isEmpty ? null : controller.text.trim(),
       media: media,

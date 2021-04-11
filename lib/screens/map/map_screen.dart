@@ -211,7 +211,7 @@ class _MapScreenState extends State<MapScreen> {
                     icon: Icon(
                       Icons.my_location,
                     ),
-                    color: kPrimaryColor,
+                    color:  kPrimaryColor,
                     onPressed: () {
                       _goTo(_mainController.userLatLng);
                     }),

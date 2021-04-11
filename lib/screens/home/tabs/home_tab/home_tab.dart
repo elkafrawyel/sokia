@@ -153,65 +153,65 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
               ),
       );
 
-  Widget _buildFloatingSearchBar() {
-    final isPortrait =
-        MediaQuery.of(Get.context).orientation == Orientation.portrait;
+    Widget _buildFloatingSearchBar() {
+      final isPortrait =
+          MediaQuery.of(Get.context).orientation == Orientation.portrait;
 
-    return GetBuilder<HomeController>(
-      builder: (controller) => Container(
-        height: searchFocus ? MediaQuery.of(context).size.height : 70,
-        child: FloatingSearchBar(
-          onFocusChanged: (isFocused) {
-            setState(() {
-              searchFocus = isFocused;
-            });
-          },
-          hint: 'search'.tr,
-          scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
-          transitionDuration: const Duration(milliseconds: 800),
-          transitionCurve: Curves.easeInOut,
-          physics: const BouncingScrollPhysics(),
-          axisAlignment: isPortrait ? 0.0 : -1.0,
-          openAxisAlignment: 0.0,
-          shadowColor: Colors.white,
-          backgroundColor: Colors.white,
-          backdropColor: Colors.white,
-          width: isPortrait ? 600 : 500,
-          debounceDelay: const Duration(milliseconds: 500),
-          onQueryChanged: (query) {
-            controller.search(query);
-          },
-          // Specify a custom transition to be used for
-          // animating between opened and closed stated.
-          transition: CircularFloatingSearchBarTransition(),
-          actions: [
-            FloatingSearchBarAction.searchToClear(
-              showIfClosed: true,
-            ),
-          ],
-          controller: _searchController,
-          builder: (context, transition) {
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Material(
-                color: Colors.white,
-                elevation: 4.0,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: controller.searchList.map((mosque) {
-                    return Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: SuggestionItem(
-                        mosque: mosque,
-                      ),
-                    );
-                  }).toList(),
-                ),
+      return GetBuilder<HomeController>(
+        builder: (controller) => Container(
+          height: searchFocus ? MediaQuery.of(context).size.height : 70,
+          child: FloatingSearchBar(
+            onFocusChanged: (isFocused) {
+              setState(() {
+                searchFocus = isFocused;
+              });
+            },
+            hint: 'search'.tr,
+            scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+            transitionDuration: const Duration(milliseconds: 800),
+            transitionCurve: Curves.easeInOut,
+            physics: const BouncingScrollPhysics(),
+            axisAlignment: isPortrait ? 0.0 : -1.0,
+            openAxisAlignment: 0.0,
+            shadowColor: Colors.white,
+            backgroundColor: Colors.white,
+            backdropColor: Colors.white,
+            width: isPortrait ? 600 : 500,
+            debounceDelay: const Duration(milliseconds: 500),
+            onQueryChanged: (query) {
+              controller.search(query);
+            },
+            // Specify a custom transition to be used for
+            // animating between opened and closed stated.
+            transition: CircularFloatingSearchBarTransition(),
+            actions: [
+              FloatingSearchBarAction.searchToClear(
+                showIfClosed: true,
               ),
-            );
-          },
+            ],
+            controller: _searchController,
+            builder: (context, transition) {
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Material(
+                  color: Colors.white,
+                  elevation: 4.0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: controller.searchList.map((mosque) {
+                      return Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: SuggestionItem(
+                          mosque: mosque,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              );
+            },
+          ),
         ),
-      ),
-    );
-  }
+      );
+    }
 }

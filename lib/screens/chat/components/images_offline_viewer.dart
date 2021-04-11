@@ -19,7 +19,6 @@ class OfflineImagesViewer extends StatelessWidget {
     return Scaffold(
       //make body under appbar
       extendBodyBehindAppBar: true,
-
       appBar: AppBar(
         title: CustomText(
           text: 'customerService'.tr,

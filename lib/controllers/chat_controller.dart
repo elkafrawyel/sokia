@@ -39,10 +39,9 @@ class ChatController extends GetxController {
     int id = DateTime.now().millisecondsSinceEpoch;
 
     //with media message
+    List<File> images = [];
+    List<File> videos = [];
     if (media.isNotEmpty) {
-      List<File> images = [];
-      List<File> videos = [];
-
       images = media
           .where((element) => isImage(element.path))
           .map((e) => File(e.path))
@@ -52,83 +51,45 @@ class ChatController extends GetxController {
           .where((element) => isVideo(element.path))
           .map((e) => File(e.path))
           .toList();
-
-      LocalMessage localMessage = LocalMessage(
-          id: id,
-          to: 'management',
-          messageText: message,
-          seen: false,
-          videoFiles: videos,
-          uploading: true,
-          imagesFiles: images,
-          time: id);
-
-      chatMessages.insert(0, localMessage);
-
-      update();
-
-      ApiService().sendMessage(
-          message: message,
-          media: media,
-          onUploadProgress: (progress) {
-            uploadProgress = progress;
-            update(['upload']);
-          },
-          state: (dataState) {
-            if (dataState is SuccessState) {
-              localMessage.uploading = false;
-              chatMessages[chatMessages.indexOf(chatMessages
-                  .singleWhere((element) => element.id == id))] = localMessage;
-              empty = false;
-              update();
-            } else if (dataState is ErrorState) {
-              chatMessages.removeAt(chatMessages.indexOf(
-                  chatMessages.singleWhere((element) => element.id == id)));
-              error = true;
-              update();
-            } else if (dataState is NoConnectionState) {
-              CommonMethods().goOffline();
-            }
-          });
-    } else {
-      LocalMessage localMessage = LocalMessage(
-          id: id,
-          to: 'management',
-          messageText: message,
-          seen: false,
-          videoFiles: [],
-          uploading: true,
-          imagesFiles: [],
-          time: id);
-
-      chatMessages.insert(0, localMessage);
-
-      update();
-
-      ApiService().sendMessage(
-          message: message,
-          media: media,
-          onUploadProgress: (progress) {
-            uploadProgress = progress;
-            update(['upload']);
-          },
-          state: (dataState) {
-            if (dataState is SuccessState) {
-              localMessage.uploading = false;
-              chatMessages[chatMessages.indexOf(chatMessages
-                  .singleWhere((element) => element.id == id))] = localMessage;
-              empty = false;
-              update();
-            } else if (dataState is ErrorState) {
-              chatMessages.removeAt(chatMessages.indexOf(
-                  chatMessages.singleWhere((element) => element.id == id)));
-              error = true;
-              update();
-            } else if (dataState is NoConnectionState) {
-              CommonMethods().goOffline();
-            }
-          });
     }
+    LocalMessage localMessage = LocalMessage(
+        id: id,
+        to: 'management',
+        messageText: message,
+        seen: false,
+        videoFiles: videos,
+        uploading: true,
+        imagesFiles: images,
+        time: id);
+
+    chatMessages.insert(0, localMessage);
+
+    update();
+
+    ApiService().sendMessage(
+        message: message,
+        media: media,
+        onUploadProgress: (progress) {
+          uploadProgress = progress;
+          update(['upload']);
+        },
+        state: (dataState) {
+          if (dataState is SuccessState) {
+            localMessage.uploading = false;
+            chatMessages[chatMessages.indexOf(
+                    chatMessages.singleWhere((element) => element.id == id))] =
+                localMessage;
+            empty = false;
+            update();
+          } else if (dataState is ErrorState) {
+            chatMessages.removeAt(chatMessages.indexOf(
+                chatMessages.singleWhere((element) => element.id == id)));
+            error = true;
+            update();
+          } else if (dataState is NoConnectionState) {
+            CommonMethods().goOffline();
+          }
+        });
   }
 
   getChatMessages() {
