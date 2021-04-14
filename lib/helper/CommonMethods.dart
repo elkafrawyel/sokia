@@ -181,6 +181,25 @@ class CommonMethods {
     }
   }
 
+  String getDateStringYMdHM(int time) {
+    initializeDateFormatting();
+
+    var date = DateTime.fromMillisecondsSinceEpoch(time);
+    if (LocalStorage().isArabicLanguage()) {
+      var formatter = DateFormat('y/M/d hh:mm a','ar_SA');
+      // print(formatter.locale);
+      String formatted = formatter.format(date);
+      // print(formatted);
+      return formatted;
+    } else {
+      var formatter = DateFormat('y/M/d hh:mm a');
+      // print(formatter.locale);
+      String formatted = formatter.format(date);
+      // print(formatted);
+      return formatted;
+    }
+  }
+
   String getDateStringHhMmA(int time) {
     initializeDateFormatting();
 

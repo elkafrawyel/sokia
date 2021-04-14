@@ -4,6 +4,7 @@ import 'package:sokia_app/controllers/chat_controller.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:sokia_app/screens/chat/components/message_bubble.dart';
+import 'package:sokia_app/screens/chat/components/message_bubble_v2.dart';
 class MessageListView extends StatefulWidget {
   @override
   _MessageListViewState createState() => _MessageListViewState();
@@ -64,7 +65,7 @@ class _MessageListViewState extends State<MessageListView> {
                   controller: _scrollController,
                   padding: EdgeInsets.all(12),
                   itemBuilder: (BuildContext context, int index) {
-                    return BubbleChat(
+                    return BubbleChat2(
                       chatMessage: controller.chatMessages[index],
                     );
                   },

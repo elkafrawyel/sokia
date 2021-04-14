@@ -20,8 +20,8 @@ final List<String> imgList = [
   'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
 ];
 
-class BubbleChat extends StatelessWidget {
-  BubbleChat({this.chatMessage});
+class BubbleChat2 extends StatelessWidget {
+  BubbleChat2({this.chatMessage});
 
   final SuperMessage chatMessage;
 
@@ -30,30 +30,29 @@ class BubbleChat extends StatelessWidget {
     final _isMe = chatMessage.to == 'management';
     final bg = _isMe ? kPrimaryColor : Color.fromRGBO(255, 255, 255, 100);
     final icon = chatMessage.seen ? Icons.done_all : Icons.done;
-    final iconColor = chatMessage.seen ? Colors.white : Colors.white;
+    final iconColor = chatMessage.seen ? Colors.green : Colors.green;
     final textColor = _isMe ? Colors.white : Colors.black;
-    return Bubble(
-      margin: BubbleEdges.only(top: 10),
-      alignment:
-          _isMe ? AlignmentDirectional.topEnd : AlignmentDirectional.topStart,
-      nipWidth: 8,
-      nipHeight: 10,
-      radius: Radius.circular(10),
-      nip: LocalStorage().isArabicLanguage()
-          ? _isMe
-              ? BubbleNip.leftTop
-              : BubbleNip.rightTop
-          : _isMe
-              ? BubbleNip.rightTop
-              : BubbleNip.leftTop,
-      color: bg,
-      child: Stack(
-        children: [
-          ConstrainedBox(
+    return Column(
+      children: [
+        Bubble(
+          margin: BubbleEdges.only(top: 10),
+          alignment: _isMe
+              ? AlignmentDirectional.topEnd
+              : AlignmentDirectional.topStart,
+          nipWidth: 8,
+          nipHeight: 10,
+          radius: Radius.circular(10),
+          nip: LocalStorage().isArabicLanguage()
+              ? _isMe
+                  ? BubbleNip.leftTop
+                  : BubbleNip.rightTop
+              : _isMe
+                  ? BubbleNip.rightTop
+                  : BubbleNip.leftTop,
+          color: bg,
+          child: ConstrainedBox(
             constraints: new BoxConstraints(
                 minHeight: 25,
-                minWidth: 100,
-                // maxHeight: 30.0,
                 maxWidth: MediaQuery.of(context).size.width * .7),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -66,37 +65,36 @@ class BubbleChat extends StatelessWidget {
               ],
             ),
           ),
-          PositionedDirectional(
-            end: 0,
-            bottom: 0,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(width: 10),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(top: 10),
-                  child: Text(
-                    CommonMethods().getDateStringHhMmA(chatMessage.time),
-                    style: Theme.of(Get.context)
-                        .textTheme
-                        .caption
-                        .apply(color: _isMe ? Colors.white : Colors.grey),
-                  ),
-                ),
-                SizedBox(width: 3.0),
-                Visibility(
-                  visible: _isMe,
-                  child: Icon(
-                    icon,
-                    size: 20.0,
-                    color: iconColor,
-                  ),
-                ),
-              ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment:
+              _isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          children: [
+            SizedBox(width: 10),
+            Padding(
+              padding: const EdgeInsetsDirectional.only(top: 10),
+              child: Text(
+                CommonMethods().getDateStringYMdHM(chatMessage.time),
+                style: Theme.of(Get.context)
+                    .textTheme
+                    .caption
+                    .apply(color: Colors.grey),
+              ),
             ),
-          )
-        ],
-      ),
+            SizedBox(width: 3.0),
+            Visibility(
+              visible: _isMe,
+              child: Icon(
+                icon,
+                size: 20.0,
+                color: iconColor,
+              ),
+            ),
+            SizedBox(width: 10),
+          ],
+        )
+      ],
     );
   }
 
@@ -141,48 +139,21 @@ class BubbleChat extends StatelessWidget {
   _text(textColor) {
     return chatMessage.messageText == null
         ? SizedBox()
-        : LayoutBuilder(builder: (context, constraints) {
-            final placeholderText = '                  \u202F';
-            final messagePainter = TextPainter(
-              text: TextSpan(
-                  text: chatMessage.messageText,
-                  style: TextStyle(fontSize: 20)),
-              textDirection: TextDirection.ltr,
-              textWidthBasis: TextWidthBasis.longestLine,
-            )..layout(maxWidth: constraints.maxWidth);
-
-            final timePainter = TextPainter(
-              text: TextSpan(
-                  text: chatMessage.messageText + placeholderText,
-                  style: TextStyle(fontSize: 20)),
-              textDirection: TextDirection.ltr,
-              textWidthBasis: TextWidthBasis.longestLine,
-            )..layout(maxWidth: constraints.maxWidth);
-
-            final changeLine = timePainter.minIntrinsicWidth.ceilToDouble() >
-                    messagePainter.minIntrinsicWidth.ceilToDouble() + 0.001 ||
-                timePainter.height > messagePainter.height + 0.001;
-
-            print(chatMessage.messageText + changeLine.toString());
-            return Padding(
-              padding:
-                  const EdgeInsetsDirectional.only(start: 4, end: 8, top: 8),
-              child: SelectableLinkify(
-                onOpen: (link) async {
-                  if (await canLaunch(link.url)) {
-                    await launch(link.url);
-                  } else {
-                    throw 'Could not launch $link';
-                  }
-                },
-                text: changeLine
-                    ? chatMessage.messageText + placeholderText
-                    : chatMessage.messageText + placeholderText,
-                textAlign: TextAlign.start,
-                style: TextStyle(color: textColor, fontSize: 20),
-                linkStyle: TextStyle(color: Colors.green),
-              ),
-            );
-          });
+        : Padding(
+            padding: const EdgeInsetsDirectional.only(start: 4, end: 8, top: 8),
+            child: SelectableLinkify(
+              onOpen: (link) async {
+                if (await canLaunch(link.url)) {
+                  await launch(link.url);
+                } else {
+                  throw 'Could not launch $link';
+                }
+              },
+              text: chatMessage.messageText.trim(),
+              textAlign: TextAlign.start,
+              style: TextStyle(color: textColor, fontSize: 20),
+              linkStyle: TextStyle(color: Colors.green),
+            ),
+          );
   }
 }
