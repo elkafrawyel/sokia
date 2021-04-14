@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/api/api_service.dart';
+import 'package:sokia_app/helper/get_binding.dart';
 import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/screens/notifications/notifications_screen.dart';
 
@@ -111,7 +112,7 @@ class PushNotificationsManager {
 
   Future onSelectNotification(String message) async {
     print('Message clicked : $message');
-    Get.to(NotificationsScreen());
+    Get.to(NotificationsScreen(), binding: GetBinding());
   }
 
   void showNotification(String title, String body) async {

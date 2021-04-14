@@ -70,13 +70,13 @@ dev_dependencies:
   flutter_native_splash:
 
 flutter_native_splash:
-#  color: "#0DA0B4"
+  #  color: "#0DA0B4"
   image: src/images/splash.png
   background_image: "src/images/splash_bg.png"
   android: true
   ios: true
-#  android_gravity: fill
-#  ios_content_mode: scaleAspectFill
+  #  android_gravity: fill
+  #  ios_content_mode: scaleAspectFill
 
   # run this command
   #  flutter pub run flutter_native_splash:create

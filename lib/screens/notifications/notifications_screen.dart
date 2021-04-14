@@ -9,41 +9,35 @@ import 'package:sokia_app/helper/custom_widgets/main_screen.dart';
 import 'notificationItem.dart';
 
 class NotificationsScreen extends StatelessWidget {
-  final controller = Get.put(NotificationsController());
-
-  NotificationsScreen() {
-    controller.getNotifications();
-  }
 
   @override
   Widget build(BuildContext context) {
     return MainScreen(
       title: 'notification'.tr,
       pageBackground: kBackgroundColor,
-      body: RefreshIndicator(
-        onRefresh: () {
-          controller.onInit();
-          return Future.value();
-        },
-        child: GetBuilder<NotificationsController>(
-          builder: (controller) => controller.loading
-              ? LoadingView()
-              : controller.empty
-                  ? EmptyView(
-                      emptyViews: EmptyViews.Magnifier,
-                      textColor: Colors.black,
-                    )
-                  : ListView.builder(
+      body: GetBuilder<NotificationsController>(
+        builder: (controller) => controller.loading
+            ? LoadingView()
+            : controller.empty
+                ? EmptyView(
+                    emptyViews: EmptyViews.Magnifier,
+                    textColor: Colors.black,
+                  )
+                : RefreshIndicator(
+                    onRefresh: () {
+                      controller.getNotifications();
+                      return Future.value();
+                    },
+                    child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) {
                         return NotificationItem(
-                          notificationModel:
-                              controller.notificationList[index],
+                          notificationModel: controller.notificationList[index],
                         );
                       },
                       itemCount: controller.notificationList.length,
                     ),
-        ),
+                  ),
       ),
     );
   }

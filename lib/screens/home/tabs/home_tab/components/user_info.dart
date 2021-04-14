@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/controllers/user_controller.dart';
 import 'package:sokia_app/helper/Constant.dart';
+import 'package:sokia_app/helper/get_binding.dart';
 import 'package:sokia_app/screens/notifications/notifications_screen.dart';
 
 class UserInfo extends StatelessWidget {
@@ -52,7 +53,7 @@ class UserInfo extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              Get.to(() => NotificationsScreen());
+              Get.to(() => NotificationsScreen(), binding: GetBinding());
             },
             icon: Icon(
               Icons.notifications_active,
