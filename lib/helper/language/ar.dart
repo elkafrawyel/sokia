@@ -260,5 +260,6 @@ Map<String, String> ar = {
   'continueToOrders': 'متابعة لانشاء طلب',
   'customerService': 'خدمة العملاء',
   'writeMessage': 'اكتب رسالة...',
-  'howToHelpYou':'كيف يمكننا مساعدتك'
+  'howToHelpYou':'كيف يمكننا مساعدتك',
+  'phoneOrEmail':'البريد الالكتروني او رقم الهاتف'
 };

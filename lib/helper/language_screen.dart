@@ -12,6 +12,7 @@ class LanguageScreen extends StatelessWidget {
   final String arabic = 'العربية';
   final String english = 'English';
   final String urdu = 'Urdu';
+  final String persian = 'Persian';
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,10 @@ class LanguageScreen extends StatelessWidget {
       title: 'appLanguage'.tr,
       pageBackground: kBackgroundColor,
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -27,7 +31,10 @@ class LanguageScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Container(
                 padding: EdgeInsets.all(10),
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 decoration: BoxDecoration(
                     color: Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(10)),
@@ -36,66 +43,88 @@ class LanguageScreen extends StatelessWidget {
             ),
             Expanded(
               child: GetBuilder<MainController>(
-                builder: (controller) => Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 20),
-                  child: Column(
-                    children: [
-                      Row(
+                builder: (controller) =>
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(start: 20),
+                      child: Column(
                         children: [
-                          Radio(
-                            //if value and groupValue are the same it will be selected otherwise not selected
-                            value: 'ar',
-                            activeColor: kPrimaryColor,
-                            groupValue: LocalStorage()
+                          Row(
+                            children: [
+                              Radio(
+                                //if value and groupValue are the same it will be selected otherwise not selected
+                                value: 'ar',
+                                activeColor: kPrimaryColor,
+                                groupValue: LocalStorage()
                                     .getString(LocalStorage.languageKey),
-                            onChanged: (value) {
-                              Get.find<MainController>().changeLanguage('ar');
-                              Get.find<HomeController>().onInit();
-                            },
+                                onChanged: (value) {
+                                  Get.find<MainController>().changeLanguage(
+                                      'ar');
+                                  Get.find<HomeController>().onInit();
+                                },
+                              ),
+                              Text(arabic, style: TextStyle(fontSize: 14)),
+                            ],
                           ),
-                          Text(arabic, style: TextStyle(fontSize: 14)),
+                          Row(
+                            children: [
+                              Radio(
+                                value: 'en',
+                                activeColor: kPrimaryColor,
+                                groupValue: LocalStorage()
+                                    .getString(LocalStorage.languageKey),
+                                onChanged: (value) {
+                                  Get.find<MainController>().changeLanguage(
+                                      'en');
+                                  Get.find<HomeController>().onInit();
+                                },
+                              ),
+                              Text(english, style: TextStyle(fontSize: 14)),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Radio(
+                                value: 'ur',
+                                activeColor: kPrimaryColor,
+                                groupValue: LocalStorage()
+                                    .getString(LocalStorage.languageKey),
+                                onChanged: (value) {
+                                  Get.find<MainController>().changeLanguage(
+                                      'ur');
+                                  Get.find<HomeController>().onInit();
+                                },
+                              ),
+                              Text(urdu, style: TextStyle(fontSize: 14)),
+                            ],
+                          ), Row(
+                            children: [
+                              Radio(
+                                value: 'fa',
+                                activeColor: kPrimaryColor,
+                                groupValue: LocalStorage()
+                                    .getString(LocalStorage.languageKey),
+                                onChanged: (value) {
+                                  Get.find<MainController>().changeLanguage(
+                                      'fa');
+                                  Get.find<HomeController>().onInit();
+                                },
+                              ),
+                              Text(persian, style: TextStyle(fontSize: 14)),
+                            ],
+                          ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Radio(
-                            value: 'en',
-                            activeColor: kPrimaryColor,
-                            groupValue: LocalStorage()
-                                    .getString(LocalStorage.languageKey),
-                            onChanged: (value) {
-                              Get.find<MainController>().changeLanguage('en');
-                              Get.find<HomeController>().onInit();
-                            },
-                          ),
-                          Text(english, style: TextStyle(fontSize: 14)),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                            value: 'ur',
-                            activeColor: kPrimaryColor,
-                            groupValue: LocalStorage()
-                                    .getString(LocalStorage.languageKey),
-                            onChanged: (value) {
-                              Get.find<MainController>().changeLanguage('ur');
-                              Get.find<HomeController>().onInit();
-                            },
-                          ),
-                          Text(urdu, style: TextStyle(fontSize: 14)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
               ),
             ),
             Align(
               alignment: AlignmentDirectional.bottomCenter,
               child: Image.asset(
                 'src/images/bottom_bg.png',
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 fit: BoxFit.fill,
               ),
             ),

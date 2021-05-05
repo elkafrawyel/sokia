@@ -265,5 +265,6 @@ Map<String, String> en = {
   'customerService':'Customer Service',
   'writeMessage': 'Write a message...',
   'howToHelpYou': 'How can we help you?',
+  'phoneOrEmail':'Email or Phone Numer'
 
 };

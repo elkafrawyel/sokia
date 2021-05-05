@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getX;
 import 'package:sokia_app/controllers/user_controller.dart';
-import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/screens/home/home_screen.dart';
 

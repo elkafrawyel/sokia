@@ -51,11 +51,13 @@ class AuthController extends GetxController {
           loading = false;
           update();
 
-          userModel.approved
-              ? Get.offAll(() => VerifyPhoneScreen(
-                    phone: userModel.phone,
-                  ))
-              : Get.offAll(() => HomeScreen());
+          Get.offAll(() => HomeScreen());
+
+          // userModel.approved
+          //     ? Get.offAll(() => VerifyPhoneScreen(
+          //           phone: userModel.phone,
+          //         ))
+          //     : Get.offAll(() => HomeScreen());
         } else if (dataState is ErrorState) {
           loading = false;
           error = true;
@@ -289,7 +291,7 @@ class AuthController extends GetxController {
                 break;
 
               } catch (e) {
-                print("error");
+                print("error $e");
               }
               break;
             case AuthorizationStatus.error:
@@ -301,7 +303,7 @@ class AuthController extends GetxController {
               break;
           }
         } catch (error) {
-          print("error with apple sign in");
+          print("error with apple sign in $error");
         }
         break;
     }

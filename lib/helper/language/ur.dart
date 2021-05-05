@@ -153,5 +153,6 @@ Map<String, String> ur = {
   'continueToOrders': 'آرڈر بنانے کے لئے فالو اپ کریں',
   'customerService': 'صارفین کی خدمت',
   'writeMessage': 'ایک پیغام لکھیں',
-  'howToHelpYou':'ہم کیسے آپ کی مدد کر سکتے ہیں'
+  'howToHelpYou':'ہم کیسے آپ کی مدد کر سکتے ہیں',
+  'phoneOrEmail':'ای میل یا فون نمبر'
 };

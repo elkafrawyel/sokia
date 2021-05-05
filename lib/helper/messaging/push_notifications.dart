@@ -1,9 +1,7 @@
-import 'dart:io';
+import 'dart:convert';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/api/api_service.dart';
 import 'package:sokia_app/helper/get_binding.dart';
@@ -48,11 +46,10 @@ class PushNotificationsManager {
           new AndroidInitializationSettings('@mipmap/ic_launcher');
 
       var initializationSettingsIOS = IOSInitializationSettings();
-      var initializationSettingsMAC = MacOSInitializationSettings();
       var initializationSettings = InitializationSettings(
-          android: initializationSettingsAndroid,
-          iOS: initializationSettingsIOS,
-          macOS: initializationSettingsMAC);
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsIOS,
+      );
 
       _localNotificationsPlugin.initialize(initializationSettings,
           onSelectNotification: onSelectNotification);
@@ -71,7 +68,7 @@ class PushNotificationsManager {
         print('--onMessage--');
 
         if (message.notification != null) {
-          print('Message Notification: ${message.notification}');
+          print('Message Notification: ${message.notification.body}');
         }
 
         if (message.data != null) {
@@ -93,18 +90,12 @@ class PushNotificationsManager {
         showNotification(message);
       });
 
-      FirebaseMessaging.onBackgroundMessage(
-          _firebaseMessagingBackgroundHandler);
-
       _initialized = true;
     }
   }
 
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    await Firebase.initializeApp();
-
-    print('--onBackgroundMessage--');
+  handleBackGroundMessage(RemoteMessage message) async {
+    print('--on Background Message--');
 
     if (message.notification != null) {
       print('Message Notification: ${message.notification.title}');
@@ -114,30 +105,30 @@ class PushNotificationsManager {
       print('Message Data: ${message.data}');
     }
 
-    showNotification(message);
+    // showNotification(message);
   }
 
-  Future onSelectNotification(String message) async {
-    print('Message clicked : $message');
-    // if (message.data['type'] == 'chat') {
-    //   Get.to(() => ChatScreen(), binding: GetBinding());
-    // } else {
-    //   Get.to(() => NotificationsScreen(), binding: GetBinding());
-    // }
+  Future onSelectNotification(String payload) async {
+    print('Message clicked : $payload');
+    Map<String, dynamic> data = json.decode(payload);
+    print('Message payload : ${data['formId']}');
+    if (data['type'] == 'chat') {
+      Get.to(() => ChatScreen(), binding: GetBinding());
+    } else {
+      Get.to(() => NotificationsScreen(), binding: GetBinding());
+    }
   }
 
   void showNotification(RemoteMessage message) async {
     //if chat no notifications allowed
-    if (message.data['type'] == 'chat') {
-
-    } else {
-      String title = message.notification.title;
-      String body = message.notification.body;
-      await _demoNotification(title, body);
-    }
+    String title = message.notification.title;
+    String body = message.notification.body;
+    String payload = json.encode(message.data);
+    await _demoNotification(title, body, payload);
   }
 
-  Future<void> _demoNotification(String title, String body) async {
+  Future<void> _demoNotification(
+      String title, String body, String payload) async {
     String _channelId = "com.sokia.app";
     String _channelName = "Sokia";
     String _channelDesc = "Charity App";
@@ -155,11 +146,13 @@ class PushNotificationsManager {
     var iOSChannelSpecifics = IOSNotificationDetails();
     var channelSpecifics = NotificationDetails(
         android: androidChannelSpecifics, iOS: iOSChannelSpecifics);
-    await _localNotificationsPlugin.show(1995, title, body, channelSpecifics);
-
-    FlutterRingtonePlayer.play(
-      android: AndroidSounds.notification,
-      ios: IosSounds.glass,
+    await _localNotificationsPlugin.show(
+      1995,
+      title,
+      body,
+      channelSpecifics,
+      payload: payload,
     );
+
   }
 }

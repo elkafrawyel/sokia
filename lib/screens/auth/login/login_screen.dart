@@ -83,14 +83,14 @@ class LoginScreen extends StatelessWidget {
                             height: 20,
                           ),
                           CustomOutlinedTextFormField(
-                            text: 'phone'.tr,
+                            text: 'phoneOrEmail'.tr,
                             controller: phoneController,
-                            hintText: 'phone'.tr,
+                            hintText: 'phoneOrEmail'.tr,
                             maxLines: 1,
-                            labelText: 'phone'.tr,
+                            labelText: 'phoneOrEmail'.tr,
                             // suffixText: '+966',
-                            validateEmptyText: 'phoneIsEmpty'.tr,
-                            keyboardType: TextInputType.phone,
+                            validateEmptyText: 'requiredField'.tr,
+                            keyboardType: TextInputType.text,
                             labelColor: Colors.black,
                             hintColor: Colors.black,
                             textColor: Colors.black,
@@ -140,13 +140,13 @@ class LoginScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'forgetPassword'.tr,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: kAccentColor,
-                              decoration: TextDecoration.underline),
-                        ),
+                        // Text(
+                        //   'forgetPassword'.tr,
+                        //   style: TextStyle(
+                        //       fontSize: 14,
+                        //       color: kAccentColor,
+                        //       decoration: TextDecoration.underline),
+                        // ),
                         GestureDetector(
                           onTap: () {
                             Get.to(() => RegisterScreen());

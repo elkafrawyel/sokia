@@ -3,6 +3,7 @@ import 'package:sokia_app/helper/language/ur.dart';
 
 import 'ar.dart';
 import 'en.dart';
+import 'fa.dart';
 
 class Translation extends Translations {
   @override
@@ -10,5 +11,6 @@ class Translation extends Translations {
         'en': en,
         'ar': ar,
         'ur': ur,
+        'fa': fa,
       };
 }
