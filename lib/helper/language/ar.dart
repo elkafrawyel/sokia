@@ -1,5 +1,5 @@
 Map<String, String> ar = {
-  'appName': "سقيا",
+  'appName': "العربي المضيف",
   'labelWelcome': "اهلا وسهلا بك",
   'pickImage': "أختر صورة",
   'loading': "يتم التحميل",
@@ -211,7 +211,7 @@ Map<String, String> ar = {
   'notAvailableFastShipping': 'غير متاح التوصيل السريع',
   'opened': 'مفتوح',
   'closed': 'مغلق',
-  'inSokia': 'في سقيا',
+  'inSokia': 'في العربي المضيف',
   'name-email-phone': 'الاسم, رقم الجوال, البريد الالكتروني',
   'passwordMismatch': 'كلمة السر غير متطابقة',
   'connectedTitle': 'مرحي',

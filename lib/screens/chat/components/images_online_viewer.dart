@@ -26,18 +26,18 @@ class OnlineImagesViewer extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         actions: [
-          IconButton(
-            icon: Icon(MdiIcons.download),
-            onPressed: () {
-              CommonMethods().showToast(message: 'Soon',);
-            },
-            color: Colors.white,
-          ),
-          IconButton(
-            icon: Icon(MdiIcons.dotsVertical),
-            onPressed: () {},
-            color: Colors.white,
-          ),
+          // IconButton(
+          //   icon: Icon(MdiIcons.download),
+          //   onPressed: () {
+          //     CommonMethods().showToast(message: 'Soon',);
+          //   },
+          //   color: Colors.white,
+          // ),
+          // IconButton(
+          //   icon: Icon(MdiIcons.dotsVertical),
+          //   onPressed: () {},
+          //   color: Colors.white,
+          // ),
         ],
       ),
       backgroundColor: Colors.black,

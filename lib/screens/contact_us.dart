@@ -73,9 +73,12 @@ class ContactUsScreen extends StatelessWidget {
                                                 Radius.circular(10))),
                                       ),
                                       onPressed: () {},
-                                      label: CustomText(
-                                        fontSize: 12,
-                                        text: 'whatsAppCall'.tr,
+                                      label: Expanded(
+                                        child: CustomText(
+                                          maxLines: 2,
+                                          fontSize: 12,
+                                          text: 'whatsAppCall'.tr,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -97,9 +100,12 @@ class ContactUsScreen extends StatelessWidget {
                                             Radius.circular(10))),
                                   ),
                                   onPressed: () {},
-                                  label: CustomText(
-                                    fontSize: 12,
-                                    text: 'directCall'.tr,
+                                  label: Expanded(
+                                    child: CustomText(
+                                      fontSize: 12,
+                                      maxLines: 2,
+                                      text: 'directCall'.tr,
+                                    ),
                                   ),
                                 ),
                               )

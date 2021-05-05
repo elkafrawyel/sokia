@@ -11,6 +11,7 @@ import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/custom_button.dart';
 import 'package:sokia_app/helper/custom_widgets/main_screen.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
+import 'package:sokia_app/helper/get_binding.dart';
 import 'package:sokia_app/helper/map_helper/custom_marker.dart';
 import 'package:sokia_app/screens/chat/chat_screen.dart';
 
@@ -311,7 +312,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       colorText: Colors.white,
                       colorBackground: kPrimaryColor,
                       onPressed: () {
-                        Get.to(() => ChatScreen());
+                        Get.to(() => ChatScreen(), binding: GetBinding());
                       },
                     ),
                   ),

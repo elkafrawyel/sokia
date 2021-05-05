@@ -1,12 +1,14 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/api/api_service.dart';
 import 'package:sokia_app/helper/get_binding.dart';
 import 'package:sokia_app/helper/local_storage.dart';
+import 'package:sokia_app/screens/chat/chat_screen.dart';
 import 'package:sokia_app/screens/notifications/notifications_screen.dart';
 
 class PushNotificationsManager {
@@ -24,7 +26,7 @@ class PushNotificationsManager {
 
   bool _initialized = false;
 
-  Future<void> init(BuildContext context) async {
+  Future<void> init() async {
     _firebaseMessaging.getToken().then((token) {
       String fireToken = LocalStorage().getString(LocalStorage.firebaseToken);
       if (fireToken == null) {
@@ -67,30 +69,32 @@ class PushNotificationsManager {
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         print('--onMessage--');
-        print('Message data: ${message.data}');
 
         if (message.notification != null) {
-          print(
-              'Message also contained a notification: ${message.notification}');
+          print('Message Notification: ${message.notification}');
         }
 
-        showNotification(message.notification.title, message.notification.body);
+        if (message.data != null) {
+          print('Message Data: ${message.data}');
+        }
+
+        showNotification(message);
       });
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         print('--onMessageOpenedApp--');
-        print('Message data: ${message.data}');
 
         if (message.notification != null) {
-          print(
-              'Message also contained a notification: ${message.notification}');
+          print('Message Notification: ${message.notification.title}');
         }
-
-        showNotification(message.notification.title, message.notification.body);
+        if (message.data != null) {
+          print('Message Data: ${message.data}');
+        }
+        showNotification(message);
       });
 
-      // FirebaseMessaging.onBackgroundMessage(
-      //     _firebaseMessagingBackgroundHandler);
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
 
       _initialized = true;
     }
@@ -101,23 +105,36 @@ class PushNotificationsManager {
     await Firebase.initializeApp();
 
     print('--onBackgroundMessage--');
-    print('Message data: ${message.data}');
 
     if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
+      print('Message Notification: ${message.notification.title}');
     }
 
-    showNotification(message.notification.title, message.notification.body);
+    if (message.data != null) {
+      print('Message Data: ${message.data}');
+    }
+
+    showNotification(message);
   }
 
   Future onSelectNotification(String message) async {
     print('Message clicked : $message');
-    Get.to(NotificationsScreen(), binding: GetBinding());
+    // if (message.data['type'] == 'chat') {
+    //   Get.to(() => ChatScreen(), binding: GetBinding());
+    // } else {
+    //   Get.to(() => NotificationsScreen(), binding: GetBinding());
+    // }
   }
 
-  void showNotification(String title, String body) async {
+  void showNotification(RemoteMessage message) async {
     //if chat no notifications allowed
-    await _demoNotification(title, body);
+    if (message.data['type'] == 'chat') {
+
+    } else {
+      String title = message.notification.title;
+      String body = message.notification.body;
+      await _demoNotification(title, body);
+    }
   }
 
   Future<void> _demoNotification(String title, String body) async {

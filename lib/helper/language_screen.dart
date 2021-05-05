@@ -11,6 +11,7 @@ class LanguageScreen extends StatelessWidget {
   //radio switch value
   final String arabic = 'العربية';
   final String english = 'English';
+  final String urdu = 'Urdu';
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +44,10 @@ class LanguageScreen extends StatelessWidget {
                         children: [
                           Radio(
                             //if value and groupValue are the same it will be selected otherwise not selected
-                            value: true,
+                            value: 'ar',
                             activeColor: kPrimaryColor,
-                            groupValue: LocalStorage().isArabicLanguage(),
+                            groupValue: LocalStorage()
+                                    .getString(LocalStorage.languageKey),
                             onChanged: (value) {
                               Get.find<MainController>().changeLanguage('ar');
                               Get.find<HomeController>().onInit();
@@ -57,15 +59,31 @@ class LanguageScreen extends StatelessWidget {
                       Row(
                         children: [
                           Radio(
-                            value: false,
+                            value: 'en',
                             activeColor: kPrimaryColor,
-                            groupValue: LocalStorage().isArabicLanguage(),
+                            groupValue: LocalStorage()
+                                    .getString(LocalStorage.languageKey),
                             onChanged: (value) {
                               Get.find<MainController>().changeLanguage('en');
                               Get.find<HomeController>().onInit();
                             },
                           ),
                           Text(english, style: TextStyle(fontSize: 14)),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Radio(
+                            value: 'ur',
+                            activeColor: kPrimaryColor,
+                            groupValue: LocalStorage()
+                                    .getString(LocalStorage.languageKey),
+                            onChanged: (value) {
+                              Get.find<MainController>().changeLanguage('ur');
+                              Get.find<HomeController>().onInit();
+                            },
+                          ),
+                          Text(urdu, style: TextStyle(fontSize: 14)),
                         ],
                       ),
                     ],

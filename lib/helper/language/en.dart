@@ -1,5 +1,5 @@
 Map<String, String> en = {
-  'appName': "Sokia",
+  'appName': "The Arab host",
   'labelWelcome': 'Welcome',
   'labelSelectLanguage': "Select Language",
   'labelInfo': "This is multi-languages demo application",

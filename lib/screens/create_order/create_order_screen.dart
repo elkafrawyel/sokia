@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sokia_app/controllers/home_controller.dart';
 import 'package:sokia_app/controllers/create_order_controller.dart';
-import 'package:sokia_app/data/data_models/order_model.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
@@ -12,7 +10,6 @@ import 'package:sokia_app/helper/custom_widgets/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_outline_text_form_field.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
-import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/helper/payment/payment_api.dart';
 import 'package:sokia_app/screens/create_order/components/single_item_card.dart';
 
@@ -359,8 +356,11 @@ class CreateOrderScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomText(
-                          text: 'orderTotalPrice'.tr,
+                        Expanded(
+                          child: CustomText(
+                            maxLines: 2,
+                            text: 'orderTotalPrice'.tr,
+                          ),
                         ),
                         CustomText(
                           text: _orderController.priceWithCurrency(

@@ -599,7 +599,6 @@ class ApiService {
   sendMessage({
     @required String message,
     @required List<Media> media,
-    @required Function(String progress) onUploadProgress,
     @required Function(DataState dataState) state,
   }) async {
     if (await _checkNetwork()) {
@@ -619,7 +618,7 @@ class ApiService {
           data: formData,
           onSendProgress: (count, total) {
             final progress = ((count / total) * 100).toStringAsFixed(0);
-            onUploadProgress(progress);
+            // onUploadProgress(progress);
           },
         );
 

@@ -6,7 +6,6 @@ import 'package:sokia_app/data/data_models/super_message.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/local_storage.dart';
-import 'package:sokia_app/screens/chat/components/images_offline_grid.dart';
 import 'package:sokia_app/screens/chat/components/images_online_grid.dart';
 import 'package:sokia_app/screens/chat/components/video_player_view.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,8 +28,6 @@ class BubbleChat extends StatelessWidget {
   Widget build(BuildContext context) {
     final _isMe = chatMessage.to == 'management';
     final bg = _isMe ? kPrimaryColor : Color.fromRGBO(255, 255, 255, 100);
-    final icon = chatMessage.seen ? Icons.done_all : Icons.done;
-    final iconColor = chatMessage.seen ? Colors.white : Colors.white;
     final textColor = _isMe ? Colors.white : Colors.black;
     return Bubble(
       margin: BubbleEdges.only(top: 10),
@@ -69,30 +66,15 @@ class BubbleChat extends StatelessWidget {
           PositionedDirectional(
             end: 0,
             bottom: 0,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(width: 10),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(top: 10),
-                  child: Text(
-                    CommonMethods().getDateStringHhMmA(chatMessage.time),
-                    style: Theme.of(Get.context)
-                        .textTheme
-                        .caption
-                        .apply(color: _isMe ? Colors.white : Colors.grey),
-                  ),
-                ),
-                SizedBox(width: 3.0),
-                Visibility(
-                  visible: _isMe,
-                  child: Icon(
-                    icon,
-                    size: 20.0,
-                    color: iconColor,
-                  ),
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(top: 10),
+              child: Text(
+                CommonMethods().getDateStringHhMmA(chatMessage.time),
+                style: Theme.of(Get.context)
+                    .textTheme
+                    .caption
+                    .apply(color: _isMe ? Colors.white : Colors.grey),
+              ),
             ),
           )
         ],
@@ -101,48 +83,24 @@ class BubbleChat extends StatelessWidget {
   }
 
   _images() {
-    if (chatMessage is OnlineMessage) {
-      OnlineMessage onlineMessage = (chatMessage as OnlineMessage);
-      return onlineMessage.imagesUrl.isEmpty
-          ? SizedBox()
-          : ImagesOnlineGrid(images: onlineMessage.imagesUrl);
-    } else {
-      LocalMessage localMessage = (chatMessage as LocalMessage);
-      return localMessage.imagesFiles.isEmpty
-          ? SizedBox()
-          : ImagesOfflineGrid(
-              uploading: localMessage.uploading,
-              images: localMessage.imagesFiles);
-    }
+    return chatMessage.imagesUrl.isEmpty
+        ? SizedBox()
+        : ImagesOnlineGrid(images: chatMessage.imagesUrl);
   }
 
   _video() {
-    if (chatMessage is OnlineMessage) {
-      OnlineMessage onlineMessage = (chatMessage as OnlineMessage);
-      return onlineMessage.videosUrl.isEmpty
-          ? SizedBox()
-          : VideoPlayerView(
-              mUrl: onlineMessage.videosUrl[0],
-              local: false,
-              uploading: false,
-            );
-    } else {
-      LocalMessage localMessage = (chatMessage as LocalMessage);
-      return localMessage.videosFiles.isEmpty
-          ? SizedBox()
-          : VideoPlayerView(
-              mUrl: localMessage.videosFiles[0].path,
-              local: true,
-              uploading: localMessage.uploading,
-            );
-    }
+    return chatMessage.videosUrl.isEmpty
+        ? SizedBox()
+        : VideoPlayerView(
+      mUrl: chatMessage.videosUrl[0],
+    );
   }
 
   _text(textColor) {
     return chatMessage.messageText == null
         ? SizedBox()
         : LayoutBuilder(builder: (context, constraints) {
-            final placeholderText = '                  \u202F';
+            final placeholderText = '            \u202F';
             final messagePainter = TextPainter(
               text: TextSpan(
                   text: chatMessage.messageText,

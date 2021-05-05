@@ -19,10 +19,8 @@ class _SendMessageViewState extends State<SendMessageView> {
   final TextEditingController controller = TextEditingController();
   var canSendMessage = false;
   final chatController = Get.find<ChatController>();
-  var emojiOpened = false;
   var keyboardOpeded = false;
   Timer debouncer;
-  FocusNode focusNode = FocusNode();
 
   void debounce(VoidCallback callback,
       {Duration duration = const Duration(seconds: 2)}) {
@@ -33,25 +31,9 @@ class _SendMessageViewState extends State<SendMessageView> {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    focusNode.addListener(() {
-      if (focusNode.hasFocus) {
-        setState(() {
-          emojiOpened = false;
-        });
-      }
-    });
-  }
-
-  @override
   void dispose() {
     super.dispose();
-    debouncer.cancel();
-    if (focusNode.hasFocus) {
-      focusNode.dispose();
-    }
+    if (debouncer != null) debouncer.cancel();
   }
 
   @override
@@ -59,7 +41,6 @@ class _SendMessageViewState extends State<SendMessageView> {
     return WillPopScope(
       onWillPop: _willPopCallback,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Container(
             margin: EdgeInsets.all(8.0),
@@ -79,24 +60,11 @@ class _SendMessageViewState extends State<SendMessageView> {
                     ),
                     child: Row(
                       children: [
-                        IconButton(
-                            icon: Icon(
-                              Icons.insert_emoticon,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              focusNode.unfocus();
-                              focusNode.canRequestFocus = false;
-                              setState(() {
-                                emojiOpened = !emojiOpened;
-                              });
-                            }),
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsetsDirectional.only(
                                 start: 10, end: 10),
                             child: TextField(
-                              focusNode: focusNode,
                               minLines: 1,
                               maxLines: 8,
                               controller: controller,
@@ -154,13 +122,8 @@ class _SendMessageViewState extends State<SendMessageView> {
                             color: Colors.grey,
                           ),
                           onPressed: () {
-                            focusNode.unfocus();
-                            focusNode.canRequestFocus = false;
-                            setState(() {
-                              emojiOpened = false;
-                            });
-
-                            _openBottomSheet();
+                            _selectImages();
+                            // _openBottomSheet();
                           },
                         ),
                       ],
@@ -173,16 +136,17 @@ class _SendMessageViewState extends State<SendMessageView> {
                   onTap: !canSendMessage
                       ? null
                       : () {
-                          _sendMessage(
-                            text: controller.text.isEmpty
-                                ? null
-                                : controller.text.trim(),
-                            media: [],
-                          );
+                          String messageText = controller.text.isEmpty
+                              ? null
+                              : controller.text.trim();
                           setState(() {
                             controller.text = '';
                             canSendMessage = false;
                           });
+                          _sendMessage(
+                            text: messageText,
+                            media: [],
+                          );
                         },
                   child: Container(
                     decoration: BoxDecoration(
@@ -208,62 +172,6 @@ class _SendMessageViewState extends State<SendMessageView> {
               ],
             ),
           ),
-          Visibility(
-            visible: emojiOpened,
-            child: Stack(
-              children: [
-                EmojiPicker(
-                  rows: 4,
-                  columns: 7,
-                  buttonMode: Platform.isAndroid
-                      ? ButtonMode.MATERIAL
-                      : ButtonMode.CUPERTINO,
-                  // recommendKeywords: ["racing", "horse"],
-                  numRecommended: 10,
-                  onEmojiSelected: (emoji, category) {
-                    controller.text = controller.text + emoji.emoji;
-                    setState(() {
-                      canSendMessage = true;
-                    });
-                  },
-                ),
-                PositionedDirectional(
-                  top: 0,
-                  bottom: 0,
-                  start: 30,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: InkWell(
-                        child: Icon(
-                          Icons.backspace,
-                          size: 30,
-                          color: Colors.black54,
-                        ),
-                        onTap: () {
-                          controller.text = controller.text
-                              .substring(0, controller.text.length - 2);
-                          setState(() {
-                            if (controller.text.isEmpty) {
-                              canSendMessage = false;
-                            }
-                          });
-                        },
-                        onLongPress: () {
-                          controller.text = '';
-                          setState(() {
-                            canSendMessage = false;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -272,11 +180,6 @@ class _SendMessageViewState extends State<SendMessageView> {
   Future<bool> _willPopCallback() async {
     if (keyboardOpeded) {
       Get.back();
-      return Future.value(false);
-    } else if (emojiOpened) {
-      setState(() {
-        emojiOpened = false;
-      });
       return Future.value(false);
     } else {
       return Future.value(true);
