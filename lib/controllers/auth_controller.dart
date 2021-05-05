@@ -1,3 +1,4 @@
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -238,39 +239,70 @@ class AuthController extends GetxController {
         CommonMethods().goOffline();
         break;
       case DataConnectionStatus.connected:
-        // final credential = await SignInWithApple.getAppleIDCredential(
-        //   scopes: [
-        //     AppleIDAuthorizationScopes.email,
-        //     AppleIDAuthorizationScopes.fullName,
-        //   ],
-        // );
-        //
-        // print(credential);
-        // ApiService().registerWithSocialAccount(
-        //   name: credential.givenName,
-        //   email: credential.email,
-        //   socialType: 'apple',
-        //   state: (dataState) async {
-        //     if (dataState is SuccessState) {
-        //       UserModel userModel = dataState.data as UserModel;
-        //
-        //       saveUserState(userModel);
-        //
-        //       loading = false;
-        //       update();
-        //
-        //       await Get.offAll(() => HomeScreen());
-        //     } else if (dataState is ErrorState) {
-        //       loading = false;
-        //       error = true;
-        //       update();
-        //     } else if (dataState is NoConnectionState) {
-        //       loading = false;
-        //       CommonMethods().goOffline();
-        //       update();
-        //     }
-        //   },
-        // );
+        try {
+
+          final AuthorizationResult result = await AppleSignIn.performRequests([
+            AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+          ]);
+
+          switch (result.status) {
+            case AuthorizationStatus.authorized:
+              try {
+                print("successfully sign in");
+                final AppleIdCredential appleIdCredential = result.credential;
+
+                OAuthProvider oAuthProvider =
+                new OAuthProvider("apple.com");
+                final AuthCredential credential = oAuthProvider.credential(
+                  idToken:
+                  String.fromCharCodes(appleIdCredential.identityToken),
+                  accessToken:
+                  String.fromCharCodes(appleIdCredential.authorizationCode),
+                );
+
+                 await FirebaseAuth.instance
+                    .signInWithCredential(credential);
+
+                User user = FirebaseAuth.instance.currentUser;
+                UserInfo userInfo = user.providerData[0];
+                print('<-- Apple Login ');
+                print('Name ${userInfo.displayName}');
+                print('Email ${userInfo.email}');
+                print('Phone ${userInfo.phoneNumber}');
+                print('Photo ${userInfo.photoURL}');
+                print('uid ${userInfo.uid}');
+                print('End Apple -->');
+
+                if (userInfo.email == null) {
+                  Fluttertoast.showToast(
+                    msg: 'Login Failed',
+                    toastLength: Toast.LENGTH_LONG,
+                  );
+                  return;
+                }
+
+                ApiService().registerWithSocialAccount(
+                    name: userInfo.displayName,
+                    email: userInfo.email,
+                    socialType: 'Apple',
+                    state: handleUserState);
+                break;
+
+              } catch (e) {
+                print("error");
+              }
+              break;
+            case AuthorizationStatus.error:
+            // do something
+              break;
+
+            case AuthorizationStatus.cancelled:
+              print('User cancelled');
+              break;
+          }
+        } catch (error) {
+          print("error with apple sign in");
+        }
         break;
     }
   }
