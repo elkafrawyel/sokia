@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:apple_sign_in/apple_sign_in_button.dart' as apple;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -78,14 +79,16 @@ class SocialLogin extends StatelessWidget {
                     Get.to(() => LoginScreen());
                   },
                   imageAsset: 'src/images/phone.png',
-
                 ),
-                SocialButton(
-                  text: 'loginWithGoogle'.tr,
-                  onTap: () {
-                    controller.signInGoogle();
-                  },
-                  imageAsset: 'src/images/google_login.png',
+                Visibility(
+                  visible: Platform.isAndroid,
+                  child: SocialButton(
+                    text: 'loginWithGoogle'.tr,
+                    onTap: () {
+                      controller.signInGoogle();
+                    },
+                    imageAsset: 'src/images/google_login.png',
+                  ),
                 ),
                 Visibility(
                   visible: Platform.isIOS,

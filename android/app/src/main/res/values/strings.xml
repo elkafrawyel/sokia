@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">العربي المضيف</string>
+    <string name="app_name">Arab Host</string>
     <string name="facebook_app_id">150242140248239</string>
     <string name="fb_login_protocol_scheme">fb150242140248239</string>
 

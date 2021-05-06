@@ -59,6 +59,7 @@ import TwitterKit
         
         GMSServices.provideAPIKey("AIzaSyAlD-AjHc-bdnyomHFsHtlkXy8gO_neVgg")
         FirebaseApp.configure()
+        
         GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }

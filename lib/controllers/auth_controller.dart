@@ -241,6 +241,11 @@ class AuthController extends GetxController {
         CommonMethods().goOffline();
         break;
       case DataConnectionStatus.connected:
+
+        if(!(await AppleSignIn.isAvailable())){
+          Fluttertoast.showToast(msg:'Not available on your device');
+            return;
+           }
         try {
 
           final AuthorizationResult result = await AppleSignIn.performRequests([

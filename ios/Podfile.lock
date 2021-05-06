@@ -75,8 +75,6 @@ PODS:
     - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
-  - flutter_ringtone_player (0.0.1):
-    - Flutter
   - flutter_twitter_login (0.0.1):
     - Flutter
     - TwitterKit
@@ -171,7 +169,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_facebook_login (from `.symlinks/plugins/flutter_facebook_login/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - flutter_ringtone_player (from `.symlinks/plugins/flutter_ringtone_player/ios`)
   - flutter_twitter_login (from `.symlinks/plugins/flutter_twitter_login/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
@@ -229,8 +226,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_facebook_login/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  flutter_ringtone_player:
-    :path: ".symlinks/plugins/flutter_ringtone_player/ios"
   flutter_twitter_login:
     :path: ".symlinks/plugins/flutter_twitter_login/ios"
   fluttertoast:
@@ -275,7 +270,6 @@ SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_facebook_login: cfb5659f686b1c575ef205c6b6fd20db9679d3c4
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  flutter_ringtone_player: 15eba85187230b87b2512f0e1b92225618bc03e7
   flutter_twitter_login: acf71258bca3b35b6ac06681f7a33b48f4acc0bd
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
