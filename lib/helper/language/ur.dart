@@ -154,5 +154,9 @@ Map<String, String> ur = {
   'customerService': 'صارفین کی خدمت',
   'writeMessage': 'ایک پیغام لکھیں',
   'howToHelpYou':'ہم کیسے آپ کی مدد کر سکتے ہیں',
-  'phoneOrEmail':'ای میل یا فون نمبر'
+  'phoneOrEmail':'ای میل یا فون نمبر',
+  'occasions':'مواقع',
+  'addCategory':'کلاس',
+
+
 };

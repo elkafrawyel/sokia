@@ -6,6 +6,7 @@ import 'package:sokia_app/data/responses/conditions_response.dart';
 import 'package:sokia_app/data/responses/help_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/data_states.dart';
+import 'package:sokia_app/screens/home/home_screen.dart';
 
 class GeneralController extends GetxController {
   List<HelpModel> helpList = [];
@@ -102,6 +103,7 @@ class GeneralController extends GetxController {
       body: body,
       state: (dataState) {
         if (dataState is SuccessState) {
+          Get.to(HomeScreen());
           loading = false;
           update();
         } else if (dataState is ErrorState) {

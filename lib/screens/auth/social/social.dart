@@ -9,6 +9,7 @@ import 'package:sokia_app/controllers/auth_controller.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
+import 'package:sokia_app/helper/get_binding.dart';
 import 'package:sokia_app/helper/social_button.dart';
 import 'package:sokia_app/screens/auth/login/login_screen.dart';
 import 'package:sokia_app/screens/terms_screen.dart';

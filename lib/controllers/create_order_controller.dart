@@ -3,6 +3,7 @@ import 'package:sokia_app/api/api_service.dart';
 import 'package:sokia_app/controllers/home_controller.dart';
 import 'package:sokia_app/data/data_models/create_order_request.dart';
 import 'package:sokia_app/data/data_models/order_model.dart';
+import 'package:sokia_app/data/data_models/search_model.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/data/responses/static_data_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
@@ -45,19 +46,20 @@ class CreateOrderController extends GetxController {
     });
   }
 
-  void addOrders(List<Mosque> mosques, Category category) {
+  void addOrders(List<SearchModel> mosques, Category category) {
     mosques.forEach((mosque) {
-      OrderModel orderModel = OrderModel(
-        mosque: mosque,
-        category: category == null ? homeController.categories[0] : category,
-        count: 10,
-      );
+      OrderModel orderModel = OrderModel(searchModel: mosque, orderCategories: [
+        OrderCategories(
+          category == null ? homeController.categories[0] : category,
+          10,
+        )
+      ]);
 
-      if (orderMap[orderModel.mosque.id] == null) {
+      if (orderMap[orderModel.searchModel.id] == null) {
         print('add' + orderMap.toString());
 
         orderMap.addAll({
-          orderModel.mosque.id: orderModel,
+          orderModel.searchModel.id: orderModel,
         });
       }
     });
@@ -67,7 +69,7 @@ class CreateOrderController extends GetxController {
   }
 
   updateOrderMap({OrderModel orderModel}) {
-    orderMap[orderModel.mosque.id] = orderModel;
+    orderMap[orderModel.searchModel.id] = orderModel;
     print('update' + orderMap.toString());
     calculatePrices();
 
@@ -100,13 +102,16 @@ class CreateOrderController extends GetxController {
     List<OrderDetails> orderDetails = [];
     orderMap.values.forEach((e) {
       orderDetails.add(OrderDetails(
-          donateTo: e.mosque.mosqueName,
-          count: e.count,
-          price: e.price,
-          latitude: e.mosque.mosqueLatitude,
-          longitude: e.mosque.mosqueLongitude,
-          address: e.mosque.mosqueAdress,
-          categoryName: e.category.categoryName,
+          donateTo: e.searchModel.name,
+          orderDetailsCategoryModel: e.orderCategories
+              .map((element) => OrderDetailsCategoryModel(
+                  count: element.count,
+                  price: element.categoryPrice(),
+                  categoryName: element.category.categoryName))
+              .toList(),
+          latitude: e.searchModel.latitude,
+          longitude: e.searchModel.longitude,
+          address: e.searchModel.adress,
           workerName: e.workerName,
           workerNumber: e.workerNumber));
     });

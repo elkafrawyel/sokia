@@ -1,5 +1,5 @@
 Map<String, String> ar = {
-  'appName': "العربي المضيف",
+  'appName': "المضيف",
   'labelWelcome': "اهلا وسهلا بك",
   'pickImage': "أختر صورة",
   'loading': "يتم التحميل",
@@ -261,5 +261,7 @@ Map<String, String> ar = {
   'customerService': 'خدمة العملاء',
   'writeMessage': 'اكتب رسالة...',
   'howToHelpYou':'كيف يمكننا مساعدتك',
-  'phoneOrEmail':'البريد الالكتروني او رقم الهاتف'
+  'phoneOrEmail':'البريد الالكتروني او رقم الهاتف',
+  'occasions':'المناسبات',
+  'addCategory':'صنف'
 };

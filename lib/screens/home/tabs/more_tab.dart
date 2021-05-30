@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share/share.dart';
 import 'package:sokia_app/controllers/user_controller.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
@@ -269,16 +272,21 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                   _line(),
                   Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'share'.tr,
-                          style: TextStyle(
-                              fontSize: fontSize14,
-                              color: Colors.grey.shade500),
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: (){
+                        shareApp();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'share'.tr,
+                            style: TextStyle(
+                                fontSize: fontSize14,
+                                color: Colors.grey.shade500),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   _line(),
@@ -382,6 +390,15 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
       ),
     );
   }
+
+  void shareApp() {
+    Platform.isIOS
+        ? Share.share(
+        "Install this cool application:  https://apps.apple.com/ph/app/%D8%A7%D8%B1%D9%88%D9%8A%D9%86%D8%A7/")
+        : Share.share(
+        "Install this cool application:  https://play.google.com/store/apps/details?id=com.sokia.app");
+  }
+
 
   @override
   bool get wantKeepAlive => true;

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sokia_app/controllers/create_order_controller.dart';
+import 'package:sokia_app/data/data_models/search_model.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
@@ -14,7 +15,7 @@ import 'package:sokia_app/helper/payment/payment_api.dart';
 import 'package:sokia_app/screens/create_order/components/single_item_card.dart';
 
 class CreateOrderScreen extends StatelessWidget {
-  final List<Mosque> mosques;
+  final List<SearchModel> searchModel;
   final Category category;
   final _orderController = Get.put(CreateOrderController());
   static GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
@@ -24,8 +25,8 @@ class CreateOrderScreen extends StatelessWidget {
   final String cash = 'cash'.tr;
   final String visa = 'visa'.tr;
 
-  CreateOrderScreen({@required this.mosques, this.category}) {
-    _orderController.addOrders(mosques, category);
+  CreateOrderScreen({@required this.searchModel, this.category}) {
+    _orderController.addOrders(searchModel, category);
   }
 
   @override

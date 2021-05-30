@@ -81,7 +81,9 @@ class RateAppScreen extends StatelessWidget {
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.red),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+
+                  },
                   child: CustomText(
                     text: 'send'.tr,
                     color: Colors.white,

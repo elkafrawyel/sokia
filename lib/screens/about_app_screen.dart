@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/controllers/general_controller.dart';
@@ -10,6 +12,7 @@ class AboutAppScreen extends StatelessWidget {
 
   AboutAppScreen() {
     controller.getAboutApp();
+
   }
 
   @override

@@ -6,6 +6,7 @@ import 'package:sokia_app/controllers/user_controller.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/data_state_views/empty_view.dart';
 import 'package:sokia_app/screens/home/tabs/home_tab/components/horizontal_list.dart';
+import 'package:sokia_app/screens/home/tabs/home_tab/components/horizontal_mosques.dart';
 import 'package:sokia_app/screens/home/tabs/home_tab/components/suggestion_item.dart';
 import 'package:sokia_app/screens/home/tabs/home_tab/components/user_info.dart';
 
@@ -81,6 +82,31 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                                 Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Text(
+                                    'occasions'.tr,
+                                    style: TextStyle(fontSize: fontSize16),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Visibility(
+                            visible: !searchFocus,
+                            replacement: SizedBox(
+                              height: 20,
+                            ),
+                            child: _buildHorizontalMosquesList(),
+                          ),
+                          Visibility(
+                            visible: !searchFocus,
+                            replacement: SizedBox(
+                              height: 20,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Text(
                                     'suggestions'.tr,
                                     style: TextStyle(fontSize: fontSize16),
                                   ),
@@ -131,9 +157,27 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                   child: CircularProgressIndicator(),
                 ),
               )
-            : HorizontalList(
-                categories: controller.categories,
-              ),
+            : controller.emptyCategories
+                ? SizedBox()
+                : HorizontalList(
+                    categories: controller.categories,
+                  ),
+      );
+
+  Widget _buildHorizontalMosquesList() => GetBuilder<HomeController>(
+        init: HomeController(),
+        builder: (controller) => controller.loading
+            ? Container(
+                height: 210,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            : controller.emptyMosques
+                ? _empty()
+                : HorizontalMosques(
+                    mosques: controller.mosques,
+                  ),
       );
 
   Widget _buildSuggestions() => GetBuilder<HomeController>(
@@ -144,74 +188,75 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) => controller.loading
                       ? _loading()
-                      : controller.emptyMosques
+                      : controller.emptyOccasions
                           ? _empty()
-                          : SuggestionItem(mosque: controller.mosques[index]),
+                          : SuggestionItem(
+                              searchModel: controller.occasions[index]),
                   childCount:
-                      controller.loading ? 2 : controller.mosques.length,
+                      controller.loading ? 2 : controller.occasions.length,
                 ),
               ),
       );
 
-    Widget _buildFloatingSearchBar() {
-      final isPortrait =
-          MediaQuery.of(Get.context).orientation == Orientation.portrait;
+  Widget _buildFloatingSearchBar() {
+    final isPortrait =
+        MediaQuery.of(Get.context).orientation == Orientation.portrait;
 
-      return GetBuilder<HomeController>(
-        builder: (controller) => Container(
-          height: searchFocus ? MediaQuery.of(context).size.height : 70,
-          child: FloatingSearchBar(
-            onFocusChanged: (isFocused) {
-              setState(() {
-                searchFocus = isFocused;
-              });
-            },
-            hint: 'search'.tr,
-            scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
-            transitionDuration: const Duration(milliseconds: 800),
-            transitionCurve: Curves.easeInOut,
-            physics: const BouncingScrollPhysics(),
-            axisAlignment: isPortrait ? 0.0 : -1.0,
-            openAxisAlignment: 0.0,
-            shadowColor: Colors.white,
-            backgroundColor: Colors.white,
-            backdropColor: Colors.white,
-            width: isPortrait ? 600 : 500,
-            debounceDelay: const Duration(milliseconds: 500),
-            onQueryChanged: (query) {
-              controller.search(query);
-            },
-            // Specify a custom transition to be used for
-            // animating between opened and closed stated.
-            transition: CircularFloatingSearchBarTransition(),
-            actions: [
-              FloatingSearchBarAction.searchToClear(
-                showIfClosed: true,
-              ),
-            ],
-            controller: _searchController,
-            builder: (context, transition) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Material(
-                  color: Colors.white,
-                  elevation: 4.0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: controller.searchList.map((mosque) {
-                      return Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: SuggestionItem(
-                          mosque: mosque,
-                        ),
-                      );
-                    }).toList(),
-                  ),
+    return GetBuilder<HomeController>(
+      builder: (controller) => Container(
+        height: searchFocus ? MediaQuery.of(context).size.height : 70,
+        child: FloatingSearchBar(
+          onFocusChanged: (isFocused) {
+            setState(() {
+              searchFocus = isFocused;
+            });
+          },
+          hint: 'search'.tr,
+          scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+          transitionDuration: const Duration(milliseconds: 800),
+          transitionCurve: Curves.easeInOut,
+          physics: const BouncingScrollPhysics(),
+          axisAlignment: isPortrait ? 0.0 : -1.0,
+          openAxisAlignment: 0.0,
+          shadowColor: Colors.white,
+          backgroundColor: Colors.white,
+          backdropColor: Colors.white,
+          width: isPortrait ? 600 : 500,
+          debounceDelay: const Duration(milliseconds: 500),
+          onQueryChanged: (query) {
+            controller.search(query);
+          },
+          // Specify a custom transition to be used for
+          // animating between opened and closed stated.
+          transition: CircularFloatingSearchBarTransition(),
+          actions: [
+            FloatingSearchBarAction.searchToClear(
+              showIfClosed: true,
+            ),
+          ],
+          controller: _searchController,
+          builder: (context, transition) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Material(
+                color: Colors.white,
+                elevation: 4.0,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: controller.searchList.map((searchModel) {
+                    return Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: SuggestionItem(
+                        searchModel: searchModel,
+                      ),
+                    );
+                  }).toList(),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
-      );
-    }
+      ),
+    );
+  }
 }

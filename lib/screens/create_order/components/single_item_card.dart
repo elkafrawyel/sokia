@@ -38,14 +38,59 @@ class SingleItemCard extends StatelessWidget {
               top: 20,
               start: 20,
             ),
-            child: CustomText(
-              text: 'orderDetails'.tr + ' (${orderModel.mosque.mosqueName})',
-              fontSize: fontSize14,
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomText(
+                    text:
+                        'orderDetails'.tr + ' (${orderModel.searchModel.name})',
+                    fontSize: fontSize14 - 2,
+                    maxLines: 2,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    top: 5,
+                    end: 10,
+                    start: 10,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.green.shade300),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          _addCategory();
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                            CustomText(
+                              text: 'addCategory'.tr,
+                              fontSize: fontSize14,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
             padding:
-            const EdgeInsetsDirectional.only(top: 10, start: 10, end: 10),
+                const EdgeInsetsDirectional.only(top: 10, start: 10, end: 10),
             child: Card(
               color: Colors.white,
               shape: RoundedRectangleBorder(
@@ -54,134 +99,153 @@ class SingleItemCard extends StatelessWidget {
               elevation: 3,
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                        top: 10, end: 10, start: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: '${orderModel.count} ' +
-                            'boxes'.tr +
-                            ' ${orderModel.category.categoryName}',
-                          fontSize: fontSize14,
-                          color: kPrimaryColor,
-                        ),
-                        CustomButton(
-                            text: 'change'.tr,
-                            underLineText: true,
-                            fontSize: fontSize14 - 2,
-                            colorBackground: Colors.white,
-                            colorText: Colors.grey.shade500,
-                            elevation: 0.0,
-                            onPressed: () {
-                              _changeCategory();
-                            }),
-                        Expanded(
-                          child: CustomText(
-                            alignment: AlignmentDirectional.centerEnd,
-                            text: orderController
-                                .priceWithCurrency(orderModel.orderPrice),
-                            color: kAccentColor,
-                            fontSize: fontSize14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                    const EdgeInsetsDirectional.only(end: 10, start: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                          text: orderModel.category.note,
-                          color: Colors.grey.shade600,
-                          fontSize: fontSize14,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CachedNetworkImage(
-                            fit: BoxFit.contain,
-                            // placeholder: placeholder,
-                            height: 50,
-                            width: 50,
-                            placeholder: (context, url) => Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.0,
+                  Column(
+                    children: orderModel.orderCategories
+                        .map(
+                          (item) => Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsetsDirectional.only(
+                                    top: 10, end: 10, start: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      text: '${item.count} ' +
+                                          'boxes'.tr +
+                                          ' ${item.category.categoryName}',
+                                      fontSize: fontSize14,
+                                      color: kPrimaryColor,
+                                    ),
+                                    Visibility(
+                                      visible:
+                                          orderModel.orderCategories.length > 1,
+                                      child: IconButton(
+                                          icon: Icon(
+                                            Icons.remove,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            _removeCategory(item);
+                                          }),
+                                    ),
+                                    Expanded(
+                                      child: CustomText(
+                                        alignment:
+                                            AlignmentDirectional.centerEnd,
+                                        text: orderController.priceWithCurrency(
+                                            item.categoryPrice()),
+                                        color: kAccentColor,
+                                        fontSize: fontSize14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            imageUrl: orderModel.category.categoryImage,
-                            errorWidget: (context, url, error) => Icon(
-                              Icons.error,
-                              color: Colors.grey.shade300,
-                              size: 50,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                    const EdgeInsetsDirectional.only(end: 10, start: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: kBackgroundColor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              _add();
-                            },
-                            color: Colors.black,
-                            iconSize: 30,
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: CustomText(
-                            text: orderModel.count.toString(),
-                            fontSize: fontSize18,
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: kBackgroundColor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              _remove(context);
-                            },
-                            color: Colors.black,
-                            iconSize: 30,
-                            icon: Icon(
-                              Icons.remove,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: CustomText(
-                            text: 'atLeastTenBox'.tr,
-                            color: kAccentColor,
-                            fontSize: 12,
-                            textAlign: TextAlign.center,
-                            alignment: AlignmentDirectional.centerEnd,
+                              Padding(
+                                padding: const EdgeInsetsDirectional.only(
+                                    end: 10, start: 10),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomText(
+                                      text: item.category.note,
+                                      color: Colors.grey.shade600,
+                                      fontSize: fontSize14,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: CachedNetworkImage(
+                                        fit: BoxFit.contain,
+                                        // placeholder: placeholder,
+                                        height: 50,
+                                        width: 50,
+                                        placeholder: (context, url) => Center(
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2.0,
+                                          ),
+                                        ),
+                                        imageUrl: item.category.categoryImage,
+                                        errorWidget: (context, url, error) =>
+                                            Icon(
+                                          Icons.error,
+                                          color: Colors.grey.shade300,
+                                          size: 50,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.only(
+                                    end: 10, start: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: kBackgroundColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          _add(item);
+                                        },
+                                        color: Colors.black,
+                                        iconSize: 30,
+                                        icon: Icon(
+                                          Icons.add,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: CustomText(
+                                        text: item.count.toString(),
+                                        fontSize: fontSize18,
+                                      ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: kBackgroundColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          _remove(context, item);
+                                        },
+                                        color: Colors.black,
+                                        iconSize: 30,
+                                        icon: Icon(
+                                          Icons.remove,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: CustomText(
+                                        text: 'atLeastTenBox'.tr,
+                                        color: kAccentColor,
+                                        fontSize: 12,
+                                        textAlign: TextAlign.center,
+                                        alignment:
+                                            AlignmentDirectional.centerEnd,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                thickness: 2,
+                              ),
+                            ],
                           ),
                         )
-                      ],
-                    ),
+                        .toList(),
                   ),
                   _workerInfo(),
                 ],
@@ -209,93 +273,103 @@ class SingleItemCard extends StatelessWidget {
     numberDebouncer = Timer(duration, callback);
   }
 
-  void _add() {
-    orderModel.count++;
+  void _add(OrderCategories item) {
+    orderModel
+        .orderCategories[orderModel.orderCategories.indexOf(item)].count++;
     orderController.updateOrderMap(orderModel: orderModel);
   }
 
-  void _remove(BuildContext context) {
-    if (orderModel.count > 10) {
-      orderModel.count--;
+  void _remove(BuildContext context, OrderCategories item) {
+    if (orderModel
+            .orderCategories[orderModel.orderCategories.indexOf(item)].count >
+        10) {
+      orderModel
+          .orderCategories[orderModel.orderCategories.indexOf(item)].count--;
       orderController.updateOrderMap(orderModel: orderModel);
     } else {
-      CommonMethods()
-          .showToast(message: 'orderCountMessage'.tr, );
+      CommonMethods().showToast(
+        message: 'orderCountMessage'.tr,
+      );
     }
   }
 
-  void _changeCategory() {
+  void _addCategory() {
     CommonMethods().showBottomSheet(
       BottomSheetList(
         categories: Get.find<HomeController>().categories,
         onSelect: (selectedCategory) {
           Get.back();
-          orderModel.category = selectedCategory;
+          orderModel.orderCategories.add(OrderCategories(selectedCategory, 10));
           orderController.updateOrderMap(orderModel: orderModel);
         },
       ),
     );
   }
 
+  void _removeCategory(OrderCategories item) {
+    orderModel.orderCategories.remove(item);
+    orderController.updateOrderMap(orderModel: orderModel);
+  }
+
   _workerInfo() => Column(
-    children: [
-      Visibility(
-        visible: (orderModel.workerName != null &&
-            orderModel.workerName.isNotEmpty) ||
-            (orderModel.workerNumber != null &&
-                orderModel.workerNumber.isNotEmpty),
-        child: Divider(
-          thickness: 2,
-        ),
-      ),
-      Visibility(
-        visible: orderModel.workerName != null &&
-            orderModel.workerName.isNotEmpty,
-        child: Padding(
-          padding:
-          const EdgeInsetsDirectional.only(top: 10, end: 10, start: 10),
-          child: CustomText(
-            text: '${'workerName'.tr} : ${orderModel.workerName}',
+        children: [
+          Visibility(
+            visible: (orderModel.workerName != null &&
+                    orderModel.workerName.isNotEmpty) ||
+                (orderModel.workerNumber != null &&
+                    orderModel.workerNumber.isNotEmpty),
+            child: Divider(
+              thickness: 2,
+            ),
           ),
-        ),
-      ),
-      Visibility(
-        visible: orderModel.workerNumber != null &&
-            orderModel.workerNumber.isNotEmpty,
-        child: Padding(
-          padding:
-          const EdgeInsetsDirectional.only(top: 10, end: 10, start: 10),
-          child: CustomText(
-            text: '${'workerNumber'.tr} : ${orderModel.workerNumber}',
+          Visibility(
+            visible: orderModel.workerName != null &&
+                orderModel.workerName.isNotEmpty,
+            child: Padding(
+              padding:
+                  const EdgeInsetsDirectional.only(top: 10, end: 10, start: 10),
+              child: CustomText(
+                text: '${'workerName'.tr} : ${orderModel.workerName}',
+              ),
+            ),
           ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsetsDirectional.only(
-          top: 10,
-        ),
-        child: Container(
-          width: MediaQuery.of(Get.context).size.width * 0.6,
-          child: CustomButton(
-            text: 'addWorkerInfo'.tr,
-            colorText: Colors.white,
-            elevation: 0,
-            radius: 20,
-            fontSize: 12,
-            colorBackground: kPrimaryColor,
-            onPressed: () async {
-              WorkerInfo workerInfo = await _showWorkerDialog(
-                  workerName: orderModel.workerName,
-                  workerNumber: orderModel.workerNumber);
-              orderModel.workerName = workerInfo.name;
-              orderModel.workerNumber = workerInfo.number;
-              orderController.updateOrderMap(orderModel: orderModel);
-            },
+          Visibility(
+            visible: orderModel.workerNumber != null &&
+                orderModel.workerNumber.isNotEmpty,
+            child: Padding(
+              padding:
+                  const EdgeInsetsDirectional.only(top: 10, end: 10, start: 10),
+              child: CustomText(
+                text: '${'workerNumber'.tr} : ${orderModel.workerNumber}',
+              ),
+            ),
           ),
-        ),
-      ),
-    ],
-  );
+          Padding(
+            padding: const EdgeInsetsDirectional.only(
+              top: 10,
+            ),
+            child: Container(
+              width: MediaQuery.of(Get.context).size.width * 0.6,
+              child: CustomButton(
+                text: 'addWorkerInfo'.tr,
+                colorText: Colors.white,
+                elevation: 0,
+                radius: 20,
+                fontSize: 12,
+                colorBackground: kPrimaryColor,
+                onPressed: () async {
+                  WorkerInfo workerInfo = await _showWorkerDialog(
+                      workerName: orderModel.workerName,
+                      workerNumber: orderModel.workerNumber);
+                  orderModel.workerName = workerInfo.name;
+                  orderModel.workerNumber = workerInfo.number;
+                  orderController.updateOrderMap(orderModel: orderModel);
+                },
+              ),
+            ),
+          ),
+        ],
+      );
 
   Future<WorkerInfo> _showWorkerDialog(
       {String workerName, String workerNumber}) async {
@@ -329,7 +403,7 @@ class SingleItemCard extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: 'workerName'.tr,
                       hintStyle:
-                      TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                          TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       contentPadding: EdgeInsets.all(16),
                       alignLabelWithHint: true,
                       errorStyle: TextStyle(
@@ -338,7 +412,7 @@ class SingleItemCard extends StatelessWidget {
                       ),
                       labelText: 'workerName'.tr,
                       labelStyle:
-                      TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                          TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -353,7 +427,7 @@ class SingleItemCard extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: 'workerNumber'.tr,
                     hintStyle:
-                    TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                        TextStyle(fontSize: 14, color: Colors.grey.shade600),
                     contentPadding: EdgeInsets.all(16),
                     alignLabelWithHint: true,
                     errorStyle: TextStyle(
@@ -362,7 +436,7 @@ class SingleItemCard extends StatelessWidget {
                     ),
                     labelText: 'workerNumber'.tr,
                     labelStyle:
-                    TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                        TextStyle(fontSize: 14, color: Colors.grey.shade600),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),

@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:sokia_app/data/data_models/search_model.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
 
 import 'suggestion_item.dart';
 
 class Suggestions {
-  Widget getSuggestions({List<Mosque> mosques}) {
+  Widget getSuggestions({List<SearchModel> searchModel}) {
     List<Widget> views = [];
 
     views.add(
@@ -23,10 +24,8 @@ class Suggestions {
       ),
     );
 
-    views.addAll(mosques
-        .map(
-          (element) => SuggestionItem(mosque: element),
-        )
+    views.addAll(searchModel
+        .map((element) => SuggestionItem(searchModel: element))
         .toList());
 
     views.add(

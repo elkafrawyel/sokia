@@ -1,5 +1,5 @@
 Map<String, String> en = {
-  'appName': "The Arab host",
+  'appName': "The host",
   'labelWelcome': 'Welcome',
   'labelSelectLanguage': "Select Language",
   'labelInfo': "This is multi-languages demo application",
@@ -265,6 +265,9 @@ Map<String, String> en = {
   'customerService':'Customer Service',
   'writeMessage': 'Write a message...',
   'howToHelpYou': 'How can we help you?',
-  'phoneOrEmail':'Email or Phone Numer'
+  'phoneOrEmail':'Email or Phone Numer',
+  'occasions':'Occasions',
+  'addCategory':'category',
+
 
 };

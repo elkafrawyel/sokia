@@ -349,7 +349,9 @@ class ApiService {
           InfoResponse infoResponse = InfoResponse.fromJson(response.data);
           if (infoResponse.status) {
             CommonMethods().showSnackBar(infoResponse.message);
+
             state(SuccessState(true));
+
           } else {
             String errorMessage = infoResponse.vErrors.getErrors();
             if (errorMessage != null) {

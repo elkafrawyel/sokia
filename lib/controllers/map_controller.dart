@@ -6,6 +6,7 @@ import 'package:focused_menu/modals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sokia_app/data/data_models/search_model.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/map_helper/custom_marker.dart';
@@ -242,19 +243,22 @@ class MapController extends GetxController {
     return newStr;
   }
 
-  List<Mosque> getSelectedPlacesAsMosques() {
-    List<Mosque> list = [];
+  List<SearchModel> getSelectedPlacesAsMosques() {
+    List<SearchModel> list = [];
     int i = 0;
     selectedMarkersId.forEach((element) {
       Marker marker = googleMapMarkers[MarkerId(element)];
 
       list.add(
-        Mosque(
-          id: i++,
-          mosqueName: marker.infoWindow.title,
-          mosqueAdress: marker.infoWindow.snippet,
-          mosqueLatitude: marker.position.latitude.toString(),
-          mosqueLongitude: marker.position.longitude.toString(),
+        SearchModel(
+          i++,
+          marker.infoWindow.title,
+          marker.infoWindow.snippet,
+          '',
+          true,
+          true,
+          marker.position.latitude.toString(),
+          marker.position.longitude.toString(),
         ),
       );
     });

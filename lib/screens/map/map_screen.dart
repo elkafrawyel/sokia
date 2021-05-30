@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:focused_menu/focused_menu.dart';
-import 'package:focused_menu/modals.dart';
-import 'package:geolocator/geolocator.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sokia_app/controllers/create_order_controller.dart';
 import 'package:sokia_app/controllers/main_controller.dart';
 import 'package:sokia_app/controllers/map_controller.dart';
+import 'package:sokia_app/data/data_models/search_model.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
@@ -137,20 +135,22 @@ class _MapScreenState extends State<MapScreen> {
               onPressed: () async {
                 //you must login
                 if (LocalStorage().getBool(LocalStorage.loginKey)) {
-                  List<Mosque> mosques =
+                  List<SearchModel> searchModel =
                       _mapController.getSelectedPlacesAsMosques();
-                  if (mosques.isEmpty) {
-                    CommonMethods()
-                        .showToast(message: 'Select First',);
+                  if (searchModel.isEmpty) {
+                    CommonMethods().showToast(
+                      message: 'Select First',
+                    );
                     return;
                   } else {
                     await Get.to(() => CreateOrderScreen(
-                        mosques: mosques, category: widget.category));
+                        searchModel: searchModel, category: widget.category));
                     Get.find<CreateOrderController>().orderMap.clear();
                   }
                 } else {
-                  CommonMethods()
-                      .showToast(message: 'youMustLogin'.tr,);
+                  CommonMethods().showToast(
+                    message: 'youMustLogin'.tr,
+                  );
                 }
               },
             ),
@@ -211,7 +211,7 @@ class _MapScreenState extends State<MapScreen> {
                     icon: Icon(
                       Icons.my_location,
                     ),
-                    color:  kPrimaryColor,
+                    color: kPrimaryColor,
                     onPressed: () {
                       _goTo(_mainController.userLatLng);
                     }),

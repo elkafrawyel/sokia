@@ -77,21 +77,14 @@ class CreateOrderRequest {
 
 class OrderDetails {
   String _donateTo;
-  int _count;
-  double _price;
   String _longitude;
   String _latitude;
-  String _address;
-
-  String _categoryName;
   String _workerName;
   String _workerNumber;
+  String _address;
+  List<OrderDetailsCategoryModel> _orderDetailsCategoryModel;
 
   String get donateTo => _donateTo;
-
-  int get count => _count;
-
-  double get price => _price;
 
   String get longitude => _longitude;
 
@@ -99,59 +92,95 @@ class OrderDetails {
 
   String get address => _address;
 
-  String get categoryName => _categoryName;
-
   String get workerName => _workerName;
 
   String get workerNumber => _workerNumber;
 
+
+  List<OrderDetailsCategoryModel> get orderDetailsCategoryModel =>
+      _orderDetailsCategoryModel;
+
   OrderDetails({
     String donateTo,
-    int count,
-    double price,
     String longitude,
     String latitude,
     String address,
-    String categoryName,
     String workerName,
     String workerNumber,
+    List<OrderDetailsCategoryModel> orderDetailsCategoryModel,
   }) {
     _donateTo = donateTo;
-    _count = count;
-    _price = price;
     _longitude = longitude;
     _latitude = latitude;
     _address = address;
-
-    _categoryName = categoryName;
     _workerName = workerName;
     _workerNumber = workerNumber;
+    _orderDetailsCategoryModel = orderDetailsCategoryModel;
   }
 
   OrderDetails.fromJson(dynamic json) {
     _donateTo = json["donateTo"];
-    _count = json["count"];
-    _price = json["price"];
     _longitude = json["longitude"];
     _latitude = json["latitude"];
     _address = json["adress"];
-
-    _categoryName = json["categoryName"];
     _workerName = json["workerName"];
     _workerNumber = json["workerNumber"];
+    if (json["occasions"] != null) {
+      _orderDetailsCategoryModel = [];
+      json["occasions"].forEach((v) {
+        _orderDetailsCategoryModel.add(OrderDetailsCategoryModel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map["donateTo"] = _donateTo;
-    map["count"] = _count;
-    map["price"] = _price;
     map["longitude"] = _longitude;
     map["latitude"] = _latitude;
     map["adress"] = _address;
-    map["categoryName"] = _categoryName;
     map["workerName"] = _workerName;
     map["workerNumber"] = _workerNumber;
+    if (_orderDetailsCategoryModel != null) {
+      map["categories"] = _orderDetailsCategoryModel.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+}
+
+class OrderDetailsCategoryModel {
+  //to another model call categoryModel
+  int _count;
+  double _price;
+  String _categoryName;
+
+  int get count => _count;
+
+  double get price => _price;
+
+  String get categoryName => _categoryName;
+
+  OrderDetailsCategoryModel({
+    int count,
+    double price,
+    String categoryName,
+  }) {
+    _count = count;
+    _price = price;
+    _categoryName = categoryName;
+  }
+
+  OrderDetailsCategoryModel.fromJson(dynamic json) {
+    _count = json["count"];
+    _price = json["price"];
+    _categoryName = json["categoryName"];
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["count"] = _count;
+    map["price"] = _price;
+    map["categoryName"] = _categoryName;
     return map;
   }
 }

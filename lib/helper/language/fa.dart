@@ -179,6 +179,9 @@ Map<String, String> fa = {
   'customerService': 'خدمات مشتری',
   'writeMessage': 'یک پیام بنویس',
   'howToHelpYou':'چگونه ما میتوانیم به شما کمک کنیم',
-  'phoneOrEmail':'ایمیل یا شماره تلفن'
+  'phoneOrEmail':'ایمیل یا شماره تلفن',
+  'occasions':'مناسبت ها',
+  'addCategory':'جنسیت',
+
 
 };
