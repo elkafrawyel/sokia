@@ -5,6 +5,7 @@ import 'package:sokia_app/data/data_models/user_model.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/data_states.dart';
 import 'package:sokia_app/helper/local_storage.dart';
+import 'package:sokia_app/screens/auth/login/login_screen.dart';
 import 'package:sokia_app/screens/auth/social/social.dart';
 
 class UserController extends GetxController {
@@ -136,6 +137,6 @@ class UserController extends GetxController {
   _logOut() {
     LocalStorage().clear();
     setUser(null);
-    Get.to(() => SocialLogin());
+    Get.to(() => LoginScreen());
   }
 }

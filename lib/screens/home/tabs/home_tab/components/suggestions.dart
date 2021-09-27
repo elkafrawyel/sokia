@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/data/data_models/search_model.dart';
-import 'package:sokia_app/data/responses/home_response.dart';
 
 import 'suggestion_item.dart';
 

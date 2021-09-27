@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/controllers/create_order_controller.dart';
 import 'package:sokia_app/data/data_models/search_model.dart';
-import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
-import 'package:sokia_app/helper/get_binding.dart';
 import 'package:sokia_app/helper/local_storage.dart';
 import 'package:sokia_app/screens/create_order/create_order_screen.dart';
-import 'package:sokia_app/screens/map/map_screen.dart';
 
 class HorizontalMosques extends StatelessWidget {
   final List<SearchModel> mosques;

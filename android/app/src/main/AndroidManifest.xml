@@ -59,23 +59,7 @@
             </intent-filter>
             <!--            =====================end payment =============================-->
 
-            <!--            ========================== Notification======================-->
-            <intent-filter>
-                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-            <meta-data
-                android:name="com.google.firebase.messaging.default_notification_color"
-                android:resource="@color/colorPrimary" />
-            <meta-data
-                android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@mipmap/ic_launcher" />
-            <meta-data
-                android:name="com.google.firebase.messaging.default_notification_channel_id"
-                android:value="com.sokia.app" />
-            <!-- =============================End Notification======================-->
-
+           
         </activity>
 
         <!--        ================================ Apple login =========================-->

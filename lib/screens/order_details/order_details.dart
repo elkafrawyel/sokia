@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import 'package:sokia_app/helper/custom_widgets/custom_button.dart';
 import 'package:sokia_app/helper/custom_widgets/main_screen.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:sokia_app/helper/get_binding.dart';
-import 'package:sokia_app/helper/map_helper/custom_marker.dart';
 import 'package:sokia_app/screens/chat/chat_screen.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
@@ -216,7 +214,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(Get.context).size.width * 0.4,
                       child: CustomText(
-                        text: priceWithCurrency(order.orderDetails[0].price),
+                        text: priceWithCurrency(order.getTotalPrice()),
                         fontSize: fontSize14,
                         color: Colors.black,
                         alignment: AlignmentDirectional.centerStart,
@@ -408,6 +406,7 @@ class OrderDetailsScreen extends StatelessWidget {
             ],
           ),
         ),
+        _orderCategories(),
         Padding(
           padding: const EdgeInsetsDirectional.only(top: 10),
           child: Row(
@@ -564,5 +563,35 @@ class OrderDetailsScreen extends StatelessWidget {
     }
     print(newStr);
     return newStr;
+  }
+
+  _orderCategories() {
+    List<Widget> views = [];
+    order.orderDetails.forEach((element) {
+      element.orderDonatesWith.forEach((element) {
+        views.add(Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+                width: MediaQuery.of(Get.context).size.width * 0.4,
+                child: Text(element.categoryName)),
+            Container(
+                width: MediaQuery.of(Get.context).size.width * 0.2,
+                child: Text(element.count.toString())),
+            Container(
+                width: MediaQuery.of(Get.context).size.width * 0.3,
+                child: Text(element.price.toString())),
+          ],
+        ));
+        views.add(SizedBox(height: 10));
+      });
+    });
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: views,
+      ),
+    );
   }
 }

@@ -1,8 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:get/get.dart';
 
@@ -62,9 +59,7 @@ class OnlineImagesViewer extends StatelessWidget {
         .map(
           (item) => ClipRRect(
             borderRadius: BorderRadius.circular(0),
-            child: PhotoView(
-              imageProvider: NetworkImage(item),
-            ),
+            child: Image.network(item)
           ),
         )
         .toList();

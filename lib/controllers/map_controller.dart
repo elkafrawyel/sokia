@@ -7,8 +7,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sokia_app/data/data_models/search_model.dart';
-import 'package:sokia_app/data/responses/home_response.dart';
-import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/map_helper/custom_marker.dart';
 import 'package:sokia_app/helper/map_helper/map_api.dart';
 

@@ -9,6 +9,7 @@ import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:sokia_app/helper/language_screen.dart';
 import 'package:sokia_app/screens/about_screen.dart';
 import 'package:sokia_app/screens/account_screen.dart';
+import 'package:sokia_app/screens/auth/login/login_screen.dart';
 import 'package:sokia_app/screens/auth/social/social.dart';
 import 'package:sokia_app/screens/contact_us.dart';
 import 'package:sokia_app/screens/help_screen.dart';
@@ -47,7 +48,7 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                     onTap: () {
                       controller.user != null
                           ? Get.to(()=>AccountScreen())
-                          : Get.to(()=>SocialLogin());
+                          : Get.to(()=>LoginScreen());
                     },
                     child: Row(
                       children: [
@@ -83,7 +84,7 @@ class _MoreTabState extends State<MoreTab> with AutomaticKeepAliveClientMixin {
                     onTap: () {
                       controller.user != null
                           ? Get.to(()=>AccountScreen())
-                          : Get.to(()=>SocialLogin());
+                          : Get.to(()=>LoginScreen());
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),

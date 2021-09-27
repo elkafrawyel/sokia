@@ -21,7 +21,11 @@ class RegisterScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
-        toolbarHeight: 0.0,
+        leading: BackButton(color: Colors.black,),
+        backgroundColor: Colors.white,
+        // toolbarHeight: 0.0,
+                elevation: 0.0,
+
         brightness: Brightness.dark,
       ),
       body: Container(

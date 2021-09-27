@@ -148,38 +148,42 @@ class Order {
     }
     return map;
   }
+
+  double getTotalPrice() {
+    double price = 0.0;
+    orderDetails.forEach((element) {
+      price += element.getTotalPrice();
+    });
+
+    return price;
+  }
 }
 
 class OrderDetails {
   int _id;
   String _donateTo;
-  var _price;
-  int _count;
+  var _orderPrice;
   String _longitude;
   String _workerName;
   String _workerNumber;
   String _latitude;
   String _adress;
-  String _categoryName;
   int _orderId;
   String _createdAt;
   String _updatedAt;
+  List<OrderDonatesWith> _orderDonatesWith;
 
   int get id => _id;
 
   String get donateTo => _donateTo;
 
-  double get price => double.parse(_price.toString());
-
-  int get count => _count;
+  double get orderPrice => double.parse(_orderPrice.toString());
 
   String get longitude => _longitude;
 
   String get latitude => _latitude;
 
   String get adress => _adress;
-
-  String get categoryName => _categoryName;
 
   String get workerName => _workerName;
 
@@ -191,47 +195,132 @@ class OrderDetails {
 
   String get updatedAt => _updatedAt;
 
+  List<OrderDonatesWith> get orderDonatesWith => _orderDonatesWith;
+
   OrderDetails(
       {int id,
       String donateTo,
-      int price,
-      int count,
       String longitude,
       String latitude,
-      String workerName,
-      String workerNumber,
       String adress,
-      String categoryName,
+      double orderPrice,
       int orderId,
       String createdAt,
-      String updatedAt}) {
+      String updatedAt,
+      String workerName,
+      String workerNumber,
+      List<OrderDonatesWith> orderDonatesWith}) {
     _id = id;
     _donateTo = donateTo;
-    _price = price;
-    _count = count;
+    _orderPrice = orderPrice;
     _longitude = longitude;
     _latitude = latitude;
-    _workerName = workerName;
-    _workerNumber = workerNumber;
     _adress = adress;
-    _categoryName = categoryName;
     _orderId = orderId;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
+    _workerName = workerName;
+    _workerNumber = workerNumber;
+    _orderDonatesWith = orderDonatesWith;
   }
 
   OrderDetails.fromJson(dynamic json) {
     _id = json["id"];
     _donateTo = json["donateTo"];
-    _price = json["price"];
-    _workerName = json["workerName"];
-    _workerNumber = json["workerNumber"];
-    _count = json["count"];
     _longitude = json["longitude"];
     _latitude = json["latitude"];
+    _orderPrice = json["orderPrice"];
     _adress = json["adress"];
-    _categoryName = json["categoryName"];
     _orderId = json["order_id"];
+    _createdAt = json["created_at"];
+    _updatedAt = json["updated_at"];
+    _workerName = json["workerName"];
+    _workerNumber = json["workerNumber"];
+    if (json["order_donates_with"] != null) {
+      _orderDonatesWith = [];
+      json["order_donates_with"].forEach((v) {
+        _orderDonatesWith.add(OrderDonatesWith.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["id"] = _id;
+    map["donateTo"] = _donateTo;
+    map["longitude"] = _longitude;
+    map["latitude"] = _latitude;
+    map["adress"] = _adress;
+    map["order_id"] = _orderId;
+    map["orderPrice"] = _orderPrice;
+    map["created_at"] = _createdAt;
+    map["updated_at"] = _updatedAt;
+    map["workerName"] = _workerName;
+    map["workerNumber"] = _workerNumber;
+    if (_orderDonatesWith != null) {
+      map["order_donates_with"] =
+          _orderDonatesWith.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+  double getTotalPrice() {
+    double price = 0.0;
+    orderDonatesWith.forEach((element) {
+      print(element.price);
+      price += element.price;
+    });
+
+    return double.parse(price.toString());
+  }
+}
+
+class OrderDonatesWith {
+  int _id;
+  int _count;
+  int _price;
+  String _categoryName;
+  int _orderDetailsId;
+  String _createdAt;
+  String _updatedAt;
+
+  int get id => _id;
+
+  int get count => _count;
+
+  int get price => _price;
+
+  String get categoryName => _categoryName;
+
+  int get orderDetailsId => _orderDetailsId;
+
+  String get createdAt => _createdAt;
+
+  String get updatedAt => _updatedAt;
+
+  OrderDonatesWith(
+      {int id,
+      int count,
+      int price,
+      String categoryName,
+      int orderDetailsId,
+      String createdAt,
+      String updatedAt}) {
+    _id = id;
+    _count = count;
+    _price = price;
+    _categoryName = categoryName;
+    _orderDetailsId = orderDetailsId;
+    _createdAt = createdAt;
+    _updatedAt = updatedAt;
+  }
+
+  OrderDonatesWith.fromJson(dynamic json) {
+    _id = json["id"];
+    _count = json["count"];
+    _price = json["price"];
+    _categoryName = json["categoryName"];
+    _orderDetailsId = json["order_details_id"];
     _createdAt = json["created_at"];
     _updatedAt = json["updated_at"];
   }
@@ -239,16 +328,10 @@ class OrderDetails {
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map["id"] = _id;
-    map["donateTo"] = _donateTo;
-    map["price"] = _price;
     map["count"] = _count;
-    map["workerName"] = _workerName;
-    map["workerNumber"] = _workerNumber;
-    map["longitude"] = _longitude;
-    map["latitude"] = _latitude;
-    map["adress"] = _adress;
+    map["price"] = _price;
     map["categoryName"] = _categoryName;
-    map["order_id"] = _orderId;
+    map["order_details_id"] = _orderDetailsId;
     map["created_at"] = _createdAt;
     map["updated_at"] = _updatedAt;
     return map;

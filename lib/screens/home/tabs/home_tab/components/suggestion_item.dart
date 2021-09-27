@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sokia_app/controllers/create_order_controller.dart';
-import 'package:sokia_app/controllers/home_controller.dart';
 import 'package:sokia_app/data/data_models/search_model.dart';
-import 'package:sokia_app/data/responses/home_response.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';

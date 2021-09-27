@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:animate_do/animate_do.dart';
-import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:sokia_app/controllers/chat_controller.dart';
-import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/Constant.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/helper/local_storage.dart';
@@ -202,7 +199,7 @@ class _SendMessageViewState extends State<SendMessageView> {
     });
   }
 
-  void _selectVideo() async {
+  /* void _selectVideo() async {
     List<Media> media = await ImagesPicker.pick(
       count: 1,
       pickType: PickType.video,
@@ -217,7 +214,7 @@ class _SendMessageViewState extends State<SendMessageView> {
       canSendMessage = false;
     });
   }
-
+ */
   void _selectImages() async {
     List<Media> media = await ImagesPicker.pick(
       count: 10,
@@ -238,68 +235,5 @@ class _SendMessageViewState extends State<SendMessageView> {
     debounce(() {
       chatController.sendChatMessage(text, media);
     });
-  }
-
-  void _openBottomSheet() {
-    CommonMethods().showBottomSheet(
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          InkWell(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Icon(
-                    Icons.image,
-                    color: kPrimaryColor,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'image'.tr,
-                    style: TextStyle(fontSize: 16, color: kPrimaryColor),
-                  ),
-                ],
-              ),
-            ),
-            onTap: () async {
-              _selectImages();
-              Get.back();
-            },
-          ),
-          InkWell(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Icon(Icons.video_call, color: kPrimaryColor),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'video'.tr,
-                      style: TextStyle(fontSize: 16, color: kPrimaryColor),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () async {
-                _selectVideo();
-                Get.back();
-              }),
-        ],
-      ),
-    );
   }
 }

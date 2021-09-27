@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/data/responses/home_response.dart';
-import 'package:sokia_app/helper/get_binding.dart';
 import 'package:sokia_app/screens/map/map_screen.dart';
 
 class HorizontalList extends StatelessWidget {

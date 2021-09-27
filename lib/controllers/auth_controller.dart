@@ -1,12 +1,6 @@
-import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,13 +9,8 @@ import 'package:sokia_app/controllers/user_controller.dart';
 import 'package:sokia_app/data/data_models/user_model.dart';
 import 'package:sokia_app/helper/CommonMethods.dart';
 import 'package:sokia_app/helper/data_states.dart';
-import 'package:sokia_app/helper/firebase_helper.dart';
-import 'package:sokia_app/helper/keys.dart';
 import 'package:sokia_app/helper/local_storage.dart';
-import 'package:sokia_app/screens/auth/verify_phone/verify_phone_screen.dart';
 import 'package:sokia_app/screens/home/home_screen.dart';
-import 'package:flutter_twitter_login/flutter_twitter_login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthController extends GetxController {
   bool loading = false;
@@ -129,189 +118,169 @@ class AuthController extends GetxController {
   }
 
   signInFacebook() async {
-    switch (await DataConnectionChecker().connectionStatus) {
-      case DataConnectionStatus.disconnected:
-        CommonMethods().goOffline();
-        break;
-      case DataConnectionStatus.connected:
-        try {
-          FacebookLoginResult result = await FacebookLogin().logIn(['email']);
+    // switch (await DataConnectionChecker().connectionStatus) {
+    //   case DataConnectionStatus.disconnected:
+    //     CommonMethods().goOffline();
+    //     break;
+    //   case DataConnectionStatus.connected:
+    //     try {
+    //       FacebookLoginResult result = await FacebookLogin().logIn(['email']);
 
-          AuthCredential authCredential =
-              FacebookAuthProvider.credential(result.accessToken.token);
+    //       AuthCredential authCredential =
+    //           FacebookAuthProvider.credential(result.accessToken.token);
 
-          await FirebaseAuth.instance.signInWithCredential(authCredential);
+    //       await FirebaseAuth.instance.signInWithCredential(authCredential);
 
-          User user = FirebaseAuth.instance.currentUser;
-          UserInfo userInfo = user.providerData[0];
-          print('<-- Facebook Login ');
-          print('Name ${userInfo.displayName}');
-          print('Email ${userInfo.email}');
-          print('Phone ${userInfo.phoneNumber}');
-          print('Photo ${userInfo.photoURL}');
-          print('uid ${userInfo.uid}');
-          print('End Facebook -->');
+    //       User user = FirebaseAuth.instance.currentUser;
+    //       UserInfo userInfo = user.providerData[0];
+    //       print('<-- Facebook Login ');
+    //       print('Name ${userInfo.displayName}');
+    //       print('Email ${userInfo.email}');
+    //       print('Phone ${userInfo.phoneNumber}');
+    //       print('Photo ${userInfo.photoURL}');
+    //       print('uid ${userInfo.uid}');
+    //       print('End Facebook -->');
 
-          if (userInfo.email == null) {
-            Fluttertoast.showToast(
-              msg: 'Login Failed',
-              toastLength: Toast.LENGTH_LONG,
-            );
-            return;
-          }
+    //       if (userInfo.email == null) {
+    //         Fluttertoast.showToast(
+    //           msg: 'Login Failed',
+    //           toastLength: Toast.LENGTH_LONG,
+    //         );
+    //         return;
+    //       }
 
-          ApiService().registerWithSocialAccount(
-              name: userInfo.displayName,
-              email: userInfo.email,
-              socialType: 'Facebook',
-              state: handleUserState);
-          break;
-        } on FirebaseAuthException catch (e) {
-          FirebaseLoginHelper().handleFirebaseError(e);
-        }
-    }
+    //       ApiService().registerWithSocialAccount(
+    //           name: userInfo.displayName,
+    //           email: userInfo.email,
+    //           socialType: 'Facebook',
+    //           state: handleUserState);
+    //       break;
+    //     } on FirebaseAuthException catch (e) {
+    //       FirebaseLoginHelper().handleFirebaseError(e);
+    //     }
+    // }
   }
 
   signInTwitter() async {
-    var twitterLogin = new TwitterLogin(
-      //api key
-      consumerKey: twitterConsumerKey,
-      //secret key
-      consumerSecret: twitterConsumerSecret,
-    );
+    // var twitterLogin = new TwitterLogin(
+    //   //api key
+    //   consumerKey: twitterConsumerKey,
+    //   //secret key
+    //   consumerSecret: twitterConsumerSecret,
+    // );
 
-    switch (await DataConnectionChecker().connectionStatus) {
-      case DataConnectionStatus.disconnected:
-        CommonMethods().goOffline();
-        break;
-      case DataConnectionStatus.connected:
-        final TwitterLoginResult result = await twitterLogin.authorize();
+    // switch (await DataConnectionChecker().connectionStatus) {
+    //   case DataConnectionStatus.disconnected:
+    //     CommonMethods().goOffline();
+    //     break;
+    //   case DataConnectionStatus.connected:
+    //     final TwitterLoginResult result = await twitterLogin.authorize();
 
-        switch (result.status) {
-          case TwitterLoginStatus.loggedIn:
-            var twitterSession = result.session;
+    //     switch (result.status) {
+    //       case TwitterLoginStatus.loggedIn:
+    //         var twitterSession = result.session;
 
-            // Once signed in, return the UserCredential
-            // Create a credential from the access token
-            final AuthCredential twitterAuthCredential =
-                TwitterAuthProvider.credential(
-                    accessToken: twitterSession.token,
-                    secret: twitterSession.secret);
+    //         // Once signed in, return the UserCredential
+    //         // Create a credential from the access token
+    //         final AuthCredential twitterAuthCredential =
+    //             TwitterAuthProvider.credential(
+    //                 accessToken: twitterSession.token,
+    //                 secret: twitterSession.secret);
 
-            // Once signed in, return the UserCredential
-            await FirebaseAuth.instance
-                .signInWithCredential(twitterAuthCredential);
+    //         // Once signed in, return the UserCredential
+    //         await FirebaseAuth.instance
+    //             .signInWithCredential(twitterAuthCredential);
 
-            User user = FirebaseAuth.instance.currentUser;
-            UserInfo userInfo = user.providerData[0];
-            print('<-- Twitter Login ');
-            print('Name ${userInfo.displayName}');
-            print('Email ${userInfo.email}');
-            print('Phone ${userInfo.phoneNumber}');
-            print('Photo ${userInfo.photoURL}');
-            print('uid ${userInfo.uid}');
-            print('End Twitter -->');
+    //         User user = FirebaseAuth.instance.currentUser;
+    //         UserInfo userInfo = user.providerData[0];
+    //         print('<-- Twitter Login ');
+    //         print('Name ${userInfo.displayName}');
+    //         print('Email ${userInfo.email}');
+    //         print('Phone ${userInfo.phoneNumber}');
+    //         print('Photo ${userInfo.photoURL}');
+    //         print('uid ${userInfo.uid}');
+    //         print('End Twitter -->');
 
-            if (userInfo.email == null) {
-              Fluttertoast.showToast(
-                msg: 'Login Failed',
-                toastLength: Toast.LENGTH_LONG,
-              );
-              return;
-            }
+    //         if (userInfo.email == null) {
+    //           Fluttertoast.showToast(
+    //             msg: 'Login Failed',
+    //             toastLength: Toast.LENGTH_LONG,
+    //           );
+    //           return;
+    //         }
 
-            ApiService().registerWithSocialAccount(
-                name: userInfo.displayName,
-                email: userInfo.email,
-                socialType: 'twitter',
-                state: handleUserState);
-            break;
-          case TwitterLoginStatus.cancelledByUser:
-            break;
-          case TwitterLoginStatus.error:
-            break;
-        }
-        break;
-    }
+    //         ApiService().registerWithSocialAccount(
+    //             name: userInfo.displayName,
+    //             email: userInfo.email,
+    //             socialType: 'twitter',
+    //             state: handleUserState);
+    //         break;
+    //       case TwitterLoginStatus.cancelledByUser:
+    //         break;
+    //       case TwitterLoginStatus.error:
+    //         break;
+    //     }
+    //     break;
+    // }
   }
 
   signInApple() async {
-    switch (await DataConnectionChecker().connectionStatus) {
-      case DataConnectionStatus.disconnected:
-        CommonMethods().goOffline();
-        break;
-      case DataConnectionStatus.connected:
+    // switch (await DataConnectionChecker().connectionStatus) {
+    //   case DataConnectionStatus.disconnected:
+    //     CommonMethods().goOffline();
+    //     break;
+    //   case DataConnectionStatus.connected:
+    //     if (!(await SignInWithApple.isAvailable())) {
+    //       Fluttertoast.showToast(msg: 'Not available on your device');
+    //       return;
+    //     }
+    //     try {
+    //       final appleIdCredential = await SignInWithApple.getAppleIDCredential(
+    //               scopes: [
+    //                 AppleIDAuthorizationScopes.email,
+    //                 AppleIDAuthorizationScopes.fullName,
+    //               ],
+    //             );
 
-        if(!(await AppleSignIn.isAvailable())){
-          Fluttertoast.showToast(msg:'Not available on your device');
-            return;
-           }
-        try {
+    //             print(appleIdCredential);
 
-          final AuthorizationResult result = await AppleSignIn.performRequests([
-            AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
-          ]);
+    //             OAuthProvider oAuthProvider = new OAuthProvider("apple.com");
+    //             final AuthCredential credential = oAuthProvider.credential(
+    //               idToken:appleIdCredential.identityToken,
+    //               accessToken:appleIdCredential.authorizationCode,
+    //             );
 
-          switch (result.status) {
-            case AuthorizationStatus.authorized:
-              try {
-                print("successfully sign in");
-                final AppleIdCredential appleIdCredential = result.credential;
+    //             await FirebaseAuth.instance.signInWithCredential(credential);
 
-                OAuthProvider oAuthProvider =
-                new OAuthProvider("apple.com");
-                final AuthCredential credential = oAuthProvider.credential(
-                  idToken:
-                  String.fromCharCodes(appleIdCredential.identityToken),
-                  accessToken:
-                  String.fromCharCodes(appleIdCredential.authorizationCode),
-                );
+    //             User user = FirebaseAuth.instance.currentUser;
+    //             UserInfo userInfo = user.providerData[0];
+    //             print('<-- Apple Login ');
+    //             print('Name ${userInfo.displayName}');
+    //             print('Email ${userInfo.email}');
+    //             print('Phone ${userInfo.phoneNumber}');
+    //             print('Photo ${userInfo.photoURL}');
+    //             print('uid ${userInfo.uid}');
+    //             print('End Apple -->');
 
-                 await FirebaseAuth.instance
-                    .signInWithCredential(credential);
+    //             if (userInfo.email == null) {
+    //               Fluttertoast.showToast(
+    //                 msg: 'Login Failed',
+    //                 toastLength: Toast.LENGTH_LONG,
+    //               );
+    //               return;
+    //             }
 
-                User user = FirebaseAuth.instance.currentUser;
-                UserInfo userInfo = user.providerData[0];
-                print('<-- Apple Login ');
-                print('Name ${userInfo.displayName}');
-                print('Email ${userInfo.email}');
-                print('Phone ${userInfo.phoneNumber}');
-                print('Photo ${userInfo.photoURL}');
-                print('uid ${userInfo.uid}');
-                print('End Apple -->');
-
-                if (userInfo.email == null) {
-                  Fluttertoast.showToast(
-                    msg: 'Login Failed',
-                    toastLength: Toast.LENGTH_LONG,
-                  );
-                  return;
-                }
-
-                ApiService().registerWithSocialAccount(
-                    name: userInfo.displayName,
-                    email: userInfo.email,
-                    socialType: 'Apple',
-                    state: handleUserState);
-                break;
-
-              } catch (e) {
-                print("error $e");
-              }
-              break;
-            case AuthorizationStatus.error:
-            // do something
-              break;
-
-            case AuthorizationStatus.cancelled:
-              print('User cancelled');
-              break;
-          }
-        } catch (error) {
-          print("error with apple sign in $error");
-        }
-        break;
-    }
+    //             ApiService().registerWithSocialAccount(
+    //                 name: userInfo.displayName,
+    //                 email: userInfo.email,
+    //                 socialType: 'Apple',
+    //                 state: handleUserState);
+    //             break;
+    //     } catch (error) {
+    //       print("error with apple sign in $error");
+    //     }
+    //     break;
+    // }
   }
 
   saveUserState(UserModel userModel) {

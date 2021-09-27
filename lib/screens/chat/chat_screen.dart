@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sokia_app/controllers/chat_controller.dart';
 import 'package:get/get.dart';
 import 'package:sokia_app/screens/chat/components/messages_list.dart';

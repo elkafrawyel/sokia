@@ -125,9 +125,9 @@ class OrderDetails {
     _address = json["adress"];
     _workerName = json["workerName"];
     _workerNumber = json["workerNumber"];
-    if (json["occasions"] != null) {
+    if (json["donates_with"] != null) {
       _orderDetailsCategoryModel = [];
-      json["occasions"].forEach((v) {
+      json["donates_with"].forEach((v) {
         _orderDetailsCategoryModel.add(OrderDetailsCategoryModel.fromJson(v));
       });
     }
@@ -142,7 +142,7 @@ class OrderDetails {
     map["workerName"] = _workerName;
     map["workerNumber"] = _workerNumber;
     if (_orderDetailsCategoryModel != null) {
-      map["categories"] = _orderDetailsCategoryModel.map((v) => v.toJson()).toList();
+      map["donates_with"] = _orderDetailsCategoryModel.map((v) => v.toJson()).toList();
     }
     return map;
   }

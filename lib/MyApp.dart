@@ -6,7 +6,6 @@ import 'package:sokia_app/helper/Constant.dart';
 import 'package:sokia_app/helper/get_binding.dart';
 import 'package:sokia_app/helper/language/Translation.dart';
 import 'package:sokia_app/screens/home/home_screen.dart';
-import 'helper/messaging/push_notifications.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -16,8 +15,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    PushNotificationsManager().init();
-
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       smartManagement: SmartManagement.onlyBuilder,
@@ -28,26 +25,26 @@ class _MyAppState extends State<MyApp> {
       locale: Locale('en'),
       fallbackLocale: Locale('en'),
       theme: ThemeData(
-        textTheme: GoogleFonts.tajawalTextTheme(
-          Theme.of(context).textTheme,
-        ),
-        primaryTextTheme: TextTheme(
-          caption: TextStyle(
-            fontSize: 14,
-            color: Colors.black,
+          textTheme: GoogleFonts.tajawalTextTheme(
+            Theme.of(context).textTheme,
           ),
-          headline6: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
+          primaryTextTheme: TextTheme(
+            caption: TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+            ),
+            headline6: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+            ),
+            headline5: TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+            ),
           ),
-          headline5: TextStyle(
-            fontSize: 20,
-            color: Colors.black,
-          ),
-        ),
-        primaryColor: kPrimaryColor,
-        accentColor: kAccentColor,
-      ),
+          primaryColor: kPrimaryColor,
+          colorScheme:
+              Theme.of(context).colorScheme.copyWith(secondary: kAccentColor)),
       home: HomeScreen(),
     );
   }

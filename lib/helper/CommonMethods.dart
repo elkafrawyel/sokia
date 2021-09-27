@@ -186,7 +186,7 @@ class CommonMethods {
 
     var date = DateTime.fromMillisecondsSinceEpoch(time);
     if (LocalStorage().isArabicLanguage()) {
-      var formatter = DateFormat('y/M/d hh:mm a','ar_SA');
+      var formatter = DateFormat('y/M/d hh:mm a', 'ar_SA');
       // print(formatter.locale);
       String formatted = formatter.format(date);
       // print(formatted);
@@ -223,9 +223,9 @@ class CommonMethods {
     initializeDateFormatting();
 
     var date = DateTime.fromMillisecondsSinceEpoch(unixDate);
-    var formatter = DateFormat.yMMMMEEEEd();
+    // var formatter = DateFormat.yMMMMEEEEd();
     // print(formatter.locale);
-    String formattedDate = formatter.format(date);
+    // String formattedDate = formatter.format(date);
     // print(formattedDate);
 
     final date2 = DateTime.now();

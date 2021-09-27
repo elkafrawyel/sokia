@@ -75,7 +75,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -120,7 +120,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -162,7 +162,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -199,7 +199,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -229,7 +229,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -268,7 +268,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -319,7 +319,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -351,7 +351,6 @@ class ApiService {
             CommonMethods().showSnackBar(infoResponse.message);
 
             state(SuccessState(true));
-
           } else {
             String errorMessage = infoResponse.vErrors.getErrors();
             if (errorMessage != null) {
@@ -363,7 +362,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -394,7 +393,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -425,7 +424,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -455,7 +454,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -486,7 +485,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -517,7 +516,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -548,7 +547,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -589,7 +588,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -619,7 +618,7 @@ class ApiService {
           "/sendMessage",
           data: formData,
           onSendProgress: (count, total) {
-            final progress = ((count / total) * 100).toStringAsFixed(0);
+            // final progress = ((count / total) * 100).toStringAsFixed(0);
             // onUploadProgress(progress);
           },
         );
@@ -636,7 +635,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -667,7 +666,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }
@@ -696,7 +695,7 @@ class ApiService {
           CommonMethods().showGeneralError();
           state(ErrorState());
         }
-      } on DioError catch (ex) {
+      } on DioError catch (_) {
         CommonMethods().showGeneralError();
         state(ErrorState());
       }

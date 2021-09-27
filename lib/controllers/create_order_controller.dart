@@ -104,10 +104,12 @@ class CreateOrderController extends GetxController {
       orderDetails.add(OrderDetails(
           donateTo: e.searchModel.name,
           orderDetailsCategoryModel: e.orderCategories
-              .map((element) => OrderDetailsCategoryModel(
-                  count: element.count,
-                  price: element.categoryPrice(),
-                  categoryName: element.category.categoryName))
+              .map(
+                (element) => OrderDetailsCategoryModel(
+                    count: element.count,
+                    price: element.categoryPrice(),
+                    categoryName: element.category.categoryName),
+              )
               .toList(),
           latitude: e.searchModel.latitude,
           longitude: e.searchModel.longitude,

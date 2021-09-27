@@ -1,29 +1,42 @@
-import 'dart:io';
-
+import 'package:fcm_config/fcm_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'MyApp.dart';
-import 'helper/messaging/push_notifications.dart';
+import 'api/api_service.dart';
+import 'helper/local_storage.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.notification.body}");
+}
 
 void main() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+  await FCMConfig.instance.init(
+    onBackgroundMessage: _firebaseMessagingBackgroundHandler,
+  );
 
   runApp(MyApp());
-}
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-
-  if(!Platform.isIOS){
-    print("Handling a background message: ${message.messageId}");
-    PushNotificationsManager().handleBackGroundMessage(message);
-  }
+  FCMConfig.messaging.getToken().then((token) {
+    print('Firebase token : $token');
+    String fireToken = LocalStorage().getString(LocalStorage.firebaseToken);
+      if (fireToken == null) {
+        fireToken = token;
+        LocalStorage().setString(LocalStorage.firebaseToken, fireToken);
+        ApiService().sendFirebaseToken(firebaseToken: token);
+      } else {
+        if (fireToken != token) {
+          fireToken = token;
+          LocalStorage().setString(LocalStorage.firebaseToken, fireToken);
+          print("FirebaseMessaging token: $token");
+          ApiService().sendFirebaseToken(firebaseToken: token);
+        }
+      }
+  });
 }

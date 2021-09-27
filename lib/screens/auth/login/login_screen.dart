@@ -20,7 +20,10 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
-        toolbarHeight: 0.0,
+        leading: BackButton(color: Colors.black,),
+        backgroundColor: Colors.white,
+        // toolbarHeight: 0.0,
+        elevation: 0.0,
         brightness: Brightness.dark,
       ),
       body: Container(
@@ -94,7 +97,9 @@ class LoginScreen extends StatelessWidget {
                             labelColor: Colors.black,
                             hintColor: Colors.black,
                             textColor: Colors.black,
-                            autoFillHints: [AutofillHints.telephoneNumberNational],
+                            autoFillHints: [
+                              AutofillHints.telephoneNumberNational
+                            ],
                           ),
                           SizedBox(
                             height: 20,
