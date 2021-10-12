@@ -7,6 +7,10 @@ import 'package:sokia_app/helper/custom_widgets/custom_button.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_outline_text_form_field.dart';
 import 'package:sokia_app/helper/custom_widgets/text/custom_text.dart';
 import 'package:sokia_app/screens/auth/register/register_screen.dart';
+import 'package:sokia_app/screens/auth/social_login/apple_button.dart';
+import 'package:sokia_app/screens/auth/social_login/facebook_button.dart';
+import 'package:sokia_app/screens/auth/social_login/google_button.dart';
+import 'package:sokia_app/screens/auth/social_login/twitter_button.dart';
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 final TextEditingController phoneController = TextEditingController();
@@ -20,7 +24,9 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
-        leading: BackButton(color: Colors.black,),
+        leading: BackButton(
+          color: Colors.black,
+        ),
         backgroundColor: Colors.white,
         // toolbarHeight: 0.0,
         elevation: 0.0,
@@ -121,6 +127,22 @@ class LoginScreen extends StatelessWidget {
                           SizedBox(
                             height: 20,
                           ),
+                          // GoogleButton(
+                          //   onLoginComplete: (socialUserModel) {
+                          //     print(socialUserModel.email);
+                          //   },
+                          // ),
+                          // FacebookButton(
+                          //   onLoginComplete: (socialUserModel) {
+                          //     print(socialUserModel.email);
+                          //   },
+                          // ),
+                          TwitterButton(
+                            onLoginComplete: (socialUserModel) {
+                              print(socialUserModel.email);
+                            },
+                          ),
+
                           Container(
                             height: 50,
                             width: MediaQuery.of(context).size.width,
