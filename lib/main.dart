@@ -19,24 +19,25 @@ void main() async {
 
   await FCMConfig.instance.init(
     onBackgroundMessage: _firebaseMessagingBackgroundHandler,
+    defaultAndroidChannel: AndroidNotificationChannel('com.sokia', 'sokia')
   );
 
   runApp(MyApp());
 
-  FCMConfig.messaging.getToken().then((token) {
-    print('Firebase token : $token');
-    String fireToken = LocalStorage().getString(LocalStorage.firebaseToken);
-      if (fireToken == null) {
-        fireToken = token;
-        LocalStorage().setString(LocalStorage.firebaseToken, fireToken);
-        ApiService().sendFirebaseToken(firebaseToken: token);
-      } else {
-        if (fireToken != token) {
-          fireToken = token;
-          LocalStorage().setString(LocalStorage.firebaseToken, fireToken);
-          print("FirebaseMessaging token: $token");
-          ApiService().sendFirebaseToken(firebaseToken: token);
-        }
-      }
-  });
+  // FCMConfig.messaging.getToken().then((token) {
+  //   print('Firebase token : $token');
+  //   String fireToken = LocalStorage().getString(LocalStorage.firebaseToken);
+  //     if (fireToken == null) {
+  //       fireToken = token;
+  //       LocalStorage().setString(LocalStorage.firebaseToken, fireToken);
+  //       ApiService().sendFirebaseToken(firebaseToken: token);
+  //     } else {
+  //       if (fireToken != token) {
+  //         fireToken = token;
+  //         LocalStorage().setString(LocalStorage.firebaseToken, fireToken);
+  //         print("FirebaseMessaging token: $token");
+  //         ApiService().sendFirebaseToken(firebaseToken: token);
+  //       }
+  //     }
+  // });
 }
